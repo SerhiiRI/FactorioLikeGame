@@ -13,7 +13,7 @@ namespace Controller;
  * @package Controller
  * <p></p>
  */
-class MySQLController
+final class MySQLController
 {
     /**
      *
@@ -44,7 +44,7 @@ class MySQLController
      */
     public static function getInstance()
     {
-        if(empty(self::$instance))
+        if (empty(self::$instance))
             self::$instance = new self($login = 'root', $passwd = '', $dataBaseName = 'game', $host = 'localhost');
         return self::$instance;
     }
@@ -55,24 +55,29 @@ class MySQLController
         $this->passwd = $passwd;
         $this->dataBaseName = $dataBaseName;
         $this->host = $host;
-        $this->connectToDataBase($login , $passwd,  $dataBaseName, $host);
+        $this->connectToDataBase($login, $passwd, $dataBaseName, $host);
     }
 
-    private function __clone(){}
+    private function __clone()
+    {
+    }
 
-    public function connectToDataBase($login , $passwd,  $dataBaseName, $host){
+    public function connectToDataBase($login, $passwd, $dataBaseName, $host)
+    {
         $this->DB = new mysqli($host, $login, $passwd, $dataBaseName);
-        if ($this->DB->connect_errno){
+        if ($this->DB->connect_errno) {
             return false;
         }
         return true;
     }
 
-    public function disconnectDataBase(){
+    public function disconnectDataBase()
+    {
         $this->DB->close();
     }
 
-    public function returnQuery(string $query){
+    public function returnQuery(string $query)
+    {
         //TODO: create a query Controller method
     }
 }

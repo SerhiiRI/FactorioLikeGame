@@ -8,8 +8,29 @@
 
 namespace Controller;
 
-
+/**
+ * Class Resource
+ * @package Controller
+ */
 class Resource
 {
+    private $ResourceType;
+    private $ResourceValue;
+
+    public function __construct($type = "", $value = "")
+    {
+        $this->ResourceType = $type;
+        $this->ResourceValue = $value;
+    }
+
+    public function getResourceType()
+    {
+        return $this->ResourceType;
+    }
+
+    public function getResourceValue()
+    {
+        return $this->ResourceValue;
+    }
 
 }
