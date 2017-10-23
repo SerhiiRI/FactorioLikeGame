@@ -64,7 +64,7 @@ final class MySQLController
 
     public function connectToDataBase($login, $passwd, $dataBaseName, $host)
     {
-        $this->DB = new mysqli($host, $login, $passwd, $dataBaseName);
+        $this->DB = new \mysqli($host, $login, $passwd, $dataBaseName);
         if ($this->DB->connect_errno) {
             return false;
         }
@@ -79,5 +79,6 @@ final class MySQLController
     public function returnQuery(string $query)
     {
         //TODO: create a query Controller method
+
     }
 }
