@@ -20,6 +20,11 @@ namespace Controller;
 interface GraficView
 {
     public function __view__Generate();
-    public function __view__Change();
-    public function __view__ReturnParamert();
+
+    /**
+     * @param array $param list of changes;
+     * @return 0;
+     */
+    public function __view__Change(array $param);
+     public function __view__ReturnParametr();
 }
