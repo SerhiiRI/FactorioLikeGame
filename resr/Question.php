@@ -9,32 +9,40 @@
 namespace Controller;
 
 
-class Question
+class Question 
 {
     public $question = '';
     public $answers = array();
 
-    public function __construct()
+    public function __construct(string $questionField, array $answer)
     {
-
+        if (!is_null($questionField) && !is_null($answer)) {
+            $this->question = $questionField;
+            $this->answers = $answer;
+        }
     }
 }
 
-class Answer{
+class Answer
+{
     private $answer;
     private $right = false;
+
     public function __construct($answerField, $isCorrect = false)
     {
-        if(!is_null($answerField)){
+        if (!is_null($answerField)) {
             $this->answer = $answerField;
             $this->right = $isCorrect;
         }
     }
 
-    public function getAnswer(){
+    public function getAnswer()
+    {
         return $this->answer;
     }
-    public function isRight(){
+
+    public function isRight()
+    {
         return $this->right ? true : false;
     }
 }

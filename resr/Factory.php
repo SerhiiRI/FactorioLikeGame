@@ -16,7 +16,7 @@ namespace Controller;
  * @method __view__Change method
  * @method __view__ReturnParamert return
  */
-class Factory implements GraficView
+class Factory
 {
     /**
      * <p>This type of variables used to graphic view in HTML/CSS</p>
@@ -79,25 +79,4 @@ class Factory implements GraficView
         $this->inMapLocation = $Location;
     }
 
-    public function __view__Generate()
-    {
-        // TODO: Implement __view__Generate() method.
-    }
-
-    public function __view__Change(array $param)
-    {
-        // TODO: Implement __view__Change() method.
-    }
-
-    public function __view__ReturnParametr()
-    {
-        // TODO: Implement __view__ReturnParametr() method.
-    }
-
-    public function __call($name, $arguments)
-    {
-        // TODO: Implement @method __view__Generate is
-        // TODO: Implement @method __view__Change method
-        // TODO: Implement @method __view__ReturnParamert return
-    }
 }
