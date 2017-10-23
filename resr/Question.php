@@ -11,7 +11,7 @@ namespace Controller;
 
 class Question 
 {
-    public $question = '';
+    public $question = ' ';
     public $answers = array();
 
     public function __construct(string $questionField, array $answer)
