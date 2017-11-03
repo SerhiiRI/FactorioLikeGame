@@ -26,10 +26,10 @@ final class MySQLController
      * <p>
      * Variables used for connection to MySQL Data Base,
      * </p>
-     * @var login
-     * @var passwd
-     * @var dataBaseName
-     * @var host
+     * @var login login to DB
+     * @var passwd DB password
+     * @var dataBaseName neme of data base
+     * @var host is a local url to MySQL data base
      * @var DB is instance of MySQLi class to using data.
      */
     private $login;
@@ -78,7 +78,6 @@ final class MySQLController
 
     public function returnQuery(string $query)
     {
-        //TODO: create a query Controller method
-
+        return mysqli_fetch_assoc($query);
     }
 }
