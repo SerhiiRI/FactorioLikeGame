@@ -26,17 +26,16 @@ final class MySQLController
      * <p>
      * Variables used for connection to MySQL Data Base,
      * </p>
-     * @var login login to DB
-     * @var passwd DB password
-     * @var dataBaseName neme of data base
-     * @var host is a local url to MySQL data base
-     * @var DB is instance of MySQLi class to using data.
+     *
+     * @var login login to mysql
+     * @var passwd mysql password
+     * @var PDO is instance of MySQLi class to using data.
+     *
      */
+
     private $login;
     private $passwd;
-    private $dataBaseName;
-    private $host;
-    private $DB;
+    private $pdo;
 
     /**
      * @return is|MySQLController
@@ -49,35 +48,38 @@ final class MySQLController
         return self::$instance;
     }
 
-    private function __construct($login = 'root', $passwd = '', $dataBaseName = 'game', $host = 'localhost')
+    private function __construct($login = 'root', $passwd = '')
     {
         $this->login = $login;
         $this->passwd = $passwd;
-        $this->dataBaseName = $dataBaseName;
-        $this->host = $host;
-        $this->connectToDataBase($login, $passwd, $dataBaseName, $host);
+        try
+        { // przekazujemy dla interfejsa PDO ustanawia dla zdefiniowanego zdarzenia
+            $this->pdo = new \PDO("mysql:host=localhost;dbname=game", $login, $passwd);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); }
+        catch(PDOException $e)
+        {
+            echo "Error: ".$e->getMessage();
+        }
     }
 
     private function __clone()
     {
     }
 
-    public function connectToDataBase($login, $passwd, $dataBaseName, $host)
-    {
-        $this->DB = new \mysqli($host, $login, $passwd, $dataBaseName);
-        if ($this->DB->connect_errno) {
-            return false;
-        }
-        return true;
-    }
-
     public function disconnectDataBase()
     {
-        $this->DB->close();
+        $this->pdo=null;
     }
 
-    public function returnQuery(string $query)
-    {
-        return mysqli_fetch_assoc($query);
+
+    public function validateUser($login) {
+        $prepare = $this->pdo->prepare("SELECT * FORM `User` WHERE Email=:e_mail");
+        $prepare->bindParam(":e_mail", trim($login));
+        print "user login = |".trim($login)."|";
+        $prepare->execute();
+        if($prepare->rowCount()>0){
+            return true;
+        }
+        return false;
     }
 }

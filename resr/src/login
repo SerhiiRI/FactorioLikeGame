@@ -1,0 +1,14 @@
+<?php
+$result = $pdo->query('');
+$pdo->setFetchMode(PDO::FETCH_ASSOC);
+while ($pdo = $result->fetch()) {
+    echo $row['name'] . "\n";
+    echo $row->addr . "\n";
+    echo $row[2] . "\n";
+}
+
+
+if(validateUser($login, $password)){
+
+}
+?>

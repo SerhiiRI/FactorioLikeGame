@@ -20,6 +20,7 @@ class ControllSession
             //TODO: ask if some of parameter issets in user browser, if not, then... set coockie to request;
             //$_SERVER['PHP_AUTH_USER'] = $_COOKIE['login']; // PHP_AUTH_USER is a LOGIN contained in server;
             //$_SERVER['PHP_AUTH_PW'] = $_COOKIE['password']; // PHP_AUTH_PW is a PASSWORD contained in server;
+            session_start();
             $_SESSION['login'] = $_COOKIE['login'];
             $_SESSION['password'] = $_COOKIE['password'];
         }else{

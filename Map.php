@@ -5,6 +5,13 @@
     <title>Title</title>
 </head>
 <body>
+<?php ?>
+
+<table>
+    <tr>
+        map->generete map<?php $_POST["name"]?>
+    </tr>
+</table>
 
 </body>
 </html>
