@@ -1,3 +1,23 @@
+<?php
+define("ADMIN", 1);
+/**
+ *
+ * twozenia objektu steroania Bazy Danych
+ */
+$dataBase=\Controller\MySQLController::getInstance();
+if(isset($_POST["ok"])){
+    if($dataBase->login($_POST["login"], $_POST["password"]))  {
+        /**
+         *
+         * jeżeli zalogowany użytkownik jest adminem to zrób
+         * przekierowania do strony sterowania Admina;
+         *
+         */
+        if($_SESSION["userIdentificator"]==ADMIN)header("Location:Map.php");
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,18 +26,14 @@
 <body>
 <div class="login-page">
     <div class="form">
-        <form class="register-form">
-            <input type="text" placeholder="name"/>
-            <input type="password" placeholder="password"/>
-            <input type="text" placeholder="email address"/>
-            <button>create</button>
-            <p class="message">Already registered? <a href="#">Sign In</a></p>
-        </form>
-        <form class="login-form">
-            <input type="text" placeholder="username"/>
-            <input type="password" placeholder="password"/>
-            <button>login</button>
-            <p class="message">Not registered? <a href="#">Create an account</a></p>
+        <form class="login-form" method="post">
+            <input type="text" placeholder="username" name="login" required/>
+
+            <!-- TODO: nie zapomnij zmienic input z teksta na password-a -->
+
+            <input type="text" placeholder="password" name="password" required/>
+            <button type="submit" name="ok">login</button>
+            <p class="message">Not registered? <a href="Regestration.php">Create an account</a></p>
         </form>
     </div>
 </div>
@@ -25,7 +41,3 @@
 </html>
 
 <?php
-
-if(\Controller\ControllSession::hadCoockie()){
-    header("Location: map.php");
-}

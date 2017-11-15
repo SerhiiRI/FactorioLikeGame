@@ -72,14 +72,34 @@ final class MySQLController
     }
 
 
-    public function validateUser($login) {
-        $prepare = $this->pdo->prepare("SELECT * FORM `User` WHERE Email=:e_mail");
+    public function validateUser($login, $password) {
+        $prepare = $this->pdo->prepare("SELECT * FORM `User` WHERE Email=:e_mail AND Passwd=:password");
         $prepare->bindParam(":e_mail", trim($login));
+        $prepare->bindParam(":password", trim($password));
         print "user login = |".trim($login)."|";
         $prepare->execute();
-        if($prepare->rowCount()>0){
-            return true;
+        if($prepare->rowCount()>0) {
+            $prepare->setFetchMode(\PDO::FETCH_OBJ);
+            return $prepare->fetch()->idUser();
         }
-        return false;
+        return -1;
     }
+
+
+
+    public function login(string $login, string $password){
+            $idUser = $this->validateUser($login, $password);
+            if($idUser>0) {
+                ControllSession::addSesionVariable("userIdentificator", $idUser);
+                return true;
+            }
+            else{
+                return false;
+            }
+    }
+
+    public function regestration(){
+
+    }
+
 }

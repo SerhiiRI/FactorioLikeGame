@@ -11,6 +11,7 @@ namespace Controller;
 
 class ControllSession
 {
+
     public static function createSession(){
         session_start();
     }
@@ -33,6 +34,24 @@ class ControllSession
         }
         return $boolRequest;
     }
+
+    public static function issetCoockie($coockie_variable){
+        if(isset($_COOKIE[$coockie_variable])){
+            return true;
+        }
+        return false;
+    }
+
+    public static function addCookiesVariable(string $variable_name, string $variable_value){
+        setcookie('login', $_SESSION['login'], time() + 60*60*24);
+        return true;
+    }
+
+    public static function addSesionVariable(string $variable_name, string $variable_value){
+        $_SESSION[$variable_name] = $variable_value;
+        return true;
+    }
+
     public static function removeCoockie(){
         setcookie('login', '', 1);
         setcookie('password', '', 1);
