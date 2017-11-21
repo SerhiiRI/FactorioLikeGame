@@ -33,6 +33,7 @@ class Factory
      * @var upgradeLevel is a int value, which have calculate user resource-oriented score;
      * @var resourceScore is a calculate value for adding to main user statistic;
      */
+
     private $resourceType;
     private $upgradeLevel;
     private $resourceScore;

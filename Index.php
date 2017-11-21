@@ -1,19 +1,25 @@
 <?php
+session_start();
+
+
 define("ADMIN", 1);
-/**
- *
- * twozenia objektu steroania Bazy Danych
- */
-$dataBase=\Controller\MySQLController::getInstance();
+define("USER", 2);
+$__controller__DataBase=\Controller\MySQLController::getInstance();
+
+
 if(isset($_POST["ok"])){
-    if($dataBase->login($_POST["login"], $_POST["password"]))  {
-        /**
-         *
-         * jeżeli zalogowany użytkownik jest adminem to zrób
-         * przekierowania do strony sterowania Admina;
-         *
-         */
-        if($_SESSION["userIdentificator"]==ADMIN)header("Location:Map.php");
+    $id=$__controller__DataBase->validateUser($_POST["login"], $_POST["password"]);
+    if($id!=-1)  {
+        $_SESSION["idUser"] = $id["idUser"];
+        $_SESSION["UserType"] = $id["Type"];
+    }
+    unset($id);
+}
+if($_SESSION["idUser"] != null) {
+    if ($_SESSION["UserType"] == USER) {
+        header("Location:Map.php");
+    }elseif($_SESSION["UserType"] == ADMIN) {
+        header("Location:AdminControllerSystem.php");
     }
 }
 ?>
@@ -28,9 +34,6 @@ if(isset($_POST["ok"])){
     <div class="form">
         <form class="login-form" method="post">
             <input type="text" placeholder="username" name="login" required/>
-
-            <!-- TODO: nie zapomnij zmienic input z teksta na password-a -->
-
             <input type="text" placeholder="password" name="password" required/>
             <button type="submit" name="ok">login</button>
             <p class="message">Not registered? <a href="Regestration.php">Create an account</a></p>
@@ -41,3 +44,7 @@ if(isset($_POST["ok"])){
 </html>
 
 <?php
+/*
+if($_SESSION)
+
+*/
