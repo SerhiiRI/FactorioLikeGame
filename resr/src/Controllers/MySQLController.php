@@ -5,9 +5,8 @@
  * Date: 23.10.17
  * Time: 0:38
  */
-
 namespace Controller;
-
+use PDO;
 /**
  * Class MySQLController
  * @package Controller
@@ -44,7 +43,7 @@ final class MySQLController
     public static function getInstance()
     {
         if (empty(self::$instance))
-            self::$instance = new self($login = 'root', $passwd = '', $dataBaseName = 'game', $host = 'localhost');
+            self::$instance = new self('root', '');
         return self::$instance;
     }
 
@@ -80,30 +79,35 @@ final class MySQLController
      * @return $idUzytkownika of new user, or -1 if Insertion was failed;
      *
      */
-    public function regestration($login, $password, $type, $idScore=0, $idLevel=0){
-        $prepare = $this->pdo->prepare("SELECT * FORM `User` WHERE Email=:e_mail ");
+    public function regestration($login, $password, $type=2, $idLevel=0, $idScore=0){
+        $prepare = $this->pdo->prepare("SELECT * FROM `User` WHERE Email=:e_mail ");
         $prepare->bindParam(":e_mail", $login);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         $idUzytkownika=-1;
-        if($prepare->rowCount()<0){
-            $rejestracja = $this->pdo->prepare(" INSERT INTO User (OUTPUT VALUES (NULL , :email, :pass, :type, :score, :userlevel) ");
+        if($prepare->rowCount()<=0){
+            $rejestracja = $this->pdo->prepare(" INSERT INTO User VALUES (NULL , :email, :pass, :type, :score, :userlevel) ");
             $rejestracja->bindParam(":email", $login);
             $rejestracja->bindParam(":pass", $password);
             $rejestracja->bindParam(":type", $type);
             $rejestracja->bindParam(":score", $idScore);
             $rejestracja->bindParam(":userlevel", $idLevel);
-            $rejestracja->setFetchMode(PDO::FETCH_OBJ);
+            $rejestracja->setFetchMode(PDO::FETCH_ASSOC);
             $rejestracja->execute();
             $idUzytkownika = $this->pdo->lastInsertId();
+            $rejestracja->closeCursor();
+        }
+        else {
+            $fetchOBJ = $prepare->fetch();
+            return $fetchOBJ["idUser"];
         }
         $prepare->closeCursor();
         return $idUzytkownika;
     }
     public function validateUser($login, $password) {
-        $prepare = $this->pdo->prepare("SELECT * FORM `User` WHERE Email=:e_mail AND Passwd=:password");
-        $prepare->bindParam(":e_mail", trim($login));
-        $prepare->bindParam(":password", trim($password));
-        print "user login = |".trim($login)."|";
+        $prepare = $this->pdo->prepare("SELECT * FROM `User` WHERE Email=:email AND Passwd=:passwd");
+        $prepare->bindParam(":email", $login);
+        $prepare->bindParam(":passwd", $password);
         $prepare->execute();
         if($prepare->rowCount()>0) {
             $prepare->setFetchMode(\PDO::FETCH_ASSOC);
@@ -116,10 +120,21 @@ final class MySQLController
     /**
      * następne metody twożą interfejs do wykorzystawania poszczególnych funkcyj
      * przez użytkowanika ADMIN!
-     * @return IndexOfAdd value, only work in Adding element
+     * @return array
      */
-    public function __Admin__UserAdd($login, $password, $type=2, $idScore=0, $idLevel=0){
-        return $this->regestration($login, $password, $type, $idScore, $idLevel);
+    public function __Admin__UserQuery(){
+        $prepare = $this->pdo->prepare("SELECT * FROM `User`");
+        $prepare->bindParam(":email", $login);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        if($prepare->rowCount()>0){
+            $assocc = $prepare->fetchAll();
+            return $assocc;
+        }
+        return null;
+    }
+    public function __Admin__UserAdd($login, $password, $type=2, $idLevel=0, $idScore=0){
+        return $this->regestration($login, $password, $type, $idLevel, $idScore);
     }
     public function __Admin__UserUpdate($EmailToChange, $idScoreToChange, $levelToChange){
         try{

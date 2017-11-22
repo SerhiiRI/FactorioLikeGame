@@ -1,10 +1,16 @@
+<?php
+include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
+include_once ("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_LOGOUT_BUTTON_AND_FORM.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>User map</title>
+    <link rel="stylesheet" type="text/css" href="style/login.css">
+
 </head>
-<body>
+<body style="background-image: url(resr/img/land.jpg)">
 
 <?php
 /**
@@ -32,7 +38,11 @@
  * }
  */
 ?>
-<h1>To jest MAPA dla usera</h1>
+<div class="login-page">
+    <div class="form">
+        <p class="message"> AdminConrollerSystem</p>
+    </div>
+</div>
 <table>
     <?php
         echo "<tr>";
