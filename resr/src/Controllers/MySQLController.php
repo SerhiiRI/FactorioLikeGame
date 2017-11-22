@@ -120,7 +120,7 @@ final class MySQLController
     /**
      * następne metody twożą interfejs do wykorzystawania poszczególnych funkcyj
      * przez użytkowanika ADMIN!
-     * @return array
+     * @return array FETCH_ASSOC
      */
     public function __Admin__UserQuery(){
         $prepare = $this->pdo->prepare("SELECT * FROM `User`");
@@ -136,21 +136,17 @@ final class MySQLController
     public function __Admin__UserAdd($login, $password, $type=2, $idLevel=0, $idScore=0){
         return $this->regestration($login, $password, $type, $idLevel, $idScore);
     }
-    public function __Admin__UserUpdate($EmailToChange, $idScoreToChange, $levelToChange){
-        try{
-            $prepare = $this->pdo->prepare("UPDATE User SET idScore=?, Level=? WHERE Email=?");
-            $prepare->bindParam(1,$EmailToChange);
-            $prepare->bindParam(2,$idScoreToChange);
+    public function __Admin__UserUpdate($EmailToChange, $PasswordToChange){
+            $prepare = $this->pdo->prepare("UPDATE `User` SET `Passwd` = ? WHERE `Email`=?");
+            $prepare->bindParam(1,$PasswordToChange);
+            $prepare->bindParam(2,$EmailToChange);
+        /*
+        $prepare->bindParam(2,$idScoreToChange);
             $prepare->bindParam(3,$levelToChange);
+            */
             $prepare->execute();
             $prepare->closeCursor();
-        }catch(Exception $e){
-            echo "<div style='background: red; font-size: 20px; font-family: monospace; color: #FFFFFF; margin: 30px; padding: 40px;'>";
-            echo $e->getMessage();
-            echo $e->getFile();
-            echo $e->getLine();
-            echo "</div>";
-        }
+
     }
     public function __Admin__UserRemove($login){
         try {

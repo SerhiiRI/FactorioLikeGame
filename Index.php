@@ -11,7 +11,7 @@ if(isset($_POST["ok"])){
         <div class="form">
             <p class="message" style="font-size: 30px;"> Login is failed, may be you want <a href="Regestration.php"> create an account</a></p>
         </div>
-        <?
+        <?php
     }
     unset($id);
 }
