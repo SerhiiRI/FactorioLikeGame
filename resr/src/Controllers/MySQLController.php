@@ -60,11 +60,9 @@ final class MySQLController
             echo "Error: ".$e->getMessage();
         }
     }
-
     private function __clone()
     {
     }
-
     public function disconnectDataBase()
     {
         $this->pdo=null;
@@ -114,13 +112,39 @@ final class MySQLController
             return $prepare->fetch();
         }
         return -1;
-
     }
+
+
+    public function __User__UserMapAdd(){}
+    public function __User__UserMapUpdate(){}
+    public function __User__UserMapRemove(){
+        //TODO:
+    }
+
+    public function __User__UserScoreAdd(){}
+    public function __User__UserScoreUpdate(){}
+    public function __User__UserScoreRemove(){
+        //TODO:
+    }
+
+    public function __User__FactoryInstanceAdd(){}
+    public function __User__FactoryInstanceUpdate(){}
+    public function __User__FactoryInstanceRemove(){
+        //TODO:
+    }
+
+    public function __User__QuestionQuery(){}
+    public function __User__TaskQuery(){}
+    public function __User__FactoryQuery(){}
+    public function __User__ResourcesQuery(){}
+
+//====================================================================================================================//
+//====================================================================================================================//
 
     /**
      * następne metody twożą interfejs do wykorzystawania poszczególnych funkcyj
      * przez użytkowanika ADMIN!
-     * @return array FETCH_ASSOC
+     * @return array FETCH_ASSOC or NUll
      */
     public function __Admin__UserQuery(){
         $prepare = $this->pdo->prepare("SELECT * FROM `User`");
@@ -162,5 +186,71 @@ final class MySQLController
             echo "</div>";
         }
     }
+
+    /**
+     * @param $idElement
+     * @param $Question
+     * @param array $Answer
+     * @return bool
+     */
+    public function __Admin__QuestionQuery(){}
+    public function __Admin__QuestionAdd($idElement, $Question, array $Answer){
+        $prepare = $this->pdo->prepare("INSERT INTO `Question` VALUES (NULL , :question, :idresource) ");
+        $prepare->bindParam(":question", $Question);
+        $prepare->bindParam(":idresource", $idElement);
+        $prepare->execute();
+        $id_New_Added_Question = $this->pdo->lastInsertId();
+        $prepare->closeCursor();
+        $prepare = $this->pdo->prepare("INSERT INTO `Answer` VALUES (NULL, :idquestion, :answer, :isright)");
+        foreach ($Answer as $oneAnswer) {
+        $prepare->bindParam(":idquestion", $id_New_Added_Question);
+        if(stripos($oneAnswer, "$")!=False){ $prepare->bindParam(":isright", $right); }
+        else{ $prepare->bindParam(":isright", $right); }
+        }
+            /**
+             * jeżeli w odpowidzi będzie znależony znaczek "$" - znaczy, że odpowiedz jest poprawna;
+             * TODO: pod koniec sprawdzenia zrobić obcianania znaka dolara:
+             *
+             *      $oneAnswer = preg_replace('/[^\p{L}\p{N}\s]/u', '$', $oneAnswer);
+             */
+        $prepare->bindParam(":answer", $oneAnswer);
+        return true;
+    }
+    public function __Admin__QuestionUpdate(){
+        //TODO:
+    }
+    public function __Admin__QuestionRemove(){
+        //TODO:
+    }
+
+    public function __Admin__FactoryQuery(){}
+    public function __Admin__FactoryAdd(){}
+    public function __Admin__FactoryUpdate(){}
+    public function __Admin__FactoryRemove(){
+        //TODO:
+    }
+
+    public function __Admin__TaskQuery(){}
+    public function __Admin__TaskAdd(){}
+    public function __Admin__TaskUpdate(){}
+    public function __Admin__TaskRemove(){
+        //TODO:
+    }
+
+    public function __Admin__ResourcesQuery(){}
+    public function __Admin__ResourcesAdd(){}
+    public function __Admin__ResourcesUpdate(){}
+    public function __Admin__ResourcesRemove(){
+        //TODO:
+    }
+
+    public function __Admin__UserMapQuery(){}
+    public function __Admin__UserMapAdd(){}
+    public function __Admin__UserMapUpdate(){}
+    public function __Admin__UserMapRemove(){
+        //TODO:
+    }
+
+
 
 }
