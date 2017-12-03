@@ -68,7 +68,6 @@ final class MySQLController
         $this->pdo=null;
     }
 
-
     /**
      * @param $login - it regestration e-mail address
      * @param $password - its password to acount e-mail
