@@ -16,7 +16,7 @@ namespace Controller;
  * @method __view__Change method
  * @method __view__ReturnParamert return
  */
-class Factory
+class Factory implements GraficView
 {
     /**
      * <p>This type of variables used to graphic view in HTML/CSS</p>
@@ -68,16 +68,30 @@ class Factory
         $this->resourceScore = $this->upgradeLevel * $this->resourceType->getResourceValue();
     }
 
-    public function __view__PramReturn(){
+    private function __view__PramReturn(){
         return array($this->Type, $this->inMapLocation, $this->IMG);
     }
 
-    public function __view__ParamLocation($Location){
+    private function __view__ParamLocation($Location){
         $this->inMapLocation = $Location;
     }
 
-    public function __view__ParamIMG($Location){
+    private function __view__ParamIMG($Location){
         $this->inMapLocation = $Location;
     }
 
+    public function __view__Generate()
+    {
+        // TODO: Implement __view__Generate() method.
+    }
+
+    public function __view__Change(array $param)
+    {
+        // TODO: Implement __view__Change() method.
+    }
+
+    public function __view__ReturnParametr()
+    {
+        // TODO: Implement __view__ReturnParametr() method.
+    }
 }

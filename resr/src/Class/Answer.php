@@ -9,7 +9,12 @@
 namespace Controller;
 
 
-class Answer
+/**
+ * @method __view__Generate is
+ * @method __view__Change method
+ * @method __view__ReturnParamert return
+ */
+class Answer implements GraficView
 {
     private $answer;
     private $right = false;
@@ -30,5 +35,28 @@ class Answer
     public function isRight()
     {
         return $this->right ? true : false;
+    }
+
+
+    public function __view__Generate()
+    {
+        // TODO: Implement __view__Generate() method.
+    }
+
+    public function __view__Change(array $param)
+    {
+        // TODO: Implement __view__Change() method.
+    }
+
+    public function __view__ReturnParametr()
+    {
+        // TODO: Implement __view__ReturnParametr() method.
+    }
+
+    public function __call($name, $arguments)
+    {
+        // TODO: Implement @method __view__Generate is
+        // TODO: Implement @method __view__Change method
+        // TODO: Implement @method __view__ReturnParamert return
     }
 }
