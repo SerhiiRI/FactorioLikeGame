@@ -139,6 +139,7 @@ final class MySQLController
     public function __User__ResourcesQuery(){}
 
 //====================================================================================================================//
+//====================================================================================================================//
 
     /**
      * następne metody twożą interfejs do wykorzystawania poszczególnych funkcyj
