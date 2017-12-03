@@ -115,7 +115,37 @@ final class MySQLController
     }
 
 
-    public function __User__UserMapAdd(){}
+    public function __User__UserMapAdd($idUser, $idFactory){
+        $findCountFactory = $this->pdo->prepare("SELECT * FROM `UserMap` WHERE idFactory=:idfac");
+        $findCountFactory->bindParam(":idfac", $idFactory);
+        $findCountFactory->setFetchMode(PDO::FETCH_ASSOC);
+        $findCountFactory->execute();
+        $updateMap =0;
+        $iloscFabryk=$findCountFactory->rowCount();
+        if($iloscFabryk = 0){
+            $countFactory = 1;
+            $prepare = $this->pdo->prepare("INSERT INTO `UserMap`(`idUserMap`, `idUser`, `idFactory`, `CountFactory`) 
+VALUES (NULL, :idUser, :idFactory, :CountFactory)");
+            $prepare->bindParam(":idUser",$idUser );
+            $prepare->bindParam(":idFactory", $idFactory);
+            $prepare->bindParam(":CountFactory", $countFactory);
+            $prepare->execute();
+            $id_New_Added_Question = $this->pdo->lastInsertId();
+            $prepare->closeCursor();
+            return $id_New_Added_Question;
+        }elseif ($iloscFabryk > 0){
+            $iloscFabryk +=1;
+            $row = $findCountFactory->fetch();
+            $updateMap = $row["idUserMap"];
+            $prepare = $this->pdo->prepare("UPDATE `UserMap` SET CountFactory=:countt WHERE idFactory=:idfactory");
+            $prepare->bindParam(":countt",$iloscFabryk );
+            $prepare->bindParam(":idFactory", $idFactory);
+            $prepare->execute();
+            $prepare->closeCursor();
+            return $updateMap;
+        }
+
+    }
     public function __User__UserMapUpdate(){}
     public function __User__UserMapRemove(){
         //TODO:
@@ -188,68 +218,194 @@ final class MySQLController
     }
 
     /**
+     * @return array|null
+     */
+    public function __Admin__QuestionQuery(){
+        $prepare = $this->pdo->prepare("SELECT `Question.Question` as `Question`, `Answers.Answer` as `Answer` FROM `Question `, `Answer` WHERE `Question.idQuestion = Answer.idQuestion`");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        $prepare->closeCursor();
+        if($prepare->rowCount()>0){
+            $assoc = $prepare->fetchAll();
+            return $assoc;
+        }
+        return null;
+    }
+    /**
      * @param $idElement
      * @param $Question
      * @param array $Answer
      * @return bool
      */
-    public function __Admin__QuestionQuery(){}
     public function __Admin__QuestionAdd($idElement, $Question, array $Answer){
+
+        /**
+         * Inset into DB Question, without answer;
+         */
         $prepare = $this->pdo->prepare("INSERT INTO `Question` VALUES (NULL , :question, :idresource) ");
         $prepare->bindParam(":question", $Question);
         $prepare->bindParam(":idresource", $idElement);
         $prepare->execute();
         $id_New_Added_Question = $this->pdo->lastInsertId();
         $prepare->closeCursor();
+
+        /**
+         * inset into DB answer to the define question;
+         */
         $prepare = $this->pdo->prepare("INSERT INTO `Answer` VALUES (NULL, :idquestion, :answer, :isright)");
         foreach ($Answer as $oneAnswer) {
-        $prepare->bindParam(":idquestion", $id_New_Added_Question);
-        if(stripos($oneAnswer, "$")!=False){ $prepare->bindParam(":isright", $right); }
-        else{ $prepare->bindParam(":isright", $right); }
+                $prepare->bindParam(":idquestion", $id_New_Added_Question);
+                $toPoprawnaOdpowiedz = true;
+                $toPoprawnaOdpowiedz = stripos($oneAnswer, "$")!=False ? true : false;
+                $prepare->bindParam(":isright", $toPoprawnaOdpowiedz);
+                $prepare->bindParam(":answer", $oneAnswer);
+                $prepare->execute();
         }
-            /**
-             * jeżeli w odpowidzi będzie znależony znaczek "$" - znaczy, że odpowiedz jest poprawna;
-             * TODO: pod koniec sprawdzenia zrobić obcianania znaka dolara:
-             *
-             *      $oneAnswer = preg_replace('/[^\p{L}\p{N}\s]/u', '$', $oneAnswer);
-             */
-        $prepare->bindParam(":answer", $oneAnswer);
+        $prepare->closeCursor();
+
+        /**
+         * jeżeli w odpowidzi będzie znależony znaczek "$" - znaczy, że odpowiedz jest poprawna;
+         * TODO: pod koniec sprawdzenia zrobić obcianania znaka dolara:
+         *
+         * $oneAnswer = preg_replace('/[^\p{L}\p{N}\s]/u', '$', $oneAnswer);
+         */
         return true;
     }
-    public function __Admin__QuestionUpdate(){
-        //TODO:
-    }
-    public function __Admin__QuestionRemove(){
-        //TODO:
+    /**
+     * @param $idQuestion
+     * @return null
+     */
+    public function __Admin__QuestionRemove($idQuestion){
+        $prepare = $this->pdo->prepare("DELETE FROM `Query` WHERE idQuestion=:idQuestion" );
+        $prepare->bindParam(":idQuestion", $idQuestion);
+        $prepare->execute();
+        $prepare->closeCursor();
+        return null;
     }
 
-    public function __Admin__FactoryQuery(){}
-    public function __Admin__FactoryAdd(){}
-    public function __Admin__FactoryUpdate(){}
+    public function __Admin__FactoryQuery(){
+        $prepare = $this->pdo->prepare("SELECT * FROM `Factory`");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        $prepare->closeCursor();
+        if($prepare->rowCount()>0){
+            $assoc = $prepare->fetchAll();
+            return $assoc;
+        }
+        return null;
+    }
+
+    /**
+     * @param $typeOfFactory
+     * @param $imagePATH
+     * @return string - added index
+     */
+    public function __Admin__FactoryAdd($typeOfFactory, $imagePATH){
+        /**
+         * Inset into DB Factory(Type of factory, path to image)
+         */
+        $prepare = $this->pdo->prepare("INSERT INTO `Factory` VALUES (NULL , :type, :image) ");
+        $prepare->bindParam(":type", $typeOfFactory);
+        $prepare->bindParam(":image", $imagePATH);
+        $prepare->execute();
+        $id_New_Added_Factory = $this->pdo->lastInsertId();
+        $prepare->closeCursor();
+        return $id_New_Added_Factory;
+    }
     public function __Admin__FactoryRemove(){
         //TODO:
     }
 
-    public function __Admin__TaskQuery(){}
-    public function __Admin__TaskAdd(){}
-    public function __Admin__TaskUpdate(){}
-    public function __Admin__TaskRemove(){
-        //TODO:
+    public function __Admin__TaskQuery(){
+        $prepare = $this->pdo->prepare("SELECT * FROM `Task`");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        if($prepare->rowCount()>0){
+            $assoc = $prepare->fetchAll();
+            return $assoc;
+        }
+        $prepare->closeCursor();
+        return null;
+    }
+    public function __Admin__TaskAdd($Task, $idResource, $LevelTo, $ResourceTo){
+        /**
+         * Inset into DB Factory(task,
+         * id resources, needed level
+         * to open, needed level of
+         * summary resources)
+         */
+        $prepare = $this->pdo->prepare("INSERT INTO `Factory` VALUES (NULL , :idResources, :Task, :LevelTo, :ResourceTo)");
+        $prepare->bindParam(":idResources", $idResource);
+        $prepare->bindParam(":Task", $Task);
+        $prepare->bindParam(":LevelTo", $LevelTo);
+        $prepare->bindParam(":ResourceTo", $ResourceTo);
+        $prepare->execute();
+        $id_New_Added_Task = $this->pdo->lastInsertId();
+        $prepare->closeCursor();
+        return $id_New_Added_Task;
+    }
+    public function __Admin__TaskRemove($idTask){
+        $prepare = $this->pdo->prepare("DELETE FROM `Task` WHERE idTask=:idts" );
+        $prepare->bindParam(":idts", $idTask);
+        $prepare->execute();
+        $prepare->closeCursor();
+        return null;
     }
 
-    public function __Admin__ResourcesQuery(){}
-    public function __Admin__ResourcesAdd(){}
-    public function __Admin__ResourcesUpdate(){}
-    public function __Admin__ResourcesRemove(){
-        //TODO:
+    public function __Admin__ResourcesQuery(){
+        $prepare = $this->pdo->prepare("SELECT * FROM `Resource` ");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        $prepare->closeCursor();
+        if($prepare->rowCount()>0){
+            $assoc = $prepare->fetchAll();
+            return $assoc;
+        }
+        return null;
     }
 
-    public function __Admin__UserMapQuery(){}
-    public function __Admin__UserMapAdd(){}
-    public function __Admin__UserMapUpdate(){}
-    public function __Admin__UserMapRemove(){
-        //TODO:
+    /**
+     * @param $Resource - nazwa surowca
+     * @param $ProductionUnit - punkty wyrobienia
+     * @return string (id before
+     * inserted object, or now inserted
+     * object) or null
+     */
+    public function __Admin__ResourcesAdd($Resource, $ProductionUnit)
+    {
+        /**
+         * Inset into DB Resource as( Resource name, and value of production to factory);
+         */
+        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=:Res");
+        $sprawdzenia->bindParam(":Res", $Resource);
+        $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
+        $sprawdzenia->execute();
+        $sprawdzenia->closeCursor();
+        if($sprawdzenia->rowCount()<=0){
+            $prepare = $this->pdo->prepare("INSERT INTO `Resources` VALUES (NULL , :Resource, :ProductionUnit) ");
+            $prepare->bindParam(":Resource", $Resource);
+            $prepare->bindParam(":ProductionUnit", $ProductionUnit);
+            $prepare->execute();
+            $id_New_Added_Resource = $this->pdo->lastInsertId();
+            $prepare->closeCursor();
+            return $id_New_Added_Resource;
+        }else {
+            $fetchOBJ = $sprawdzenia->fetch();
+            return $fetchOBJ["idResources"];
+        }
     }
+    public function __Admin__ResourcesRemove($idResource){
+        $prepare = $this->pdo->prepare("DELETE FROM `Resources` WHERE idResource=:idresource");
+        $prepare->bindParam(":idresource", $idResource);
+        $prepare->execute();
+        $prepare->closeCursor();
+        return null;
+    }
+
+//    public function __Admin__UserMapQuery(){}
+//    public function __Admin__UserMapAdd(){}
+//    public function __Admin__UserMapUpdate(){}
+//    public function __Admin__UserMapRemove(){}
 
 
 
