@@ -1,0 +1,66 @@
+.aleks_user_panel{
+    background-color: rgba(255,255,255,0.7);
+}
+
+.aleks_content_panel{
+    background-color: rgba(255,255,255,0.7);
+    width: 70%;
+    float: left;
+    margin-left: 2%;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.aleks_user_img_div{
+    padding-top:10%;
+    text-align: center;
+}
+
+.aleks_user_img{
+    padding: 2.5%;
+    width: 50%;
+    border-radius: 50%;
+    background-color: rgba(191,63,63,1);
+    animation-name:user_image_hover_end;
+    animation-duration:0.3s;
+}
+
+.aleks_user_img:hover{
+    padding: 0%;
+    width: 50%;
+    border-radius: 50%;
+    background-color: rgba(191,63,63,1);
+    animation-name:user_image_hover_start;
+    animation-duration:0.3s;
+}
+
+@keyframes user_image_hover_start
+{
+    0% {padding: 2.5%;}
+    100% {padding: 0%;}
+}
+@keyframes user_image_hover_end
+{
+    0% { padding: 0%;}
+    100% {padding: 2.5%;}
+}
+
+.aleks_center{
+    text-align: center;
+}
+
+.aleks_color_text_white{
+    color: black;
+}
+
+.aleks_logout{
+    width: 2rem;
+    margin-bottom: -0.5rem;
+}
+
+.aleks_link_logout{
+    text-decoration: none;
+    color: black;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+}
