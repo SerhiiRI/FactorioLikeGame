@@ -17,28 +17,56 @@ namespace Controller;
  */
 class Resource implements GraficView
 {
-    private $ResourceType;
-    private $ResourceValue;
+    private $idResources;
+    private $Resource;
+    private $ProductiveUnit;
 
-    public function __construct($type = "", $value = "")
+    public function __construct($idResources, $Resource, $ProductiveUnit)
     {
-        $this->ResourceType = $type;
-        $this->ResourceValue = $value;
+        $this->idResources = $idResources;
+        $this->Resource = $Resource;
+        $this->ProductiveUnit = $ProductiveUnit;
     }
 
-    public function getResourceType()
-    {
-        return $this->ResourceType;
-    }
 
-    public function getResourceValue()
-    {
-        return $this->ResourceValue;
+    /**
+     * Getery
+     */
+    public function getIdResources(){
+        return $this->idResources;
+    }
+    public function getResourceName(){
+        return $this->Resource;
+    }
+    public function getProductiveUnit(){
+        return $this->ProductiveUnit;
+    }
+    /**
+     * Setery
+     */
+    public function setIdResources($toChange){
+        $this->idResources = $toChange;
+    }
+    public function setResourceName($toChange){
+        $this->Resource = $toChange;
+    }
+    public function setProductiveUnit($toChange){
+        $this->ProductiveUnit = $toChange;
     }
 
     public function __view__Generate()
     {
-        // TODO: Implement __view__Generate() method.
+        $str = <<<VIEW
+        <tr>
+            <td>
+                {$this->Resource}        
+            </td>
+            <td>
+                {$this->ProductiveUnit}
+            </td>
+        </tr>
+VIEW;
+        return $str;
     }
 
     public function __view__Change(array $param)
