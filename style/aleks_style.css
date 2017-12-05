@@ -107,7 +107,7 @@ h5{
 .progress{
     margin: 0 !important;
     padding: 0.2rem !important;
-    background-color: #ffffff !important;
+    background-color: rgba(0,0,0,0.2); !important;
     margin-left: 10% !important;
     margin-rigth: 10% !important;
     width: 80%;
@@ -225,7 +225,7 @@ table, tr, td{
 .collapsible-body:hover{
     background-color: rgba(255,255,255,0.9);
     /*background-color: rgba(191,63,63,0.7); !important;*/
-    color: rgba(191,63,63,1);
+    color: rgba(191,63,63,1) !important;
     padding: 1rem;
     padding-left: 4rem;
     animation-name:user_colapsible_selected_on;
@@ -290,6 +290,62 @@ table, tr, td{
 }
 
 .active{
-    color: black !important;
+    color: rgba(191,63,63,1) !important;
     font-size: 1.2rem !important;
+}
+
+.alx_edytor_pytań{
+    margin: 0;
+    padding: 0px;
+    padding-left: 2%;
+    text-align: left;
+    width: auto;
+}
+
+.validate{
+    font-size: 1.1rem !important;
+    color: black !important;
+}
+
+
+.alx_button_width{
+    width: 90%;
+    margin: 1%;
+}
+
+.alx_info_o_graczu{
+    margin: 0;
+    padding: 0px;
+    padding-left: 2%;
+    text-align: center;
+    width: 20%;
+}
+
+/*odległość od inputow*/
+.alx_padding_edit_users_button{
+    margin-left: 5%;
+}
+
+/*w opcjach edycji użytkowników ustala szerokość kontener na buttony*/
+.alx_btn_space_in_users_edit{
+    width: 20%;
+}
+
+.alx_small_input{
+    border-color: rgba(0,0,0,0)!important;
+    width: 80% !important;
+    text-align: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-bottom: 1px !important;
+    margin-top: -3% !important;
+    z-index: 0;
+}
+
+.materialize-textarea:hover{
+    cursor: pointer!important;
+}
+
+.alx_edit_users_button{
+width: 18%;
 }
