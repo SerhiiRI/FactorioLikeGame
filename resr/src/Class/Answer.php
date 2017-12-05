@@ -16,15 +16,21 @@ namespace Controller;
  */
 class Answer implements GraficView
 {
+    private $idAnswer;
     private $answer;
     private $right = false;
 
-    public function __construct($answerField, $isCorrect = false)
+    public function __construct($idAnswer, $answerField, $isCorrect = false)
     {
         if (!is_null($answerField)) {
+            $this->idAnswer = $idAnswer;
             $this->answer = $answerField;
             $this->right = $isCorrect;
         }
+    }
+
+    public function getIdAnswer(){
+        return $this->idAnswer;
     }
 
     public function getAnswer()

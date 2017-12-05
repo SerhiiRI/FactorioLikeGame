@@ -370,9 +370,16 @@ final class MySQLController
          */
         return true;
     }
-    public function __Admin__QuestionRemove($idQuestion){
-        $prepare = $this->pdo->prepare("DELETE FROM `Query` WHERE idQuestion=:idQuestion" );
+    public function __Admin__QuestionRemoveById($idQuestion){
+        $prepare = $this->pdo->prepare("DELETE FROM `Question` WHERE idQuestion=:idQuestion" );
         $prepare->bindParam(":idQuestion", $idQuestion);
+        $prepare->execute();
+        $prepare->closeCursor();
+        return null;
+    }
+    public function __Admin__QuestionRemoveByQuestion($Question){
+        $prepare = $this->pdo->prepare("DELETE FROM `Question` WHERE `Question`=\":question\"" );
+        $prepare->bindParam(":question", $Question);
         $prepare->execute();
         $prepare->closeCursor();
         return null;

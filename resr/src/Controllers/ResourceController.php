@@ -38,8 +38,8 @@ class ResourceController
             self::$instance = new self();
     }
 
-    public function updateProductUnit(string $nameOfResource, int $newProductiveUnit){
-        $this->__dataBase__controller->__Admin__ResourcesUpdate($nameOfResource, $newProductiveUnit);
+    public function updateProductUnit(string $nameOfResource, int $newProductiveUnit, string $IMG){
+        $this->__dataBase__controller->__Admin__ResourcesUpdate($nameOfResource, $newProductiveUnit, $IMG);
     }
 
     //Usuwa sórowca o podanej nazwie;

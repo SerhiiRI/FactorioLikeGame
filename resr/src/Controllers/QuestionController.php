@@ -8,6 +8,7 @@
 
 namespace Controllers;
 use Controller\MySQLController;
+use Controller\Question;
 
 include_once(dirname(__FILE__)."/MySQLController.php");
 include_once(dirname(__FILE__)."../Class/Question.php");
@@ -26,8 +27,6 @@ class QuestionController
 
     private function __construct()
     {
-        //Constructor klasy;
-        //pobierania danych z MySQLController-a
         $this->__dataBase__controller = MySQLController::getInstance();
 
         //Wypelnienia tablicy objektami Resource
@@ -36,7 +35,15 @@ class QuestionController
     }
 
     private function setQuestionList(array $sql_question){
-            //final Change
-        ///one more
+        foreach ($sql_question as &$item){
+            $this->QuestionList[] = new Question($item["idQuestion"], $item["Question"]);
+        }
+    }
+
+    public function addQuestion($idTask, $Question, array $Answer){
+        $this->__dataBase__controller->__Admin__QuestionAdd($idTask, $Question, $Answer);
+    }
+    public function removeQuestion(string $Question){
+        $this->__dataBase__controller->__Admin__QuestionRemove($Question);
     }
 }
