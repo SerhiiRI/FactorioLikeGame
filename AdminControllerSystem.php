@@ -46,6 +46,8 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
                         <tr>
                             <td class="alx_admin_standardowy_element_menu_lewy_panel">Ustawienia</td>
                         </tr>
+
+<!--                        WYLOGOWANIE-->
                         <tr>
                             <td class="alx_admin_ostatni_element_menu_lewy_panel">
                                 <a href="hard_logout.php" class="alx_display_block">
@@ -58,14 +60,21 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
                 </div>
             </div>
 
+<!--KONIEC PANELU LEWEGO-->
+
             <!--prawy panel użytkownika (content)-->
 
             <div class="aleks_content_panel">
                 <h1 style="text-align: center">Panel administratora</h1>
+
+<!--                PANEL NARZĘDZI-->
                 <ul class="collapsible popout" data-collapsible="accordion">
+
+<!--                    PIERWSZE NARZĘDZIE "STATYSTYKA"-->
                     <li>
                         <div class="collapsible-header"><i class="material-icons">sort</i>Statystyka</div>
 
+<!--                        PIERWSZY ELEMENT PO ROZWINIECIU-->
                         <div class="collapsible-body">
                             <table>
                                 <tr>
@@ -84,21 +93,27 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
                                 </tr>
                             </table>
                         </div>
+<!--                        KONIEC PIERWSZEGO ELEMENTU-->
                     </li>
+<!--                    KONIEC PIERWSZEGO NARZEDZIA-->
+
+<!--                    DRUGIE NARZĘDZIE "EDYCJA SUROWCOW"-->
                     <li>
                         <div class="collapsible-header">
-                            <i class="icon-cubes aleks_icon"></i>
+                            <i class="icon-industrial-building aleks_icon"></i>
                             Zarządzaj surowcami w grze
                         </div>
-<!--                        PIERWSZY WIERSZ W DODAJ SUROWCE DO GRY-->
+
+<!--             PĘTLA Z WIERSZAMI W DODAJ SUROWCE DO GRY-->
                         <?php for($i = 0; $i<2; $i++){?>
-                        <div class="collapsible-body">
+                            <div class="collapsible-body">
                             <table>
                                 <tr>
                                     <form action="#">
                                         <td class="alx_table_edit_res_pic">
                                             <div class="file-field input-field">
                                                 <img src="resr/img/miscellaneous.svg" class="alx_img_src">
+<!--                                                DODAJ OBRAZEK-->
                                                 <div class="btn-floating alx_btn_floating">
                                                     <i class="icon-wrench"></i>
 <!--                                                    Ikona dodania/edycji ebrazka surowca-->
@@ -108,23 +123,32 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
                                         </td>
                                         <td class="alx_tabela_surowcow_admin">
                                             <div class="input-field">
+                                                <input value="Wodociąg" id="first_name2" type="text" class="validate">
+                                                <!--        DO VALUE FABRYKA JESLI ISTENIE-->
+                                                <label class="active" for="first_name2">Fabryka</label>
+                                            </div>
+                                        </td>
+                                        <td class="alx_tabela_surowcow_admin">
+                                            <div class="input-field">
                                                 <input value="Woda" id="first_name2" type="text" class="validate">
+<!--                                                DO VALUE SUROWIEC JESLI ISTENIE-->
                                                 <label class="active" for="first_name2">Surowiec</label>
                                             </div>
                                         </td>
                                         <td class="alx_tabela_surowcow_admin">
                                             <div class="input-field">
                                                 <input value="10" id="first_name2" type="number" class="validate">
+<!--                                            DO VALUE ILOSC WYDOBYCIA JESLI ISTNIEJE-->
                                                 <label class="active alx_2rem_font" for="first_name2">Wydobycie</label>
                                             </div>
                                         </td>
                                         <td class="alx_tabela_surowcow_admin_button">
-                                            <button class="btn waves-effect waves-light alx_h8_font" type="submit" name="action">
+                                            <button class="btn waves-effect waves-light alx_h8_font" type="submit" name="edycja">
                                                 Edytuj <i class="icon-cogs alx_h8_font"></i>
                                             </button>
                                         </td>
                                         <td class="alx_tabela_surowcow_admin_button">
-                                            <button class="btn waves-effect waves-light alx_h8_font" type="submit" name="action">
+                                            <button class="btn waves-effect waves-light alx_h8_font" type="submit" name="usuwanie">
                                                 Usuń <i class="icon-block alx_h8_font"></i>
                                             </button>
                                         </td>
@@ -133,8 +157,9 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
                             </table>
                         </div>
                         <?php }?>
+<!--    KONIEC PĘTLI Z WIERSZAMI   -->
 
-<!--                       POCZĄTEK OSTATNI WIERSZ -->
+<!--           POCZĄTEK OSTATNI WIERSZ -->
                         <div class="collapsible-body">
                             <table>
                                 <tr>
@@ -146,6 +171,12 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
                                                     <i class="icon-plus"></i>
                                                     <input type="file">
                                                 </div>
+                                            </div>
+                                        </td>
+                                        <td class="alx_tabela_surowcow_admin">
+                                            <div class="input-field">
+                                                <input value="" id="first_name2" type="text" class="validate">
+                                                <label class="active" for="first_name2">Fabryka</label>
                                             </div>
                                         </td>
                                         <td class="alx_tabela_surowcow_admin">
@@ -170,12 +201,10 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
                             </table>
                         </div>
                     </li>
-                    <!--                KONIEC OSTATNI WIERSZ-->
-                    <li>
-                        <div class="collapsible-header"><i class="icon-industrial-building aleks_icon"></i>Dodaj fabrykę do
-                            gry
-                        </div>
-                        <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                    <!--                KONIEC OSTATNI WIERSZ Z DODANIEM-->
+<!--                    KONIEC OPCJI 2-->
+
+
                     </li>
                     <li>
                         <div class="collapsible-header"><i class="icon-code-outline aleks_icon"></i>Dodaj zadanie do

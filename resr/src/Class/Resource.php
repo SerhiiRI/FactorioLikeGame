@@ -20,11 +20,13 @@ class Resource implements GraficView
     private $idResources;
     private $Resource;
     private $ProductiveUnit;
+    private $IMG;
 
-    public function __construct($idResources, $Resource, $ProductiveUnit)
+    public function __construct($idResources, $Resource, $ProductiveUnit, $IMG)
     {
         $this->idResources = $idResources;
         $this->Resource = $Resource;
+        $this->IMG = $IMG;
         $this->ProductiveUnit = $ProductiveUnit;
     }
 
@@ -40,6 +42,9 @@ class Resource implements GraficView
     public function getProductiveUnit(){
         return $this->ProductiveUnit;
     }
+    public function getIMG(){
+        return $this->IMG;
+    }
     /**
      * Setery
      */
@@ -52,6 +57,9 @@ class Resource implements GraficView
     public function setProductiveUnit($toChange){
         $this->ProductiveUnit = $toChange;
     }
+    public function setIMG($img){
+        $this->IMG = $img;
+    }
 
     public function __view__Generate()
     {
@@ -62,6 +70,9 @@ class Resource implements GraficView
             </td>
             <td>
                 {$this->ProductiveUnit}
+            </td>
+            <td>
+                {$this->IMG}
             </td>
         </tr>
 VIEW;
