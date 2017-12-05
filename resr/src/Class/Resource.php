@@ -28,7 +28,6 @@ class Resource implements GraficView
         $this->ProductiveUnit = $ProductiveUnit;
     }
 
-
     /**
      * Getery
      */

@@ -431,8 +431,12 @@ final class MySQLController
         $prepare->closeCursor();
         return $id_New_Added_Factory;
     }
-    public function __Admin__FactoryRemove(){
-        //TODO:
+    public function __Admin__FactoryRemove($name){
+        $prepare = $this->pdo->prepare("DELETE FROM `Factory` WHERE `idFactory`=:factory" );
+        $prepare->bindParam(":factory", $name);
+        $prepare->execute();
+        $prepare->closeCursor();
+        return null;
     }
 
 
@@ -472,17 +476,7 @@ final class MySQLController
         return null;
     }
 
-    public function __Admin__ResourcesQuery(){
-        $prepare = $this->pdo->prepare("SELECT * FROM `Resource` ");
-        $prepare->setFetchMode(PDO::FETCH_ASSOC);
-        $prepare->execute();
-        $prepare->closeCursor();
-        if($prepare->rowCount()>0){
-            $assoc = $prepare->fetchAll();
-            return $assoc;
-        }
-        return null;
-    }
+
 
     /**
      * @param $Resource - nazwa surowca
@@ -521,14 +515,35 @@ final class MySQLController
         $prepare->closeCursor();
         return null;
     }
-
-//    public function __Admin__UserMapQuery(){}
-//    public function __Admin__UserMapAdd(){}
-//    public function __Admin__UserMapUpdate(){}
-//    public function __Admin__UserMapRemove(){}
-
-
-
+    public function __Admin__ResourcesUpdate($Resource, $ProductionUnit){
+        /**
+         * Update Resource productUnit;
+         */
+        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=:Res");
+        $sprawdzenia->bindParam(":Res", $Resource);
+        $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
+        $sprawdzenia->execute();
+        $sprawdzenia->closeCursor();
+        if($sprawdzenia->rowCount()>0){
+            $prepare = $this->pdo->prepare(" UPDATE `Resources` SET `ProductionUnit`=:unit WHERE `Resource`=\":rsr\"");
+            $prepare->bindParam(":rsr", $Resource);
+            $prepare->bindParam(":unit", $ProductionUnit);
+            $prepare->execute();
+            $prepare->closeCursor();
+        }
+        return null;
+    }
+    public function __Admin__ResourcesQuery(){
+        $prepare = $this->pdo->prepare("SELECT * FROM `Resource` ");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        $prepare->closeCursor();
+        if($prepare->rowCount()>0){
+            $assoc = $prepare->fetchAll();
+            return $assoc;
+        }
+        return null;
+    }
 
 
 }
