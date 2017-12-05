@@ -226,6 +226,7 @@ table, tr, td{
 .collapsible-body:hover{
     background-color: rgba(191,63,63,0.7); !important;
     color:white;
+    cursor: pointer !important;
     padding: 1rem;
     padding-left: 4rem;
     animation-name:user_colapsible_selected_on;

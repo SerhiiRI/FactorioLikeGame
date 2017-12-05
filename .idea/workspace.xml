@@ -2,19 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aad45e5f-5b5a-4fa8-8bb5-af5b22aeab4b" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/git-repo.iml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/AdminControllerSystem.php" afterPath="$PROJECT_DIR$/AdminControllerSystem_old.php" />
-      <change beforePath="$PROJECT_DIR$/Index.php" afterPath="$PROJECT_DIR$/Index.php" />
-      <change beforePath="$PROJECT_DIR$/Map.php" afterPath="$PROJECT_DIR$/Map.php" />
-      <change beforePath="$PROJECT_DIR$/resr/src/Class/Factory.php" afterPath="$PROJECT_DIR$/resr/src/Class/Factory.php" />
-      <change beforePath="$PROJECT_DIR$/resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php" afterPath="$PROJECT_DIR$/resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php" />
-      <change beforePath="$PROJECT_DIR$/resr/src/PAGE_INCLUDES_SCRIPT/PAGE_LOGOUT_BUTTON_AND_FORM.php" afterPath="$PROJECT_DIR$/resr/src/PAGE_INCLUDES_SCRIPT/PAGE_LOGOUT_BUTTON_AND_FORM.php" />
-      <change beforePath="$PROJECT_DIR$/resr/src/PAGE_INCLUDES_SCRIPT/PAGE_REDIRECT_CENTRAL_PAGE.php" afterPath="$PROJECT_DIR$/resr/src/PAGE_INCLUDES_SCRIPT/PAGE_REDIRECT_CENTRAL_PAGE.php" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/style/aleks_style.css" afterPath="$PROJECT_DIR$/style/aleks_style.css" />
-      <change beforePath="$PROJECT_DIR$/style/materialize/css/materialize.css" afterPath="$PROJECT_DIR$/style/materialize/css/materialize.css" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -76,8 +65,8 @@
       <file leaf-file-name="aleks_style.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/style/aleks_style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="111" column="12" lean-forward="false" selection-start-line="111" selection-start-column="12" selection-end-line="111" selection-end-column="12" />
+            <state relative-caret-position="543">
+              <caret line="228" column="31" lean-forward="false" selection-start-line="228" selection-start-column="31" selection-end-line="228" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -263,7 +252,7 @@
       <workItem from="1511340289561" duration="548000" />
       <workItem from="1512305241660" duration="486000" />
       <workItem from="1512305914722" duration="16752000" />
-      <workItem from="1512404926419" duration="36155000" />
+      <workItem from="1512404926419" duration="36361000" />
     </task>
     <task id="LOCAL-00001" summary="Pierwsze kroki z css">
       <created>1512323575075</created>
@@ -279,11 +268,18 @@
       <option name="project" value="LOCAL" />
       <updated>1512323649837</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Pierwsze kroki z css">
+      <created>1512441309718</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1512441309718</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54219000" />
+    <option name="totallyTimeSpent" value="54425000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2409" y="-43" width="1938" height="1048" extended-state="6" />
@@ -731,8 +727,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/style/aleks_style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="111" column="12" lean-forward="false" selection-start-line="111" selection-start-column="12" selection-end-line="111" selection-end-column="12" />
+        <state relative-caret-position="543">
+          <caret line="228" column="31" lean-forward="false" selection-start-line="228" selection-start-column="31" selection-end-line="228" selection-end-column="31" />
           <folding />
         </state>
       </provider>
