@@ -83,6 +83,14 @@ class Factory implements GraficView
     public function __view__Generate()
     {
         // TODO: Implement __view__Generate() method.
+//        echo"<tr>
+//             <th class=\"alx_right_th\">";
+//                            Węgiel:
+//        echo"</th>
+//             <th class=\"alx_left_th\">";
+//                            100/250
+//        echo "</th>
+//              </tr>";
     }
 
     public function __view__Change(array $param)
