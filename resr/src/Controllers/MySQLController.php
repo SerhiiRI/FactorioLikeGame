@@ -113,7 +113,13 @@ final class MySQLController
         return -1;
     }
 
-
+    public function __User__UserMapQuery(){
+        $prepare = $this->pdo->prepare("SELECT * FROM `UserMap`");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        $returnSet = $prepare->fetchAll();
+        return ($prepare->rowCount()>0) ? $prepare->fetchAll() : null;
+    }
     public function __User__UserMapAdd($idUser, $idFactory){
         $findCountFactory = $this->pdo->prepare("SELECT * FROM `UserMap` WHERE idFactory=:idfac");
         $findCountFactory->bindParam(":idfac", $idFactory);
@@ -123,8 +129,7 @@ final class MySQLController
         $iloscFabryk=$findCountFactory->rowCount();
         if($iloscFabryk = 0){
             $countFactory = 1;
-            $prepare = $this->pdo->prepare("INSERT INTO `UserMap`(`idUserMap`, `idUser`, `idFactory`, `CountFactory`) 
-VALUES (NULL, :idUser, :idFactory, :CountFactory)");
+            $prepare = $this->pdo->prepare("INSERT INTO `UserMap`(`idUserMap`, `idUser`, `idFactory`, `CountFactory`) VALUES (NULL, :idUser, :idFactory, :CountFactory)");
             $prepare->bindParam(":idUser",$idUser );
             $prepare->bindParam(":idFactory", $idFactory);
             $prepare->bindParam(":CountFactory", $countFactory);
@@ -133,7 +138,7 @@ VALUES (NULL, :idUser, :idFactory, :CountFactory)");
             $prepare->closeCursor();
             return $id_New_Added_Question;
         }elseif ($iloscFabryk > 0){
-            $iloscFabryk +=1;
+            $iloscFabryk +=2;
             $row = $findCountFactory->fetch();
             $updateMap = $row["idUserMap"];
             $prepare = $this->pdo->prepare("UPDATE `UserMap` SET CountFactory=:countt WHERE idFactory=:idfactory");
@@ -143,29 +148,143 @@ VALUES (NULL, :idUser, :idFactory, :CountFactory)");
             $prepare->closeCursor();
             return $updateMap;
         }
-
+        return null;
     }
-    public function __User__UserMapUpdate(){}
-    public function __User__UserMapRemove(){
-        //TODO:
+ //?   public function __User__UserMapUpdate(user_){}
+    public function __User__UserMapRemove($idFactory){
+        $findCountFactory = $this->pdo->prepare("SELECT * FROM `UserMap` WHERE idFactory=:idfac");
+        $findCountFactory->bindParam(":idfac", $idFactory);
+        $findCountFactory->setFetchMode(PDO::FETCH_ASSOC);
+        $findCountFactory->execute();
+        $iloscFabryk=$findCountFactory->rowCount();
+        if($iloscFabryk = 1){
+
+            $countFactory = 1;
+            $prepare = $this->pdo->prepare("DELETE FROM `UserMap` WHERE idFactory=:idFactory");
+            $prepare->bindParam(":idFactory", $idFactory);
+            $prepare->execute();
+            $id_New_Added_Question = $this->pdo->lastInsertId();
+            $prepare->closeCursor();
+
+        }elseif ($iloscFabryk > 1){
+            $row = $findCountFactory->fetch();
+            $updateMap = $row["idUserMap"];
+            $prepare = $this->pdo->prepare("UPDATE `UserMap` SET CountFactory=:countt WHERE idFactory=:idfactory");
+            $prepare->bindParam(":countt",$iloscFabryk );
+            $prepare->bindParam(":idFactory", $idFactory);
+            $prepare->execute();
+            $prepare->closeCursor();
+        }
+        return null;
+    }
+    public function __User__UserScoreAdd($idTask){
+        $prepare = $this->pdo->prepare("SELECT * FROM `Score` WHERE idTask=:task");
+        $prepare->bindParam(":task", $idTask);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        if($prepare->rowCount()==0) {
+            $prepare = $this->pdo->prepare("INSERT INTO `Score` VALUES (NULL , :task, FALSE)");
+            $prepare->bindParam(":task", $idTask);
+            $prepare->execute();
+            $insertedScore = $this->pdo->lastInsertId();
+            $prepare->closeCursor();
+            return $insertedScore;
+        }
+        return null;
+    }
+    public function __User__UserScoreChangeStatus($idTask){
+        $prepare = $this->pdo->prepare("SELECT * FROM `Score` WHERE idTask=:task");
+        $prepare->bindParam(":task", $idTask);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        if($prepare->rowCount()!=0) {
+            $prepare = $this->pdo->prepare("UPDATE `Score` SET `FinishedTask`=TRUE WHERE `idTask`=:task");
+            $prepare->bindParam(":task", $idTask);
+            $prepare->execute();
+            $insertedScore = $this->pdo->lastInsertId();
+            $prepare->closeCursor();
+            return $insertedScore;
+        }
+        return null;
+    }
+    public function __User__UserScoreRemove($idTask){
+        $prepare = $this->pdo->prepare("SELECT * FROM `Score` WHERE idTask=:task");
+        $prepare->bindParam(":task", $idTask);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        if($prepare->rowCount()!=0) {
+            $prepare = $this->pdo->prepare("DELETE FROM `Score` WHERE `idTask`=:task");
+            $prepare->bindParam(":task", $idTask);
+            $prepare->execute();
+            $insertedScore = $this->pdo->lastInsertId();
+            $prepare->closeCursor();
+            return $insertedScore;
+        }
+        return null;
     }
 
-    public function __User__UserScoreAdd(){}
-    public function __User__UserScoreUpdate(){}
-    public function __User__UserScoreRemove(){
-        //TODO:
+    public function __User__FactoryInstanceAdd($idResource,$idFactory,$UpgradeLVL,$idUser){
+        $prepare = $this->pdo->prepare("SELECT * FROM `FactoryInstance` WHERE `idResource`=:resource AND `idFactory`=:factory AND `Upgrade`=:up AND `idUser`=:usr");
+        $prepare->bindParam(":resource", $idResource);
+        $prepare->bindParam(":factory", $idFactory);
+        $prepare->bindParam(":up", $UpgradeLVL);
+        $prepare->bindParam(":usr", $idUser);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        $prepare->closeCursor();
+        if($prepare->rowCount()==0) {
+            $prepare = $this->pdo->prepare(
+                "INSERT INTO `FactoryInstance`(`idFactoryInstance`, `idResource`, `idFactory`, `Upgrade`, `idUser`)".
+                " VALUES (NULL,:resource,:factory,:up,:usr)");
+            $prepare->bindParam(":resource", $idResource);
+            $prepare->bindParam(":factory", $idFactory);
+            $prepare->bindParam(":up", $UpgradeLVL);
+            $prepare->bindParam(":usr", $idUser);
+            $prepare->execute();
+            $insertedScore = $this->pdo->lastInsertId();
+            $prepare->closeCursor();
+            return $insertedScore;
+        }else{
+            $prepare = $this->pdo->prepare("SELECT * FROM `FactoryInstance` WHERE `idResource`=:resource AND `idFactory`=:factory AND `Upgrade`=:up AND `idUser`=:usr");
+            $prepare->bindParam(":resource", $idResource);
+            $prepare->bindParam(":factory", $idFactory);
+            $prepare->bindParam(":up", $UpgradeLVL);
+            $prepare->bindParam(":usr", $idUser);
+            $prepare->setFetchMode(PDO::FETCH_ASSOC);
+            $prepare->execute();
+            $linia = $prepare->fetch();
+            $prepare->closeCursor();
+            return $linia["idFactoryInstance"];
+        }
+        return null;
+    }
+    public function __User__FactoryInstanceUpdate($idInstance){
+            $prepare = $this->pdo->prepare("UPDATE `FactoryInstance` SET `Upgrade` = `Upgrade` + 1 WHERE `idFactoryInstance`=:idInstance");
+            $prepare->bindParam(":idInstance", $idInstance);
+            $prepare->execute();
+            $prepare->closeCursor();
+        return null;
+    }
+    public function __User__FactoryInstanceRemove(int $idInstance){
+        $prepare = $this->pdo->prepare("DELETE FROM `FactoryInstance` WHERE idFactory=:idFactory");
+        $prepare->bindParam(":idInstance", $idInstance);
+        $prepare->execute();
+        $prepare->closeCursor();
+        return null;
     }
 
-    public function __User__FactoryInstanceAdd(){}
-    public function __User__FactoryInstanceUpdate(){}
-    public function __User__FactoryInstanceRemove(){
-        //TODO:
+    public function __User__QuestionQuery(){
+        return $this->__Admin__UserQuery();
     }
-
-    public function __User__QuestionQuery(){}
-    public function __User__TaskQuery(){}
-    public function __User__FactoryQuery(){}
-    public function __User__ResourcesQuery(){}
+    public function __User__TaskQuery(){
+        return $this->__Admin__TaskQuery();
+    }
+    public function __User__FactoryQuery(){
+        return $this->__Admin__FactoryQuery();
+    }
+    public function __User__ResourcesQuery(){
+        return $this->__Admin__ResourcesQuery();
+    }
 
 
 //====================================================================================================================//
@@ -187,7 +306,7 @@ VALUES (NULL, :idUser, :idFactory, :CountFactory)");
         }
         return null;
     }
-    public function __Admin__UserAdd($login, $password, $type=2, $idLevel=0, $idScore=0){
+    public function __Admin__UserAdd(string $login,string $password, $type=2, $idLevel=0, $idScore=0){
         return $this->regestration($login, $password, $type, $idLevel, $idScore);
     }
     public function __Admin__UserUpdate($EmailToChange, $PasswordToChange){
@@ -312,9 +431,14 @@ VALUES (NULL, :idUser, :idFactory, :CountFactory)");
         $prepare->closeCursor();
         return $id_New_Added_Factory;
     }
-    public function __Admin__FactoryRemove(){
-        //TODO:
+    public function __Admin__FactoryRemove($name){
+        $prepare = $this->pdo->prepare("DELETE FROM `Factory` WHERE `idFactory`=:factory" );
+        $prepare->bindParam(":factory", $name);
+        $prepare->execute();
+        $prepare->closeCursor();
+        return null;
     }
+
 
     public function __Admin__TaskQuery(){
         $prepare = $this->pdo->prepare("SELECT * FROM `Task`");
@@ -352,17 +476,7 @@ VALUES (NULL, :idUser, :idFactory, :CountFactory)");
         return null;
     }
 
-    public function __Admin__ResourcesQuery(){
-        $prepare = $this->pdo->prepare("SELECT * FROM `Resource` ");
-        $prepare->setFetchMode(PDO::FETCH_ASSOC);
-        $prepare->execute();
-        $prepare->closeCursor();
-        if($prepare->rowCount()>0){
-            $assoc = $prepare->fetchAll();
-            return $assoc;
-        }
-        return null;
-    }
+
 
     /**
      * @param $Resource - nazwa surowca
@@ -401,14 +515,35 @@ VALUES (NULL, :idUser, :idFactory, :CountFactory)");
         $prepare->closeCursor();
         return null;
     }
-
-//    public function __Admin__UserMapQuery(){}
-//    public function __Admin__UserMapAdd(){}
-//    public function __Admin__UserMapUpdate(){}
-//    public function __Admin__UserMapRemove(){}
-
-
-
+    public function __Admin__ResourcesUpdate($Resource, $ProductionUnit){
+        /**
+         * Update Resource productUnit;
+         */
+        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=:Res");
+        $sprawdzenia->bindParam(":Res", $Resource);
+        $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
+        $sprawdzenia->execute();
+        $sprawdzenia->closeCursor();
+        if($sprawdzenia->rowCount()>0){
+            $prepare = $this->pdo->prepare(" UPDATE `Resources` SET `ProductionUnit`=:unit WHERE `Resource`=\":rsr\"");
+            $prepare->bindParam(":rsr", $Resource);
+            $prepare->bindParam(":unit", $ProductionUnit);
+            $prepare->execute();
+            $prepare->closeCursor();
+        }
+        return null;
+    }
+    public function __Admin__ResourcesQuery(){
+        $prepare = $this->pdo->prepare("SELECT * FROM `Resource` ");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        $prepare->closeCursor();
+        if($prepare->rowCount()>0){
+            $assoc = $prepare->fetchAll();
+            return $assoc;
+        }
+        return null;
+    }
 
 
 }
