@@ -336,34 +336,15 @@ final class MySQLController
         }
     }
 
-    /**
-     * @return array|null
-     */
-    public function __Admin__QuestionQuery(){
-        $prepare = $this->pdo->prepare("SELECT `Question.Question` as `Question`, `Answers.Answer` as `Answer` FROM `Question `, `Answer` WHERE `Question.idQuestion = Answer.idQuestion`");
-        $prepare->setFetchMode(PDO::FETCH_ASSOC);
-        $prepare->execute();
-        $prepare->closeCursor();
-        if($prepare->rowCount()>0){
-            $assoc = $prepare->fetchAll();
-            return $assoc;
-        }
-        return null;
-    }
-    /**
-     * @param $idElement
-     * @param $Question
-     * @param array $Answer
-     * @return bool
-     */
-    public function __Admin__QuestionAdd($idElement, $Question, array $Answer){
+
+    public function __Admin__QuestionAdd($idTask, $Question, array $Answer){
 
         /**
          * Inset into DB Question, without answer;
          */
-        $prepare = $this->pdo->prepare("INSERT INTO `Question` VALUES (NULL , :question, :idresource) ");
+        $prepare = $this->pdo->prepare("INSERT INTO `Question` VALUES (NULL , :question, :idtask) ");
         $prepare->bindParam(":question", $Question);
-        $prepare->bindParam(":idresource", $idElement);
+        $prepare->bindParam(":idtask", $idTask);
         $prepare->execute();
         $id_New_Added_Question = $this->pdo->lastInsertId();
         $prepare->closeCursor();
@@ -373,12 +354,11 @@ final class MySQLController
          */
         $prepare = $this->pdo->prepare("INSERT INTO `Answer` VALUES (NULL, :idquestion, :answer, :isright)");
         foreach ($Answer as $oneAnswer) {
-                $prepare->bindParam(":idquestion", $id_New_Added_Question);
-                $toPoprawnaOdpowiedz = true;
-                $toPoprawnaOdpowiedz = stripos($oneAnswer, "$")!=False ? true : false;
-                $prepare->bindParam(":isright", $toPoprawnaOdpowiedz);
-                $prepare->bindParam(":answer", $oneAnswer);
-                $prepare->execute();
+            $prepare->bindParam(":idquestion", $id_New_Added_Question);
+            $toPoprawnaOdpowiedz = stripos($oneAnswer, "$")!=False ? true : false;
+            $prepare->bindParam(":isright", $toPoprawnaOdpowiedz);
+            $prepare->bindParam(":answer", $oneAnswer);
+            $prepare->execute();
         }
         $prepare->closeCursor();
 
@@ -390,10 +370,6 @@ final class MySQLController
          */
         return true;
     }
-    /**
-     * @param $idQuestion
-     * @return null
-     */
     public function __Admin__QuestionRemove($idQuestion){
         $prepare = $this->pdo->prepare("DELETE FROM `Query` WHERE idQuestion=:idQuestion" );
         $prepare->bindParam(":idQuestion", $idQuestion);
@@ -401,6 +377,101 @@ final class MySQLController
         $prepare->closeCursor();
         return null;
     }
+    public function __Admin__QuestionQuery(){
+        $prepare = $this->pdo->prepare("SELECT * FROM `Question`");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        $prepare->closeCursor();
+        if($prepare->rowCount()>0){
+            $assoc = $prepare->fetchAll();
+            return $assoc;
+        }
+        return null;
+    }
+    public function __Admin__QuestionUpdate($idQuestion, $text){
+        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Question` WHERE idQuestion=\":id\"");
+        $sprawdzenia->bindParam(":id", $idQuestion);
+        $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
+        $sprawdzenia->execute();
+        $sprawdzenia->closeCursor();
+        if($sprawdzenia->rowCount()>0){
+            $prepare = $this->pdo->prepare(" UPDATE `Question` SET `Question`=\":text\" WHERE `idQuestion`=\":id\"");
+            $prepare->bindParam(":id", $idQuestion);
+            $prepare->bindParam(":text", $text);
+            $prepare->execute();
+            $prepare->closeCursor();
+        }
+        return null;
+    }
+    public function __Admin__AnswerUpdate($idAnswer, $idQuestion, $text, $right){
+        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Answers` WHERE `idQuestion`=\":id\"");
+        $sprawdzenia->bindParam(":id", $idQuestion);
+        $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
+        $sprawdzenia->execute();
+        $sprawdzenia->closeCursor();
+        if(($sprawdzenia->rowCount()>0) && $right==true){
+            $prepare = $this->pdo->prepare(" UPDATE `Answers` SET `Right`=FALSE WHERE `idQuestion`=\":id\"");
+            $prepare->bindParam(":id", $idQuestion);
+            $prepare->execute();
+            $prepare->closeCursor();
+            $prepare = $this->pdo->prepare("UPDATE `Answers` SET `Answer`=`:text`,`Right`=FALSE WHERE `idAnswers`=\":id\"");
+            $prepare->bindParam(":id", $idAnswer);
+            $prepare->bindParam(":text", $text);
+            $prepare->execute();
+            $prepare->closeCursor();
+        }elseif (($sprawdzenia->rowCount()>0) && $right==false){
+            $prepare = $this->pdo->prepare("UPDATE `Answers` SET `Answer`=`:text`,`Right`=FALSE WHERE `idAnswers`=\":id\"");
+            $prepare->bindParam(":id", $idAnswer);
+            $prepare->bindParam(":text", $text);
+            $prepare->execute();
+            $prepare->closeCursor();
+        }
+        return null;
+    }
+    public function __Admin__AnswerAdd($idQuestion, $text, $right){
+        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Answers` WHERE `idQuestion`=\":id\" AND `Answer`=\":text\"");
+        $sprawdzenia->bindParam(":id", $idQuestion);
+        $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
+        $sprawdzenia->execute();
+        $sprawdzenia->closeCursor();
+        if(($sprawdzenia->rowCount()==0) && $right==true){
+            $prepare = $this->pdo->prepare(" UPDATE `Answers` SET `Right`=FALSE WHERE `idQuestion`=\":id\"");
+            $prepare->bindParam(":id", $idQuestion);
+            $prepare->execute();
+            $prepare->closeCursor();
+            $prepare = $this->pdo->prepare(" INSERT INTO `Answers` VALUES (NULL,:id,\":text\",TRUE)");
+            $prepare->bindParam(":id", $idQuestion);
+            $prepare->bindParam(":text", $text);
+            $prepare->execute();
+            $prepare->closeCursor();
+        }elseif (($sprawdzenia->rowCount()==0) && $right==false){
+            $prepare = $this->pdo->prepare(" INSERT INTO `Answers` VALUES (NULL,:id,\":text\",FALSE)");
+            $prepare->bindParam(":id", $idQuestion);
+            $prepare->bindParam(":text", $text);
+            $prepare->execute();
+            $prepare->closeCursor();
+        }
+        return null;
+    }
+    public function __Admin__AnswerQuery($idQuestion){
+        $prepare = $this->pdo->prepare("SELECT * FROM `Answers` WHERE `idQuestion`=\":id\"");
+        $prepare->bindParam(":id", $idQuestion);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        $prepare->closeCursor();
+        if($prepare->rowCount()>0){
+            $assoc = $prepare->fetchAll();
+            return $assoc;
+        }
+        return null;
+    }
+
+    /**
+     * @param $idElement
+     * @param $Question
+     * @param array $Answer
+     * @return bool
+     */
 
     public function __Admin__FactoryQuery(){
         $prepare = $this->pdo->prepare("SELECT * FROM `Factory`");
@@ -485,20 +556,21 @@ final class MySQLController
      * inserted object, or now inserted
      * object) or null
      */
-    public function __Admin__ResourcesAdd($Resource, $ProductionUnit)
+    public function __Admin__ResourcesAdd($Resource, $ProductionUnit, string $IMG)
     {
         /**
          * Inset into DB Resource as( Resource name, and value of production to factory);
          */
-        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=:Res");
+        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=\":Res\"");
         $sprawdzenia->bindParam(":Res", $Resource);
         $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
         $sprawdzenia->execute();
         $sprawdzenia->closeCursor();
         if($sprawdzenia->rowCount()<=0){
-            $prepare = $this->pdo->prepare("INSERT INTO `Resources` VALUES (NULL , :Resource, :ProductionUnit) ");
+            $prepare = $this->pdo->prepare("INSERT INTO `Resources` VALUES (NULL , :Resource, :ProductionUnit, \":IMG\") ");
             $prepare->bindParam(":Resource", $Resource);
             $prepare->bindParam(":ProductionUnit", $ProductionUnit);
+            $prepare->bindParam(":IMG", $IMG);
             $prepare->execute();
             $id_New_Added_Resource = $this->pdo->lastInsertId();
             $prepare->closeCursor();
@@ -515,18 +587,18 @@ final class MySQLController
         $prepare->closeCursor();
         return null;
     }
-    public function __Admin__ResourcesUpdate($Resource, $ProductionUnit){
-        /**
-         * Update Resource productUnit;
+    public function __Admin__ResourcesUpdate($Resource, $ProductionUnit, $IMG){
+        /**         * Update Resource productUnit;
          */
-        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=:Res");
+        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=\":Res\"");
         $sprawdzenia->bindParam(":Res", $Resource);
         $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
         $sprawdzenia->execute();
         $sprawdzenia->closeCursor();
         if($sprawdzenia->rowCount()>0){
-            $prepare = $this->pdo->prepare(" UPDATE `Resources` SET `ProductionUnit`=:unit WHERE `Resource`=\":rsr\"");
+            $prepare = $this->pdo->prepare(" UPDATE `Resources` SET `ProductionUnit`=:unit, `IMG`=\":img\" WHERE `Resource`=\":rsr\"");
             $prepare->bindParam(":rsr", $Resource);
+            $prepare->bindParam(":img", $IMG);
             $prepare->bindParam(":unit", $ProductionUnit);
             $prepare->execute();
             $prepare->closeCursor();
