@@ -38,7 +38,8 @@ body{
 }
 
 .aleks_icon{
-    font-size: 2.2rem;
+    margin-top: -0.6rem;
+    font-size: 0.8rem;
 }
 
 .aleks_user_img_div{
@@ -155,7 +156,7 @@ table, tr, td{
     100% {color:black;}
 }
 
-.alx_table_admin_menu_th_last{
+.alx_admin_ostatni_element_menu_lewy_panel{
     text-align: center;
     color: black;
     font-size: 1.3rem;
@@ -163,7 +164,7 @@ table, tr, td{
     animation-name:user_table_selected_off;
     animation-duration:0.3s;
 }
-.alx_table_admin_menu_th_last:hover{
+.alx_admin_ostatni_element_menu_lewy_panel:hover{
     color: white;
     cursor: pointer;
     background-color: rgba(191,63,63,0.7);
@@ -171,7 +172,7 @@ table, tr, td{
     animation-duration:0.3s;
 }
 
-.alx_table_admin_menu_th{
+.alx_admin_standardowy_element_menu_lewy_panel{
     text-align: center;
     color: black;
     font-size: 1.3rem;
@@ -182,7 +183,7 @@ table, tr, td{
     animation-duration:0.3s;
 }
 
-.alx_table_admin_menu_th:hover{
+.alx_admin_standardowy_element_menu_lewy_panel:hover{
     color: white;
     cursor: pointer;
     background-color: rgba(191,63,63,0.7);
@@ -215,18 +216,16 @@ table, tr, td{
 }
 
 .collapsible-body{
-    background-color: rgba(255,255,255,0.5);
     color:black;
     padding: 1rem;
     padding-left: 4rem;
-    animation-name:user_colapsible_selected_off;
-    animation-duration:0.3s;
+    background-color: rgba(255,255,255,0.5);
 }
 
 .collapsible-body:hover{
-    background-color: rgba(191,63,63,0.7); !important;
-    color:white;
-    cursor: pointer !important;
+    background-color: rgba(255,255,255,0.9);
+    /*background-color: rgba(191,63,63,0.7); !important;*/
+    color: rgba(191,63,63,1);
     padding: 1rem;
     padding-left: 4rem;
     animation-name:user_colapsible_selected_on;
@@ -235,17 +234,62 @@ table, tr, td{
 
 @keyframes user_colapsible_selected_on
 {
-    0% {background-color: rgba(255,255,255,0.5);
+    0% {
+        background-color: rgba(255,255,255,0.5);
         color:black;}
 
-    100% {background-color: rgba(191,63,63,0.7);
-        color:white;}
+    100% {
+        background-color: rgba(255,255,255,0.9);
+        /*background-color: rgba(191,63,63,0.7);*/
+        color: rgba(191,63,63,1);}
 }
-@keyframes user_colapsible_selected_on
-{
-    100% {background-color: rgba(191,63,63,0.7);
-        color:white;}
 
-    0% {background-color: rgba(255,255,255,0.5);
-        color:black;}
+/*Właściwości obrazu*/
+.alx_img_src{
+    z-index: 0;
+    padding: 0;
+    margin-top: -15%;
+    margin-bottom: -15%;
+}
+
+/*Pozycjonowaie przycisku wyboru pliku*/
+.alx_btn_floating{
+    padding: 0;
+    left: 60%;
+    margin-top: -20%;
+    position: relative;
+    z-index: 1;
+}
+/*Edycja pierwszej kolumny w dodaj surowce z wielkością obrazka w width*/
+.alx_table_edit_res_pic{
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    width: 10%;
+}
+
+.alx_tabela_surowcow_admin{
+    margin: 0;
+    padding: 0px;
+    padding-left: 5%;
+    text-align: left;
+    width: auto;
+}
+
+.alx_tabela_surowcow_admin_button{
+    margin: 0;
+    padding: 0px;
+    padding-left: 2%;
+    text-align: left;
+    width: 15%;
+}
+
+.validate{
+    text-align: center;
+    cursor: pointer;
+}
+
+.active{
+    color: black !important;
+    font-size: 1.2rem !important;
 }
