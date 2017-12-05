@@ -64,7 +64,7 @@ class ResourceController
         $this->__dataBase__controller = MySQLController::getInstance();
 
         //Wypelnienia tablicy objektami Resource
-        $this->setResourceList($this->__dataBase__controller->__Admin__QuestionQuery());
+        $this->setResourceList($this->__dataBase__controller->__Admin__ResourcesQuery());
 
     }
     private function setResourceList(array $sql_resources){
