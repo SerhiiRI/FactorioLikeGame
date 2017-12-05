@@ -19,8 +19,9 @@ class QuestionController
     static private $instance = null;
     private $__dataBase__controller;
 
-    public static function getInstance(){
-        if(empty(self::$instance))
+    public static function getInstance()
+    {
+        if (empty(self::$instance))
             self::$instance = new self();
     }
 
@@ -35,7 +36,8 @@ class QuestionController
 
     }
 
-    private function setQuestionList(array $sql_question){
+    private function setQuestionList(array $sql_question)
+    {
 
     }
 }
