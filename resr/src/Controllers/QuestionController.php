@@ -35,7 +35,4 @@ class QuestionController
 
     }
 
-    private function setQuestionList(array $sql_question){
-        //some change
-    }
 }
