@@ -290,11 +290,7 @@ final class MySQLController
 //====================================================================================================================//
 //====================================================================================================================//
 
-    /**
-     * następne metody twożą interfejs do wykorzystawania poszczególnych funkcyj
-     * przez użytkowanika ADMIN!
-     * @return array FETCH_ASSOC or NUll
-     */
+
     public function __Admin__UserQuery(){
         $prepare = $this->pdo->prepare("SELECT * FROM `User`");
         $prepare->bindParam(":email", $login);
@@ -335,7 +331,6 @@ final class MySQLController
             echo "</div>";
         }
     }
-
 
     public function __Admin__QuestionAdd($idTask, $Question, array $Answer){
 
@@ -410,6 +405,7 @@ final class MySQLController
         }
         return null;
     }
+
     public function __Admin__AnswerUpdate($idAnswer, $idQuestion, $text, $right){
         $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Answers` WHERE `idQuestion`=\":id\"");
         $sprawdzenia->bindParam(":id", $idQuestion);
@@ -473,13 +469,6 @@ final class MySQLController
         return null;
     }
 
-    /**
-     * @param $idElement
-     * @param $Question
-     * @param array $Answer
-     * @return bool
-     */
-
     public function __Admin__FactoryQuery(){
         $prepare = $this->pdo->prepare("SELECT * FROM `Factory`");
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
@@ -491,12 +480,6 @@ final class MySQLController
         }
         return null;
     }
-
-    /**
-     * @param $typeOfFactory
-     * @param $imagePATH
-     * @return string - added index
-     */
     public function __Admin__FactoryAdd($typeOfFactory, $imagePATH){
         /**
          * Inset into DB Factory(Type of factory, path to image)
@@ -519,7 +502,7 @@ final class MySQLController
 
 
     public function __Admin__TaskQuery(){
-        $prepare = $this->pdo->prepare("SELECT * FROM `Task`");
+        $prepare = $this->pdo->prepare("SELECT * FROM `Task` ORDER BY `LevelTo` ASC");
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         if($prepare->rowCount()>0){
@@ -530,13 +513,7 @@ final class MySQLController
         return null;
     }
     public function __Admin__TaskAdd($Task, $idResource, $LevelTo, $ResourceTo){
-        /**
-         * Inset into DB Factory(task,
-         * id resources, needed level
-         * to open, needed level of
-         * summary resources)
-         */
-        $prepare = $this->pdo->prepare("INSERT INTO `Factory` VALUES (NULL , :idResources, :Task, :LevelTo, :ResourceTo)");
+        $prepare = $this->pdo->prepare("INSERT INTO `Task` VALUES (NULL , :idResources, :Task, :LevelTo, :ResourceTo)");
         $prepare->bindParam(":idResources", $idResource);
         $prepare->bindParam(":Task", $Task);
         $prepare->bindParam(":LevelTo", $LevelTo);
@@ -553,21 +530,19 @@ final class MySQLController
         $prepare->closeCursor();
         return null;
     }
+    public function __Admin__TaskUpdate($idTask, $Task, $idResource, $LevelTo, $ResourceTo){
+        $prepare = $this->pdo->prepare("UPDATE `Task` SET `idResources`=:idresource, `Task`=:task, `LevelTo`=:levelTo, `ResourceTo`=:resourceTo WHERE `idTask`=:idtask");
+        $prepare->bindParam(":idtask", $idTask);
+        $prepare->bindParam(":idresources", $idResource);
+        $prepare->bindParam(":task", $Task);
+        $prepare->bindParam(":levelTo", $LevelTo);
+        $prepare->bindParam(":resourceTo", $ResourceTo);
+        $prepare->execute();
+        return null;
+    }
 
-
-
-    /**
-     * @param $Resource - nazwa surowca
-     * @param $ProductionUnit - punkty wyrobienia
-     * @return string (id before
-     * inserted object, or now inserted
-     * object) or null
-     */
     public function __Admin__ResourcesAdd($Resource, $ProductionUnit, string $IMG)
     {
-        /**
-         * Inset into DB Resource as( Resource name, and value of production to factory);
-         */
         $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=\":Res\"");
         $sprawdzenia->bindParam(":Res", $Resource);
         $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
