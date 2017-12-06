@@ -513,12 +513,6 @@ final class MySQLController
         return null;
     }
     public function __Admin__TaskAdd($Task, $idResource, $LevelTo, $ResourceTo){
-        /**
-         * Inset into DB Factory(task,
-         * id resources, needed level
-         * to open, needed level of
-         * summary resources)
-         */
         $prepare = $this->pdo->prepare("INSERT INTO `Task` VALUES (NULL , :idResources, :Task, :LevelTo, :ResourceTo)");
         $prepare->bindParam(":idResources", $idResource);
         $prepare->bindParam(":Task", $Task);
@@ -538,7 +532,7 @@ final class MySQLController
     }
     public function __Admin__TaskUpdate($idTask, $Task, $idResource, $LevelTo, $ResourceTo){
         $prepare = $this->pdo->prepare("UPDATE `Task` SET `idResources`=:idresource, `Task`=:task, `LevelTo`=:levelTo, `ResourceTo`=:resourceTo WHERE `idTask`=:idtask");
-        $prepare->bindParam(":idtask", $idResource);
+        $prepare->bindParam(":idtask", $idTask);
         $prepare->bindParam(":idresources", $idResource);
         $prepare->bindParam(":task", $Task);
         $prepare->bindParam(":levelTo", $LevelTo);
@@ -549,9 +543,6 @@ final class MySQLController
 
     public function __Admin__ResourcesAdd($Resource, $ProductionUnit, string $IMG)
     {
-        /**
-         * Inset into DB Resource as( Resource name, and value of production to factory);
-         */
         $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=\":Res\"");
         $sprawdzenia->bindParam(":Res", $Resource);
         $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
