@@ -9,10 +9,9 @@
 namespace Controllers;
 
 use Controller\MySQLController;
+use Controller\Task;
 
 include_once(dirname(__FILE__)."/MySQLController.php");
-include_once(dirname(__FILE__)."../Class/Question.php");
-include_once(dirname(__FILE__)."../Class/Answer.php");
 
 class TaskController
 {
@@ -25,25 +24,34 @@ class TaskController
             self::$instance = new self();
     }
 
-//=========================================================================
-
     private function __construct()
     {
         $this->__dataBase__controller = MySQLController::getInstance();
-        $this->setQuestionList($this->__dataBase__controller->__Admin__TaskQuery());
+        $this->set($this->__dataBase__controller->__Admin__TaskQuery());
 
     }
 
-    private function setQuestionList(array $sql_question){
+    private function set(array $sql_question){
         foreach ($sql_question as &$item){
-            $this->QuestionList[] = new Question($item["idQuestion"], $item["Question"]);
+            $this->TaskList[] = new Task(
+                $item["idTask"],
+                $item["idResources"],
+                $item["Task"],
+                $item["LevelTo"],
+                $item["ResourceTo"]
+            );
         }
     }
-
-    public function addQuestion($idTask, $Question, array $Answer){
-        $this->__dataBase__controller->__Admin__QuestionAdd($idTask, $Question, $Answer);
+    public function add($idTask, $idResource,  $Task, $LevelTo, $ResourceTo){
+        $this->__dataBase__controller->__Admin__TaskAdd($idTask, $idResource,  $Task, $LevelTo, $ResourceTo);
     }
-    public function removeQuestion(string $Question){
-        $this->__dataBase__controller->__Admin__QuestionRemove($Question);
+    public function remove(string $Task){
+        $this->__dataBase__controller->__Admin__TaskRemove($Task);
+    }
+    public function update($idTask, $idResource,  $Task, $LevelTo, $ResourceTo){
+        $this->__dataBase__controller->__Admin__TaskUpdate($idTask, $idResource,  $Task, $LevelTo, $ResourceTo);
+    }
+    public function returnArray(){
+        return $this->TaskList;
     }
 }

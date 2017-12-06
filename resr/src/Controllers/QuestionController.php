@@ -19,10 +19,10 @@ class QuestionController
     private $QuestionList = array();
     static private $instance = null;
     private $__dataBase__controller;
-
     public static function getInstance(){
         if(empty(self::$instance))
             self::$instance = new self();
+        return QuestionController::$instance;
     }
 
     private function __construct()
@@ -30,20 +30,23 @@ class QuestionController
         $this->__dataBase__controller = MySQLController::getInstance();
 
         //Wypelnienia tablicy objektami Resource
-        $this->setQuestionList($this->__dataBase__controller->__Admin__QuestionQuery());
+        $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
 
     }
 
-    private function setQuestionList(array $sql_question){
+    private function set(array $sql_question){
         foreach ($sql_question as &$item){
             $this->QuestionList[] = new Question($item["idQuestion"], $item["Question"]);
+            array_push($this->QuestionList, 1);
         }
     }
-
-    public function addQuestion($idTask, $Question, array $Answer){
+    public function add($idTask, $Question, array $Answer){
         $this->__dataBase__controller->__Admin__QuestionAdd($idTask, $Question, $Answer);
     }
-    public function removeQuestion(string $Question){
+    public function remove(string $Question){
         $this->__dataBase__controller->__Admin__QuestionRemove($Question);
+    }
+    public function returnArray(){
+        return $this->QuestionList;
     }
 }
