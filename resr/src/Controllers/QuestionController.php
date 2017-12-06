@@ -46,4 +46,6 @@ class QuestionController
     public function removeQuestion(string $Question){
         $this->__dataBase__controller->__Admin__QuestionRemove($Question);
     }
+
+
 }
