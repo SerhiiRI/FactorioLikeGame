@@ -5,6 +5,7 @@ if(isset($_POST["ok"]) && isset($_POST["email_address"]) && isset($_POST["passwo
     $id = $__controller__DataBase->regestration($_POST["email_address"], $_POST["password"]);
     echo "<h1> id ".print_r($id)."</h1>";
     if($id!=-1){
+        $_SESSION["name_of_user"] = $_POST["email_address"];
         $_SESSION["LOGINED"] = "1";
         $_SESSION["idUser"] = $id;
         if ($id==1) {

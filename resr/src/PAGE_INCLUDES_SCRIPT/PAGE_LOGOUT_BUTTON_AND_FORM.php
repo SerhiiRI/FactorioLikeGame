@@ -5,6 +5,6 @@ if(isset($_POST["logut"])){
 }
 ?>
 <form class="logout" action="" method="post">
-    <button class="btn-flat alx_display_block" type="submit" name="logut"><img class="aleks_logout" src="resr/img/logout.svg"> Wyloguj
+    <button class="btn-flat alx_przycisk_wylogowania" type="submit" name="logut"><img class="aleks_logout" src="resr/img/logout.svg"> Wyloguj
     </button>
 </form>

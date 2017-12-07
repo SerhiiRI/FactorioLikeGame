@@ -64,8 +64,8 @@ if(isset($_SESSION["idUser"]) && $_SESSION["UserType"]=="2") {
 
                 <table class="alx_table_admin_menu">
                     <tr>
-                        <td class="alx_admin_ostatni_element_menu_lewy_panel">
-                            <a href="hard_logout.php" class="alx_display_block">
+                        <td class="alx_przycisk_na_lewym_panelu">
+                            <a href="hard_logout.php" class="alx_przycisk_wylogowania">
                                 <i class="icon-logout aleks_icon_logout"></i> Wyloguj
                             </a>
                         </td>

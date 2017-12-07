@@ -1,8 +1,6 @@
 <?php
     include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
 
-
-
     if (isset($_POST["ok"])) {
         $id = $__controller__DataBase->validateUser($_POST["login"], $_POST["password"]);
         if ($id != -1) {

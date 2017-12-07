@@ -6,15 +6,29 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 
     <!DOCTYPE html>
     <html lang="pl">
+
     <head>
         <meta charset="UTF-8">
-        <title>User map</title>
-        <!--import czcionek, frameworków, styli-->
-        <?php include_once("style/fonts.html") ?>
+        <title>Admin Tools</title>
+        <!--Import materialize.css-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="style/materialize/css/materialize.min.css"
+              media="screen,projection"/>
+        <!--Import czcionek-->
+        <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Bahiana|Chelsea+Market|Cinzel:400,700,900|Dosis:200,300,400,500,600,700,800|Jim+Nightshade|Nosifer|Poiret+One|Quicksand:300,400,500,700|Text+Me+One&amp;subset=latin-ext"
+              rel="stylesheet">
+        <!--Import fontello-->
+        <link rel="stylesheet" href="style/fontello/css/fontello.css">
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="style/materialize/js/materialize.min.js"></script>
+        <!--Import aleks_style.css-->
         <link type="text/css" rel="stylesheet" href="style/aleks_style.css"/>
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
+
     <body class="alx_bg_img">
-    <!--    <body style="background-image: url(resr/img/bg_two.png);">-->
     <div class="alx_border_space">
         <div>
             <!--lewy panel Admina-->
@@ -23,14 +37,14 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 
             <!--prawy panel Admina (content)-->
             <div class="aleks_content_panel">
-                <h1 style="text-align: center">Panel administratora</h1>
+                <h1 class="alx_h1_title">Panel administratora</h1>
 
                 <!--                PANEL NARZĘDZI-->
                 <ul class="collapsible popout" data-collapsible="accordion">
 
                     <!------------------------------------------------------------------------------------------------>
                     <!--PIERWSZE NARZĘDZIE "STATYSTYKA"-->
-                    <li>
+                    <li class="alx_zmiana_stylu_listy_panel_admina">
                         <div class="collapsible-header"><i class="material-icons">sort</i>Statystyka</div>
                         <!--PIERWSZY ELEMENT PO ROZWINIECIU-->
                         <?php wyswietlanieStatystykSystemu(); ?>
@@ -40,10 +54,10 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
                     <!------------------------------------------------------------------------------------------------>
 
                     <!--DRUGIE NARZĘDZIE "EDYCJA SUROWCOW"-->
-                    <li>
+                    <li class="alx_zmiana_stylu_listy_panel_admina">
                         <div class="collapsible-header">
                             <i class="icon-industrial-building aleks_icon"></i>
-                            Zarządzaj surowcami w grze
+                            Edytor fabryk/surowców
                         </div>
 
                         <!--    PĘTLA Z WIERSZAMI W Zarządzaie Surowcami w grze-->
@@ -52,247 +66,36 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
                         <!------------------------------------------------------------------------------------------------>
 
                         <!--POCZĄTEK OPCJI 3 - PYTANIA DO GRY-->
-                    <li>
-                        <div class="collapsible-header"><i class="icon-code-outline aleks_icon"></i>Dodaj zadanie do
-                            gry
+                    <li class="alx_zmiana_stylu_listy_panel_admina">
+                        <div class="collapsible-header"><i class="icon-code-outline aleks_icon"></i>Edytor pytań
                         </div>
 
+                        <!--PĘTLA Z WIERSZAMI W PYTANIA DO GRY-->
+                        <?php EdycjaPytanDoGry(); ?>
+                        <!--Koniec opcji 3-->
+                        <!------------------------------------------------------------------------------------------------>
 
-                        <!--             PĘTLA Z WIERSZAMI W PYTANIA DO GRY-->
-                        <?php for ($i = 0; $i < 2; $i++) { ?>
-                            <div class="collapsible-body">
-                                <table>
-                                    <tr>
-                                        <form action="#">
-                                            <td>
-                                                <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea">
-                                                        Kasia kupiła 10 jabłek, a Adaś ma biegunkę. Co jest sensem życia?
-                                                    </textarea>
-                                                    <label for="textarea1">Pytanie</label>
-                                                </div>
-                                            </td>
-                                            <td class="alx_edytor_pytań">
-                                                <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea">
-                                                        42
-                                                    </textarea>
-                                                    <label for="textarea1">Odpowiedź</label>
-                                                </div>
-                                            </td>
-                                            <td class="alx_edytor_pytań">
-                                                <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea">
-                                                        Nie wiem...
-                                                    </textarea>
-                                                    <label for="textarea1">Źle</label>
-                                                </div>
-                                            </td>
-                                            <td class="alx_edytor_pytań">
-                                                <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea">
-                                                        PHP
-                                                    </textarea>
-                                                    <label for="textarea1">Źle</label>
-                                                </div>
-                                            </td>
-                                            <td class="alx_edytor_pytań">
-                                                <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea">
-                                                        Wait! Ta sraka to po jabłkach?
-                                                    </textarea>
-                                                    <label for="textarea1">Źle</label>
-                                                </div>
-                                            </td>
 
-                                            <!--                                            BUTTONY-->
-                                            <td class="alx_edit_users_button">
-                                                <table>
-                                                    <tr class="alx_padding_edit_users_button">
-                                                        <div class=" alx_padding_edit_users_button">
-                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                                    type="submit"
-                                                                    name="ban">
-                                                                Edytuj <i class="icon-cogs alx_h8_font"></i>
-                                                            </button>
-                                                        </div>
-                                                    </tr>
-                                                    <tr class="alx_padding_edit_users_button">
-                                                        <div class="alx_padding_edit_users_button">
-                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                                    type="submit"
-                                                                    name="usuwanie">
-                                                                Usuń <i class="icon-block alx_h8_font"></i>
-                                                            </button>
-                                                        </div>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </form>
-                                    </tr>
-                                </table>
-                            </div>
-                        <?php } ?>
-                        <!--    KONIEC PĘTLI Z WIERSZAMI   -->
-
-                        <!--           POCZĄTEK OSTATNI WIERSZ -->
-                        <div class="collapsible-body">
-                            <table>
-                                <tr>
-                                    <form action="#">
-                                        <td>
-                                            <div class="input-field col s12">
-                                                <textarea id="textarea1" class="materialize-textarea"></textarea>
-                                                <label for="textarea1">Pytanie</label>
-                                            </div>
-                                        </td>
-                                        <td class="alx_edytor_pytań">
-                                            <div class="input-field col s12">
-                                                <textarea id="textarea1" class="materialize-textarea"></textarea>
-                                                <label for="textarea1">Odpowiedź</label>
-                                            </div>
-                                        </td>
-                                        <td class="alx_edytor_pytań">
-                                            <div class="input-field col s12">
-                                                <textarea id="textarea1" class="materialize-textarea"></textarea>
-                                                <label for="textarea1">Źle</label>
-                                            </div>
-                                        </td>
-                                        <td class="alx_edytor_pytań">
-                                            <div class="input-field col s12">
-                                                <textarea id="textarea1" class="materialize-textarea"></textarea>
-                                                <label for="textarea1">Źle</label>
-                                            </div>
-                                        </td>
-                                        <td class="alx_edytor_pytań">
-                                            <div class="input-field col s12">
-                                                <textarea id="textarea1" class="materialize-textarea"></textarea>
-                                                <label for="textarea1">Źle</label>
-                                            </div>
-                                        </td>
-
-                                        <!--                                            BUTTONY-->
-                                        <td class="alx_edit_users_button">
-                                            <table>
-                                                <tr class="alx_padding_edit_users_button">
-                                                    <div class=" alx_padding_edit_users_button">
-                                                        <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                                type="submit"
-                                                                name="ban">
-                                                            Dodaj <i class="icon-plus alx_h8_font"></i>
-                                                        </button>
-                                                    </div>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </form>
-                                </tr>
-                            </table>
+                        <!--POCZĄTEK OPCJI 4 - PYTANIA DO GRY-->
+                    <li class="alx_zmiana_stylu_listy_panel_admina">
+                        <div class="collapsible-header"><i class="icon-tools aleks_icon"></i>Edytor zadań
                         </div>
-                    </li>
-                    <!--KONIEC OPCJI Z PYTANIAMI DO GRY-->
+
+                        <!--PĘTLA Z WIERSZAMI W PYTANIA DO GRY-->
+                        <?php EdycjaPytanDoGry(); ?>
+                        <!--Koniec opcji 3-->
+                        <!------------------------------------------------------------------------------------------------>
 
 
-                    <li>
+                        <!--POCZĄTEK OPCJI 5 - Edytor użytkownikow-->
+                    <li class="alx_zmiana_stylu_listy_panel_admina">
                         <div class="collapsible-header"><i class="icon-key aleks_icon"></i>Zarządzaj użytkownikami
                         </div>
-                        <!--             PĘTLA Z WIERSZAMI W ZARZĄDZAJ UŻYTKOWNIKAMI-->
-                        <?php for ($i = 0; $i < 2; $i++) { ?>
-                            <div class="collapsible-body">
-                                <table>
-                                    <tr>
-                                        <form action="#">
-                                            <td class="alx_table_edit_res_pic">
-                                                <div class="file-field input-field">
-                                                    <img src="resr/img/defoult_user.svg" class="alx_img_src">
-                                                    <!--                                                DODAJ OBRAZEK-->
-                                                </div>
-                                            </td>
-                                            <td class="alx_info_o_graczu">
-                                                <table>
-                                                    <tr>
-                                                        <div class="input-field">
-                                                            <input value="aleks" id="first_name2" type="text"
-                                                                   class="validate">
-                                                            <label class="active"
-                                                                   for="first_name2">Użytkownik</label>
-                                                        </div>
 
-                                                    </tr>
-                                                    <tr>
-                                                        <div class="input-field">
-                                                            <input value="2" id="first_name2" type="text"
-                                                                   class="validate">
-                                                            <label class="active" for="first_name2">Poziom</label>
-                                                        </div>
-                                                    </tr>
-                                                    <tr>
-                                                        <div class="input-field">
-                                                            <input value="Gracz" id="first_name2" type="text"
-                                                                   class="validate">
-                                                            <label class="active alx_2rem_font"
-                                                                   for="first_name2">Uprawnienia</label>
-                                                        </div>
-                                                    </tr>
-                                                </table>
-                                            </td>
-
-                                            <!--                                            STATY GRACZA-->
-                                            <td class="alx_info_o_graczu_spadding">
-                                                <table>
-                                                    <tr class="alx_info_bar">
-                                                        <?php for ($j = 0;
-                                                        $j < 5;
-                                                        $j++){ ?>
-                                                    <tr>
-                                                        <td class="alx_center_th alx_th_padding">
-                                                            <input value="Węgiel: 50/100" type="text"
-                                                                   class="alx_small_input">
-                                                            <div class="progress">
-                                                                <div class="determinate" style="width: 50%;"></div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <?php } ?>
-                                                    </tr>
-                                                </table>
-
-                                            </td>
-
-                                            <!--                                            BUTTONY-->
-                                            <td class="alx_btn_space_in_users_edit"
-                                            ">
-                                            <table>
-                                                <tr>
-                                                    <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                            type="submit"
-                                                            name="ban">
-                                                        Ban <i class="icon-block alx_h8_font"></i>
-                                                    </button>
-                                                </tr>
-                                                <tr>
-                                                    <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                            type="submit"
-                                                            name="edytuj">
-                                                        Edytuj <i class="icon-cogs alx_h8_font"></i>
-                                                    </button>
-                                                </tr>
-                                                <tr>
-                                                    <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                            type="submit"
-                                                            name="usuwanie">
-                                                        Usuń <i class="icon-user-delete-outline alx_h8_font"></i>
-                                                    </button>
-                                                </tr>
-                                            </table>
-                                            </td>
-
-                                        </form>
-                                    </tr>
-                                </table>
-                            </div>
-                        <?php } ?>
-                        <!--    KONIEC PĘTLI Z WIERSZAMI   -->
+                        <!--PĘTLA Z WIERSZAMI W ZARZĄDZAJ UŻYTKOWNIKAMI-->
+                        <?php EdtyorUzytkownikow(); ?>
+                        <!--Koniec opcji 5-->
+                        <!------------------------------------------------------------------------------------------------>
 
                     </li>
                 </ul>
