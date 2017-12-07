@@ -1,17 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Serhii
- * Date: 05.12.17
- * Time: 18:59
- */
+namespace Controller;
 
-namespace Controllers;
-
-use Controller\MySQLController;
-use Controller\Task;
-
-include_once(dirname(__FILE__)."/MySQLController.php");
 
 class TaskController
 {
@@ -22,6 +11,7 @@ class TaskController
     public static function getInstance(){
         if(empty(self::$instance))
             self::$instance = new self();
+        return self::$instance;
     }
 
     private function __construct()

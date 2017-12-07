@@ -36,6 +36,7 @@ class ResourceController
     public static function getInstance(){
         if(empty(self::$instance))
             self::$instance = new self();
+        return self::$instance;
     }
 
     public function updateProductUnit(string $nameOfResource, int $newProductiveUnit, string $IMG){
