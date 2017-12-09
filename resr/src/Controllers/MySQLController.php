@@ -552,6 +552,42 @@ final class MySQLController
         $prepare->closeCursor();
         return null;
     }
+    public function __Admin__TaskRemoveAll(){
+        $prepare = $this->pdo->prepare("DELETE FROM `Task`");
+        $prepare->execute();
+        $prepare->closeCursor();
+        return "suka bliat";
+    }
+    public function __Admin__UserRemoveAll(){
+        $prepare = $this->pdo->prepare("DELETE FROM `User`");
+        $prepare->execute();
+        $prepare->closeCursor();
+        return "suka bliat";
+    }
+    public function __Admin__QuestionRemoveAll(){
+        $prepare = $this->pdo->prepare("DELETE FROM `Question`");
+        $prepare->execute();
+        $prepare->closeCursor();
+        return "suka bliat";
+    }
+    public function __Admin__FactoryInstanceRemoveAll(){
+        $prepare = $this->pdo->prepare("DELETE FROM `FactoryInstance`");
+        $prepare->execute();
+        $prepare->closeCursor();
+        return "suka bliat";
+    }
+    public function __Admin__ResourceRemoveAll(){
+        $prepare = $this->pdo->prepare("DELETE FROM `Resource`");
+        $prepare->execute();
+        $prepare->closeCursor();
+        return "suka bliat";
+    }
+    public function __Admin__UserMapRemoveAll(){
+        $prepare = $this->pdo->prepare("DELETE FROM `UserMap`");
+        $prepare->execute();
+        $prepare->closeCursor();
+        return "suka bliat";
+    }
 
     public function __Admin__TaskUpdate($idTask, $Task, $idResource, $LevelTo, $ResourceTo)
     {

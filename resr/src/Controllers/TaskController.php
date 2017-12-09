@@ -38,6 +38,9 @@ class TaskController
     public function remove(string $Task){
         $this->__dataBase__controller->__Admin__TaskRemove($Task);
     }
+    public function removeAll(){
+        $this->__dataBase__controller->__Admin__TaskRemoveAll();
+    }
     public function update($idTask, $idResource,  $Task, $LevelTo, $ResourceTo){
         $this->__dataBase__controller->__Admin__TaskUpdate($idTask, $idResource,  $Task, $LevelTo, $ResourceTo);
     }
