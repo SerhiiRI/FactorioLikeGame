@@ -55,9 +55,9 @@ final class MySQLController
         $this->login = $login;
         $this->passwd = $passwd;
         try { // przekazujemy dla interfejsa PDO ustanawia dla zdefiniowanego zdarzenia
-            $this->pdo = new \PDO("mysql:host=localhost;dbname=game", $login, $passwd);
+            $this->pdo = new PDO("mysql:host=127.0.0.1;dbname=game", $login, $passwd);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
+        } catch (\Exception $e) {
             echo "Error: " . $e->getMessage();
         }
     }
@@ -212,6 +212,14 @@ final class MySQLController
             return $insertedScore;
         }
         return null;
+    }
+    public function __User__UserScoreQuery($idScore){
+        $prepare = $this->pdo->prepare("SELECT * FROM `Score` WHERE `idScore`=:idscore");
+        $prepare = $this->pdo->prepare(":idscore", $idUser);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        $returnSet = $prepare->fetchAll();
+        return ($prepare->rowCount() > 0) ? $prepare->fetchAll() : null;
     }
 
     public function __User__UserScoreChangeStatus($idTask)
@@ -531,10 +539,24 @@ final class MySQLController
         return null;
     }
 
+    public function __Admin__TaskQueryByLevel($neededLevel)
+    {
+        $prepare = $this->pdo->prepare("SELECT * FROM `Task` WHERE `LevelTo`=:lvl ORDER BY `LevelTo` ASC");
+        $prepare->bindParam(":lvl", $neededLevel);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        if ($prepare->rowCount() > 0) {
+            $assoc = $prepare->fetchAll();
+            return $assoc;
+        }
+        $prepare->closeCursor();
+        return null;
+    }
+
     public function __Admin__TaskAdd($Task, $idResource, $LevelTo, $ResourceTo)
     {
-        $prepare = $this->pdo->prepare("INSERT INTO `Task` VALUES (NULL , :idResources, :Task, :LevelTo, :ResourceTo)");
-        $prepare->bindParam(":idResources", $idResource);
+        $prepare = $this->pdo->prepare("INSERT INTO `Task` VALUES (NULL , :iddresources, :Task, :LevelTo, :ResourceTo)");
+        $prepare->bindParam(":iddresources", $idResource);
         $prepare->bindParam(":Task", $Task);
         $prepare->bindParam(":LevelTo", $LevelTo);
         $prepare->bindParam(":ResourceTo", $ResourceTo);
@@ -543,6 +565,7 @@ final class MySQLController
         $prepare->closeCursor();
         return $id_New_Added_Task;
     }
+
 
     public function __Admin__TaskRemove($idTask)
     {

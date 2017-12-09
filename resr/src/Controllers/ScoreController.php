@@ -1,13 +1,21 @@
 <?php
-namespace Controller;
-include_once __DIR__."/MySQLController.php";
-include_once __DIR__."/../Class/Task.php";
+/**
+ * Created by PhpStorm.
+ * User: Serhii
+ * Date: 09.12.17
+ * Time: 23:44
+ */
+
+namespace Controllers;
 use Controller\MySQLController;
 
-class TaskController
+include_once __DIR__."/MySQLController.php";
+include_once __DIR__."/../Class/Task.php";
+
+class ScoreController
 {
     static private $instance = null;
-    private $TaskList = array();
+    private $ScoreList = array();
     private $__dataBase__controller;
 
     public static function getInstance(){
@@ -19,7 +27,7 @@ class TaskController
     private function __construct()
     {
         $this->__dataBase__controller = MySQLController::getInstance();
-        $this->set($this->__dataBase__controller->__Admin__TaskQuery());
+        $this->set($this->__dataBase__controller->__User__UserScore);
 
     }
 
@@ -43,6 +51,7 @@ class TaskController
     }
     public function add($idResource,  $Task, $LevelTo, $ResourceTo){
         $lastAddedIndex =$this->__dataBase__controller->__Admin__TaskAdd($Task, $idResource, $LevelTo, $ResourceTo);
+        $this->__dataBase__controller->__User__UserScoreAdd();
     }
     public function remove(string $Task){
         $this->__dataBase__controller->__Admin__TaskRemove($Task);
