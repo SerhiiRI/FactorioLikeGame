@@ -126,9 +126,10 @@ final class MySQLController
         $prepare->closeCursor();
     }
 
-    public function __User__UserMapQuery()
+    public function __User__UserMapQuery($idUser)
     {
-        $prepare = $this->pdo->prepare("SELECT * FROM `UserMap`");
+        $prepare = $this->pdo->prepare("SELECT * FROM `UserMap` WHERE `idUser`=:iduser");
+        $prepare = $this->pdo->prepare(":idUser", $idUser);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         $returnSet = $prepare->fetchAll();
@@ -310,11 +311,6 @@ final class MySQLController
     public function __User__TaskQuery()
     {
         return $this->__Admin__TaskQuery();
-    }
-
-    public function __User__FactoryQuery()
-    {
-        return $this->__Admin__FactoryQuery();
     }
 
     public function __User__ResourcesQuery()
