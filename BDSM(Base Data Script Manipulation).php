@@ -19,13 +19,7 @@ function string_rand($length_of_string=20)
 
 /*function dodaj_Taks(int $count){
 $controller = TaskController::getInstance();
-    for ($i = 0; $i < $count; $i++) {
-        $idResourcl = rand(1, 3);
-        $Tasl = string_rand();
-        $LevelTl = rand(1, 40);
-        $ResourceTl = rand(1, 500);
-        $controller->add($idResourcl, $Tasl, $LevelTl, $ResourceTl);
-    }
+
 }
 function usun_wszystko(){
     $controller = TaskController::getInstance();
@@ -48,7 +42,9 @@ foreach ($controller->returnArray() as $item){
 }*/
 
 $controllerTask = TaskController::getInstance();
-$controllerTask->removeAll();/*
+//$controllerTask->removeAll();
+
+/*
 $controllerTask->add(rand(1, 3), string_rand(), 2, 100);
 $controllerTask->add(rand(1, 3), string_rand(), 3, 100);
 $controllerTask->add(rand(1, 3), string_rand(), 4, 100);*/
@@ -62,18 +58,24 @@ foreach ($controllerUser->returnArray() as $item){
     print_r($item);
 }
 
-for ($counter=0; $counter<10; $counter++){
-
+/*
+for ($i = 0; $i < 10; $i++) {
+    $idResourcl = rand(1, 3);
+    $Tasl = string_rand();
+    $LevelTl = rand(1, 5);
+    $ResourceTl = rand(1, 500);
+    $controllerTask->add($idResourcl, $Tasl, $LevelTl, $ResourceTl);
 }
 
 foreach ($controllerUser->returnArray() as $item){
     print_r($item);
 }
 
-/*    echo "User\t\tTask\tUser\n";
-    echo "========================================";
+    echo "User\tTask\tUser\n";
+    echo "=======================================\n";
 
 foreach ($controllerTask->_ToTEST__returnUserAndtAsk() as $value){
-    echo $value["mail"]."\t\t".$value["task"]."\t".$value["user"].'\n';
+    echo $value["task"]."\t\t".$value["user"]."\t\t".$value["mail"]."\t\t".$value["mes"]."\t\t"."\n";
 }
 
+?>
