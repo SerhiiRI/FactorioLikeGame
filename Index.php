@@ -42,7 +42,7 @@ if(!isset($_SESSION["idUser"])) {
         </form>
     </div>
 </div>
-<!--<a href="hard_logout.php" style="position: absolute; bottom: 1vh">Hard Logout</a>-->
+<a href="Credits.html"><img src="resr/img/gear6.gif" class="autorzy_btn"></a>
 </body>
 </html>
 

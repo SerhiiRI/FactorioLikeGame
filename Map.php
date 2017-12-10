@@ -29,6 +29,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
     </head>
 
     <body class="alx_bg_img">
+    <a href="Credits.html"><img src="resr/img/gear6.gif" class="autorzy_btn"></a>
 
     <?php PanelKontrolnyFabryki(); ?>
 
@@ -58,7 +59,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
             document.getElementById("grafika_ligthbox").src = "resr/img/" + grafika;
             document.getElementById("lvl_ligthbox").innerHTML = "Poziom: " + lvl;
             document.getElementById("wydobycie_ligthbox").innerHTML = "Wydobycie: " + wydobycie + "/h";
-
+            document.getElementById("alx_flexkontener_0").style.transition = "all 500ms";
         }
 
         function func_close_zindex() {
