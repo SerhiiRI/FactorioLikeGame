@@ -1,88 +1,95 @@
 <?php
 include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
-if(isset($_SESSION["idUser"]) && $_SESSION["UserType"]=="2") {
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
+if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
 
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="style/materialize/css/materialize.min.css" media="screen,projection"/>
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <!--Import aleks_style.css-->
-    <link type="text/css" rel="stylesheet" href="style/aleks_style.css"/>
-    <!--progresbar-->
+    include_once("resr/src/view_generator/view_for_user.php"); ?>
 
+    <!DOCTYPE html>
+    <html lang="pl">
 
-    <meta charset="UTF-8">
-    <title>User map</title>
-    <link rel="stylesheet" type="text/css" href="style/login.css">
-<!--import czcionek-->
-    <?php include_once("style/fonts.html")?>
-</head>
-<body style="background-image: url(resr/img/land.jpg)">
-<!--Import jQuery before materialize.js-->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="style/materialize/js/materialize.min.js"></script>
+    <head>
+        <meta charset="UTF-8">
+        <title>Admin Tools</title>
+        <!--Import materialize.css-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="style/materialize/css/materialize.min.css"
+              media="screen,projection"/>
+        <!--Import czcionek-->
+        <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Bahiana|Chelsea+Market|Cinzel:400,700,900|Dosis:200,300,400,500,600,700,800|Jim+Nightshade|Nosifer|Poiret+One|Quicksand:300,400,500,700|Text+Me+One&amp;subset=latin-ext"
+              rel="stylesheet">
+        <!--Import fontello-->
+        <link rel="stylesheet" href="style/fontello/css/fontello.css">
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="style/materialize/js/materialize.min.js"></script>
+        <!--Import aleks_style.css-->
+        <link type="text/css" rel="stylesheet" href="style/aleks_style.css"/>
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
 
-<div class="alx_border_space">
+    <body class="alx_bg_img">
+
+<!--    <script>-->
+<!--        document.write(' --><?php //PanelKontrolnyFabryki(); ?>// ');
+<!--    </script>-->
+    <?php PanelKontrolnyFabryki(); ?>
+
     <div>
-        <!--lewy panel użytkownika-->
-        <div class="aleks_user_panel">
+        <div>
+            <!--lewy panel Admina-->
+            <?php LewyPanelAdmina(); ?>
+            <!--KONIEC PANELU LEWEGO-->
 
-            <!--            Obrazek użytkownika-->
-            <div class="aleks_user_img_div">
-                <img class="aleks_user_img" src="resr/img/defoult_user.svg"/>
-                <h5><?php echo $_SESSION["name_of_user"] ?>
-                    <br><span class="alx_h6_font_grey">- Poziom: 1 -</span></h5>
+            <!--prawy panel Admina (content)-->
+            <div class="aleks_content_panel">
 
-                <!--                Zasoby użytkownika-->
+                <h1 class="alx_h1_title">Mapa Fabryki</h1>
+                <!--Mapa gracza-->
+                <div class="alx_flex_dla_mapy_diva">
+                    <?php MapaFabryki(); ?>
+                </div>
+                <!--Koniec części z Mapą Fabryki-->
             </div>
-            <div class="aleks_center">
-                <!--                dodać php-->
 
-                <br/>
-                <table class="alx_table_admin_menu">
-                    <?php for ($i = 0;
-                               $i < 5;
-                               $i++){ ?>
-                        <tr>
-                            <td class="alx_center_th alx_th_padding">
-                                Węgiel: 50/100
-                                <div class="progress alx_left_th">
-                                    <div class="determinate" style="width: 25%"></div>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                </table>
-
-                <br/>
-
-                <table class="alx_table_admin_menu">
-                    <tr>
-                        <td class="alx_przycisk_na_lewym_panelu">
-                            <a href="hard_logout.php" class="alx_przycisk_wylogowania">
-                                <i class="icon-logout aleks_icon_logout"></i> Wyloguj
-                            </a>
-                        </td>
-                    </tr>
-                </table>
-            </div>
         </div>
-
-        <!--prawy panel użytkownika (content)-->
-        <div class="aleks_content_panel">
-            <p> - Workspace gracza - </p>
-        </div>
-
     </div>
-</div>
+    <script>
+        function func_open_zindex(grafika, wydobycie, lvl) {
+            document.getElementById("alx_flexkontener_0").style.opacity = 1;
+            document.getElementById("alx_flexkontener_0").style.zIndex = 5;
+            document.getElementById("grafika_ligthbox").src = "resr/img/" + grafika;
+            document.getElementById("lvl_ligthbox").innerHTML = "Poziom: " + lvl;
+            document.getElementById("wydobycie_ligthbox").innerHTML = "Wydobycie: " + wydobycie + "/h";
 
-</body>
-</html>
-<?php }else if (isset($_SESSION["idUser"]) && $_SESSION["UserType"]=="1"){header("Location:AdminControllerSystem.php");}
-else if (!isset($_SESSION["idUser"])){header("Location:index.php");}?>
+        }
+
+        function func_close_zindex() {
+            document.getElementById("alx_flexkontener_0").style.opacity = 0;
+            document.getElementById("alx_flexkontener_0").style.zIndex = -1;
+        }
+
+
+        function start_working() {
+            document.getElementById("working_ico").src = "resr/img/gear3.svg";
+            document.getElementById("working_ico").style.animationIterationCount = 1000;
+            document.getElementById("onClickWorking").setAttribute("onClick", "javascript: stop_working();")
+        }
+
+        function stop_working() {
+            document.getElementById("working_ico").style.animationIterationCount = 0;
+            document.getElementById("working_ico").src = "resr/img/stop.png";
+            document.getElementById("onClickWorking").setAttribute("onClick", "javascript: start_working();")
+        }
+
+
+    </script>
+
+    </body>
+    </html>
+
+<?php } else if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
+    header("Location:AdminControllerSystem.php");
+} else if (!isset($_SESSION["idUser"])) {
+    header("Location:index.php");
+} ?>
