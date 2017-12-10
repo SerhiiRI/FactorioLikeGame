@@ -12,12 +12,14 @@ namespace Controller;
 class Score
 {
     private $idScore;
+    private $idUser;
     private $idTask;
     private $FinishedTask;
 
-    public function __construct($idScore, $idTask, $FinishedTask)
+    public function __construct($idScore, $idUser, $idTask, $FinishedTask)
     {
         $this->idScore = $idScore;
+        $this->idUser = $idUser;
         $this->idTask = $idTask;
         $this->FinishedTask = $FinishedTask;
     }
@@ -30,5 +32,8 @@ class Score
     }
     public function getFinishedTask(){
         return $this->FinishedTask;
+    }
+    public function getidUser(){
+        return $this->idUser;
     }
 }

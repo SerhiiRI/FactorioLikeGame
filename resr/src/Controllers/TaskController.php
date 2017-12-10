@@ -9,6 +9,7 @@ class TaskController
     static private $instance = null;
     private $TaskList = array();
     private $__dataBase__controller;
+    public $length;
 
     public static function getInstance(){
         if(empty(self::$instance))
@@ -20,12 +21,11 @@ class TaskController
     {
         $this->__dataBase__controller = MySQLController::getInstance();
         $this->set($this->__dataBase__controller->__Admin__TaskQuery());
-
     }
 
-    private function set(array $sql_question){
+    private function set($sql_question){
         //print_r($sql_question);
-
+        $this->length = count($sql_question);
         if(!is_null($sql_question)) {
             foreach ($sql_question as $item) {
                 $this->TaskList[] = new Task(
@@ -41,17 +41,24 @@ class TaskController
             echo "no CHUJ!";
         }
     }
+
     public function add($idResource,  $Task, $LevelTo, $ResourceTo){
-        $lastAddedIndex =$this->__dataBase__controller->__Admin__TaskAdd($Task, $idResource, $LevelTo, $ResourceTo);
+        $lastAddedIndex = $this->__dataBase__controller->__Admin__TaskAdd($Task, $idResource, $LevelTo, $ResourceTo);
+        unset($this->TaskList);
+        $this->set($this->__dataBase__controller->__Admin__TaskQuery());
     }
     public function remove(string $Task){
         $this->__dataBase__controller->__Admin__TaskRemove($Task);
+        unset($this->TaskList);
+        $this->set($this->__dataBase__controller->__Admin__TaskQuery());
     }
     public function removeAll(){
         $this->__dataBase__controller->__Admin__TaskRemoveAll();
     }
     public function update($idTask, $idResource,  $Task, $LevelTo, $ResourceTo){
         $this->__dataBase__controller->__Admin__TaskUpdate($idTask, $idResource,  $Task, $LevelTo, $ResourceTo);
+        unset($this->TaskList);
+        $this->set($this->__dataBase__controller->__Admin__TaskQuery());
     }
     public function returnArray(){
         return $this->TaskList;

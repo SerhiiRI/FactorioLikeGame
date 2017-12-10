@@ -6,11 +6,12 @@
  * Time: 23:44
  */
 
-namespace Controllers;
+namespace Controller;
 use Controller\MySQLController;
+use Controller\Score;
 
 include_once __DIR__."/MySQLController.php";
-include_once __DIR__."/../Class/Task.php";
+include_once __DIR__."/../Class/Score.php";
 
 class ScoreController
 {
@@ -27,42 +28,39 @@ class ScoreController
     private function __construct()
     {
         $this->__dataBase__controller = MySQLController::getInstance();
-        $this->set($this->__dataBase__controller->__User__UserScore);
-
+        //$this->set($this->__dataBase__controller->__User__UserScoreQuery($_SESSION["idUser"]));
+        $this->set($this->__dataBase__controller->__User__UserScoreQuery());
     }
 
-    private function set(array $sql_question){
-        //print_r($sql_question);
-
+    private function set( $sql_question){
         if(!is_null($sql_question)) {
             foreach ($sql_question as $item) {
-                $this->TaskList[] = new Task(
+               $this->ScoreList[] = new Score(
+                    $item["idScore"],
+                    $item["idUser"],
                     $item["idTask"],
-                    $item["idResources"],
-                    $item["Task"],
-                    $item["LevelTo"],
-                    $item["ResourceTo"]
+                    $item["FinishedTask"]
                 );
-                //print_r($item);
             }
         }else{
             echo "no CHUJ!";
         }
     }
-    public function add($idResource,  $Task, $LevelTo, $ResourceTo){
-        $lastAddedIndex =$this->__dataBase__controller->__Admin__TaskAdd($Task, $idResource, $LevelTo, $ResourceTo);
-        $this->__dataBase__controller->__User__UserScoreAdd();
+    public function add($idTask, $idUser=-1)
+    {
+        if ($idUser < 0) {
+            $this->__dataBase__controller->__User__UserScoreAdd($idTask, $_SESSION["idUser"]);
+        }else{
+            $this->__dataBase__controller->__User__UserScoreAdd($idTask, $idUser);
+        }
     }
     public function remove(string $Task){
-        $this->__dataBase__controller->__Admin__TaskRemove($Task);
+        $this->__dataBase__controller->__User__UserScoreRemove($Task, $_SESSION["idUser"]);
     }
-    public function removeAll(){
-        $this->__dataBase__controller->__Admin__TaskRemoveAll();
-    }
-    public function update($idTask, $idResource,  $Task, $LevelTo, $ResourceTo){
-        $this->__dataBase__controller->__Admin__TaskUpdate($idTask, $idResource,  $Task, $LevelTo, $ResourceTo);
+    public function update($idTask){
+        $this->__dataBase__controller->__User__UserScoreChangeStatus($idTask, $_SESSION["idUser"]);
     }
     public function returnArray(){
-        return $this->TaskList;
+        return $this->ScoreList;
     }
 }
