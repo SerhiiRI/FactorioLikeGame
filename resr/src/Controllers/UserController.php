@@ -7,6 +7,7 @@ class UserController
     static private $instance = null;
     private $UserList = array();
     private $__dataBase__controller;
+    public $__usersCount;
 
     public static function getInstance(){
         if(empty(self::$instance))
@@ -20,6 +21,7 @@ class UserController
         $this->set($this->__dataBase__controller->__Admin__UserQuery());
     }
     private function set(array $sql_question){
+        $this->__usersCount =  count($sql_question);
         unset($this->UserList);
         if (!is_null($sql_question))
         foreach ($sql_question as $item){
