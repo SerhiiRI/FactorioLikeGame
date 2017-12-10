@@ -55,9 +55,9 @@ final class MySQLController
         $this->login = $login;
         $this->passwd = $passwd;
         try { // przekazujemy dla interfejsa PDO ustanawia dla zdefiniowanego zdarzenia
-            $this->pdo = new \PDO("mysql:host=localhost;dbname=game", $login, $passwd);
+            $this->pdo = new PDO("mysql:host=127.0.0.1;dbname=game", $login, $passwd);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
+        } catch (\Exception $e) {
             echo "Error: " . $e->getMessage();
         }
     }
@@ -129,7 +129,7 @@ final class MySQLController
     public function __User__UserMapQuery($idUser)
     {
         $prepare = $this->pdo->prepare("SELECT * FROM `UserMap` WHERE `idUser`=:iduser");
-        $prepare = $this->pdo->prepare(":idUser", $idUser);
+        $prepare->bindParam(":idUser", $idUser);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         $returnSet = $prepare->fetchAll();
@@ -197,15 +197,20 @@ final class MySQLController
         return null;
     }
 
-    public function __User__UserScoreAdd($idTask)
+
+
+    public function __User__UserScoreAdd($idTask, $idUser)
     {
-        $prepare = $this->pdo->prepare("SELECT * FROM `Score` WHERE idTask=:task");
+        $prepare = $this->pdo->prepare("SELECT * FROM `Score` WHERE `idTask`=:task AND `idUser`=:usser");
         $prepare->bindParam(":task", $idTask);
+        $prepare->bindParam(":usser", $idUser);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         if ($prepare->rowCount() == 0) {
-            $prepare = $this->pdo->prepare("INSERT INTO `Score` VALUES (NULL , :task, FALSE)");
+            $prepare = $this->pdo->prepare("INSERT INTO `Score` VALUES (NULL ,:usser, :task, FALSE) WHERE ".
+            "((SELECT `LevelTo` FROM `Task` WHERE `idTask`=:task) <= (SELECT `Level` FROM `User` WHERE `idUser`=:usser))");
             $prepare->bindParam(":task", $idTask);
+            $prepare->bindParam(":usser", $idUser);
             $prepare->execute();
             $insertedScore = $this->pdo->lastInsertId();
             $prepare->closeCursor();
@@ -214,15 +219,57 @@ final class MySQLController
         return null;
     }
 
-    public function __User__UserScoreChangeStatus($idTask)
+    public function __User__UserScoreQueryById($idUser){
+        $prepare = $this->pdo->prepare("SELECT * FROM `Score` WHERE `idUser`=:id");
+        $prepare->bindParam(":id", $idUser);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        return ($prepare->rowCount() > 0) ? $prepare->fetchAll() : null;
+    }
+    public function __User__UserScoreQuery(){
+        $prepare = $this->pdo->prepare("SELECT * FROM `Score`");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        return ($prepare->rowCount() > 0) ? $prepare->fetchAll() : null;
+    }
+
+    public function __test__UserAndTask(){
+        $prepare = $this->pdo->prepare("SELECT `User.email` as `mail`, `Task.LevelTo` as `task`, `User.Level` as `user` FROM `Score`, `User`, `Task` "
+        ."WHERE `Score.idUser`=`User.idUser` AND  `Task.idTask`=`Score.idTask`");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        return ($prepare->rowCount() > 0) ? $prepare->fetchAll() : null;
+    }
+
+    public function __User__UserScoreChangeStatus($idTask, $idUser)
     {
-        $prepare = $this->pdo->prepare("SELECT * FROM `Score` WHERE idTask=:task");
+        $prepare = $this->pdo->prepare("SELECT * FROM `Score` WHERE `idTask`=:task AND `idUser`=:usser");
         $prepare->bindParam(":task", $idTask);
+        $prepare->bindParam(":usser", $idUser);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         if ($prepare->rowCount() != 0) {
-            $prepare = $this->pdo->prepare("UPDATE `Score` SET `FinishedTask`=TRUE WHERE `idTask`=:task");
+            $prepare = $this->pdo->prepare("UPDATE `Score` SET `FinishedTask`=TRUE WHERE `idTask`=:task AND `idUser`=:usser");
             $prepare->bindParam(":task", $idTask);
+            $prepare->bindParam(":usser", $idUser);
+            $prepare->execute();
+            $prepare->closeCursor();
+            return 1;
+        }
+        return null;
+    }
+
+    public function __User__UserScoreRemove($idTask, $idUser)
+    {
+        $prepare = $this->pdo->prepare("SELECT * FROM `Score` WHERE `idTask`=:task AND `idUser`=:usser");
+        $prepare->bindParam(":task", $idTask);
+        $prepare->bindParam(":usser", $idUser);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        if ($prepare->rowCount() != 0) {
+            $prepare = $this->pdo->prepare("DELETE FROM `Score` WHERE `idTask`=:task AND `idUser`=:usser");
+            $prepare->bindParam(":task", $idTask);
+            $prepare->bindParam(":usser", $idUser);
             $prepare->execute();
             $insertedScore = $this->pdo->lastInsertId();
             $prepare->closeCursor();
@@ -231,22 +278,8 @@ final class MySQLController
         return null;
     }
 
-    public function __User__UserScoreRemove($idTask)
-    {
-        $prepare = $this->pdo->prepare("SELECT * FROM `Score` WHERE idTask=:task");
-        $prepare->bindParam(":task", $idTask);
-        $prepare->setFetchMode(PDO::FETCH_ASSOC);
-        $prepare->execute();
-        if ($prepare->rowCount() != 0) {
-            $prepare = $this->pdo->prepare("DELETE FROM `Score` WHERE `idTask`=:task");
-            $prepare->bindParam(":task", $idTask);
-            $prepare->execute();
-            $insertedScore = $this->pdo->lastInsertId();
-            $prepare->closeCursor();
-            return $insertedScore;
-        }
-        return null;
-    }
+
+
 
     public function __User__FactoryInstanceAdd($idResource, $idFactory, $UpgradeLVL, $idUser)
     {
@@ -303,6 +336,9 @@ final class MySQLController
         return null;
     }
 
+
+
+
     public function __User__QuestionQuery()
     {
         return $this->__Admin__UserQuery();
@@ -326,13 +362,13 @@ final class MySQLController
     public function __Admin__UserQuery()
     {
         $prepare = $this->pdo->prepare("SELECT * FROM `User`");
-        $prepare->bindParam(":email", $login);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         if ($prepare->rowCount() > 0) {
             $assocc = $prepare->fetchAll();
             return $assocc;
         }
+        $prepare->closeCursor();
         return null;
     }
 
@@ -531,10 +567,24 @@ final class MySQLController
         return null;
     }
 
+    public function __Admin__TaskQueryByLevel($neededLevel)
+    {
+        $prepare = $this->pdo->prepare("SELECT * FROM `Task` WHERE `LevelTo`=:lvl ORDER BY `LevelTo` ASC");
+        $prepare->bindParam(":lvl", $neededLevel);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        if ($prepare->rowCount() > 0) {
+            $assoc = $prepare->fetchAll();
+            return $assoc;
+        }
+        $prepare->closeCursor();
+        return null;
+    }
+
     public function __Admin__TaskAdd($Task, $idResource, $LevelTo, $ResourceTo)
     {
-        $prepare = $this->pdo->prepare("INSERT INTO `Task` VALUES (NULL , :idResources, :Task, :LevelTo, :ResourceTo)");
-        $prepare->bindParam(":idResources", $idResource);
+        $prepare = $this->pdo->prepare("INSERT INTO `Task` VALUES (NULL , :iddresources, :Task, :LevelTo, :ResourceTo)");
+        $prepare->bindParam(":iddresources", $idResource);
         $prepare->bindParam(":Task", $Task);
         $prepare->bindParam(":LevelTo", $LevelTo);
         $prepare->bindParam(":ResourceTo", $ResourceTo);
@@ -544,6 +594,7 @@ final class MySQLController
         return $id_New_Added_Task;
     }
 
+
     public function __Admin__TaskRemove($idTask)
     {
         $prepare = $this->pdo->prepare("DELETE FROM `Task` WHERE idTask=:idts");
@@ -551,6 +602,42 @@ final class MySQLController
         $prepare->execute();
         $prepare->closeCursor();
         return null;
+    }
+    public function __Admin__TaskRemoveAll(){
+        $prepare = $this->pdo->prepare("DELETE FROM `Task`");
+        $prepare->execute();
+        $prepare->closeCursor();
+        return "suka bliat";
+    }
+    public function __Admin__UserRemoveAll(){
+        $prepare = $this->pdo->prepare("DELETE FROM `User`");
+        $prepare->execute();
+        $prepare->closeCursor();
+        return "suka bliat";
+    }
+    public function __Admin__QuestionRemoveAll(){
+        $prepare = $this->pdo->prepare("DELETE FROM `Question`");
+        $prepare->execute();
+        $prepare->closeCursor();
+        return "suka bliat";
+    }
+    public function __Admin__FactoryInstanceRemoveAll(){
+        $prepare = $this->pdo->prepare("DELETE FROM `FactoryInstance`");
+        $prepare->execute();
+        $prepare->closeCursor();
+        return "suka bliat";
+    }
+    public function __Admin__ResourceRemoveAll(){
+        $prepare = $this->pdo->prepare("DELETE FROM `Resource`");
+        $prepare->execute();
+        $prepare->closeCursor();
+        return "suka bliat";
+    }
+    public function __Admin__UserMapRemoveAll(){
+        $prepare = $this->pdo->prepare("DELETE FROM `UserMap`");
+        $prepare->execute();
+        $prepare->closeCursor();
+        return "suka bliat";
     }
 
     public function __Admin__TaskUpdate($idTask, $Task, $idResource, $LevelTo, $ResourceTo)
