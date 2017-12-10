@@ -394,6 +394,7 @@ table, tr, td {
     transition: background-color 200ms;
     min-width: var(--min-pic-px);
     max-width: var(--max-pic-px);
+    border: solid 1px rgba(191, 63, 63, 1);
 }
 
 .alx_flexy_w_divie_map:hover {
