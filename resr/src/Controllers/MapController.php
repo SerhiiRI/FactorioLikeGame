@@ -24,7 +24,7 @@ class MapController
     private function __construct()
     {
         $this->__dataBase__controller = MySQLController::getInstance();
-        $this->set($this->__dataBase__controller->__Admin__UserMapQuery());
+        $this->set($this->__dataBase__controller->__Admin__());
 
     }
     private function set(array $sql_question){

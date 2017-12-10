@@ -17,7 +17,7 @@ class UserController
     private function __construct()
     {
         $this->__dataBase__controller = MySQLController::getInstance();
-        $this->set($this->__dataBase__controller->__Admin__UserQuery());
+        $this->set($this->__dataBase__controller->__User__UserMapQuery());
 
     }
     private function set(array $sql_question){
