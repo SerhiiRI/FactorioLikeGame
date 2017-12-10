@@ -30,9 +30,6 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
 
     <body class="alx_bg_img">
 
-<!--    <script>-->
-<!--        document.write(' --><?php //PanelKontrolnyFabryki(); ?>// ');
-<!--    </script>-->
     <?php PanelKontrolnyFabryki(); ?>
 
     <div>

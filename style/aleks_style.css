@@ -423,6 +423,7 @@ table, tr, td {
 
 
 .alx_flexkontener_0 {
+    opacity: 0;
     background-color: rgba(0, 0, 0, 0.85);
     position: absolute;
     min-height: 100vh;
@@ -433,7 +434,6 @@ table, tr, td {
     align-items: center;
     box-sizing: border-box;
     z-index: -1;
-    opacity: 0;
 }
 
 .alx_user_fabryka_flexkontener_A {
@@ -514,6 +514,12 @@ table, tr, td {
     .alx_user_fabryka_flexkontener_B {
         max-width: 100vw;
     }
+
+    body{
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
+
 }
 
 /*Pozycjonowaie przycisku wyboru pliku*/
