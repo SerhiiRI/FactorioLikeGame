@@ -74,12 +74,15 @@ final class MySQLController
     /**
      * @param $login - it regestration e-mail address
      * @param $password - its password to acount e-mail
-     * @param $type - type of user login {1 - admin | 2 - gracz}
+     * @param int $type - type of user login {1 - admin | 2 - gracz}
      *
-     * @return $idUzytkownika of new user, or -1 if Insertion was failed;
+     * @param int $idLevel
+     * @param int $idScore
+     * @param string $IMG
+     * @return int|string $idUzytkownika of new user, or -1 if Insertion was failed;
      *
      */
-    public function regestration($login, $password, $type = 2, $idLevel = 0, $idScore = 0)
+    public function regestration($login, $password, $type = 2, $idLevel = 0, $idScore = 0, $IMG = "defoult_user.svg")
     {
         $prepare = $this->pdo->prepare("SELECT * FROM `User` WHERE Email=:e_mail ");
         $prepare->bindParam(":e_mail", $login);
@@ -87,12 +90,13 @@ final class MySQLController
         $prepare->execute();
         $idUzytkownika = -1;
         if ($prepare->rowCount() <= 0) {
-            $rejestracja = $this->pdo->prepare(" INSERT INTO User VALUES (NULL , :email, :pass, :type, :score, :userlevel) ");
+            $rejestracja = $this->pdo->prepare(" INSERT INTO User VALUES (NULL , :email, :pass, :type, :score, :userlevel, :image) ");
             $rejestracja->bindParam(":email", $login);
             $rejestracja->bindParam(":pass", $password);
             $rejestracja->bindParam(":type", $type);
             $rejestracja->bindParam(":score", $idScore);
             $rejestracja->bindParam(":userlevel", $idLevel);
+            $rejestracja->bindParam(":image", $IMG);
             $rejestracja->setFetchMode(PDO::FETCH_ASSOC);
             $rejestracja->execute();
             $idUzytkownika = $this->pdo->lastInsertId();
@@ -207,8 +211,7 @@ final class MySQLController
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         if ($prepare->rowCount() == 0) {
-            $prepare = $this->pdo->prepare("INSERT INTO `Score` VALUES (NULL ,:usser, :task, FALSE) WHERE ".
-            "((SELECT `LevelTo` FROM `Task` WHERE `idTask`=:task) <= (SELECT `Level` FROM `User` WHERE `idUser`=:usser))");
+            $prepare = $this->pdo->prepare("INSERT INTO `Score` VALUES (NULL ,:usser, :task, FALSE)");
             $prepare->bindParam(":task", $idTask);
             $prepare->bindParam(":usser", $idUser);
             $prepare->execute();
@@ -234,8 +237,7 @@ final class MySQLController
     }
 
     public function __test__UserAndTask(){
-        $prepare = $this->pdo->prepare("SELECT `User.email` as `mail`, `Task.LevelTo` as `task`, `User.Level` as `user` FROM `Score`, `User`, `Task` "
-        ."WHERE `Score.idUser`=`User.idUser` AND  `Task.idTask`=`Score.idTask`");
+        $prepare = $this->pdo->prepare("SELECT `Email` as `mail`, `LevelTo` as `task`, `Level` as `user`, `Task` as `mes` FROM `Score`, `User`, `Task` WHERE Score.idUser=User.idUser AND Task.idTask=Score.idTask");
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         return ($prepare->rowCount() > 0) ? $prepare->fetchAll() : null;
@@ -377,11 +379,12 @@ final class MySQLController
         return $this->regestration($login, $password, $type, $idLevel, $idScore);
     }
 
-    public function __Admin__UserUpdate($EmailToChange, $PasswordToChange)
+    public function __Admin__UserUpdate($EmailToChange, $PasswordToChange, $IMG)
     {
-        $prepare = $this->pdo->prepare("UPDATE `User` SET `Passwd` = ? WHERE `Email`=?");
+        $prepare = $this->pdo->prepare("UPDATE `User` SET `Passwd` = ?, `IMG` = ? WHERE `Email`=?");
         $prepare->bindParam(1, $PasswordToChange);
-        $prepare->bindParam(2, $EmailToChange);
+        $prepare->bindParam(2, $IMG);
+        $prepare->bindParam(3, $EmailToChange);
         $prepare->execute();
         $prepare->closeCursor();
     }

@@ -17,8 +17,9 @@ class User
     private $Passwd;
     private $Type;
     private $Level;
+    private $IMG;
 
-    public function __construct($idUser, $idScore, $Email, $Passwd, $Type, $Level)
+    public function __construct($idUser, $idScore, $Email, $Passwd, $Type, $Level, $IMG)
     {
         $this->idUser = $idUser;
         $this->idScore = $idScore;
@@ -26,6 +27,7 @@ class User
         $this->Passwd = $Passwd;
         $this->Type = $Type;
         $this->Level = $Level;
+        $this->IMG = $IMG;
     }
 
     public function getidUser(){
@@ -45,6 +47,9 @@ class User
     }
     public function getLevel(){
         return $this->Level;
+    }
+    public function getIMG(){
+        return $this->IMG;
     }
 
 }

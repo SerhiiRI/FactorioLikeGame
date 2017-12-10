@@ -55,9 +55,9 @@ class TaskController
         $this->set($this->__dataBase__controller->__Admin__TaskQuery());
 
         $task_level = $this->searchLevel($lastAddedIndex);
-        foreach ($this->returnArray() as $item){
-            if($item->getLevel >= $task_level ){
-                $this->__score__controller->add($lastAddedIndex, $item->getidUser);
+        foreach ($this->__user__controller->returnArray() as $item){
+            if($item->getLevel() >= $task_level ){
+                $this->__score__controller->add($lastAddedIndex, $item->getidUser());
             }
         }
     }
@@ -83,7 +83,7 @@ class TaskController
     private function searchLevel($id){
         foreach ($this->TaskList as $item){
             if ($item->getidTask() == $id){
-                return $item->getLevelTo;
+                return $item->getLevelTo();
             }
         }
     }

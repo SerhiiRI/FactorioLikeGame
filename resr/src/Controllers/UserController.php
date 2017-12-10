@@ -20,6 +20,7 @@ class UserController
         $this->set($this->__dataBase__controller->__Admin__UserQuery());
     }
     private function set(array $sql_question){
+        unset($this->UserList);
         if (!is_null($sql_question))
         foreach ($sql_question as $item){
             $this->UserList[] = new User(
@@ -28,21 +29,29 @@ class UserController
                 $item["Email"],
                 $item["Passwd"],
                 $item["Type"],
-                $item["Level"]
+                $item["Level"],
+                $item["IMG"]
             );
         }else{
-            echo "no chuj";
+            echo "W domu dzialalo";
         }
     }
 
-    public function add($login, $password, $idLevel = 0, $type = 2, $idScore = 0){
-        $this->__dataBase__controller->regestration($login, $password, $type, $idLevel, $idScore);
+    public function add($login, $password, $idLevel = 0, $type = 2, $idScore = 0, $IMG=""){
+
+        $this->__dataBase__controller->regestration($login, $password, $type, $idLevel, $idScore, $IMG);
+        $this->set($this->__dataBase__controller->__Admin__UserQuery());
     }
     public function remove(string $email){
         $this->__dataBase__controller->__Admin__UserRemove($email);
+        $this->set($this->__dataBase__controller->__Admin__UserQuery());
+
+
     }
-    public function update($EmailToChange, $PasswordToChange){
-        $this->__dataBase__controller->__Admin__UserUpdate($EmailToChange, $PasswordToChange);
+    public function update($EmailToChange, $PasswordToChange, $IMG){
+        $this->__dataBase__controller->__Admin__UserUpdate($EmailToChange, $PasswordToChange, $IMG);
+        $this->set($this->__dataBase__controller->__Admin__UserQuery());
+
     }
     public function nextLevel($email){
         $this->__dataBase__controller->__User__UserNextLevel($email);
