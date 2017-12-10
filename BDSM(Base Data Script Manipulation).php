@@ -1,17 +1,17 @@
 <?php
-include_once __DIR__ . "/resr/src/Controllers/TaskController.php";
 include_once __DIR__ . "/resr/src/Controllers/UserController.php";
+include_once __DIR__ . "/resr/src/Controllers/TaskController.php";
 include_once __DIR__ . "/resr/src/Controllers/ScoreController.php";
 
 use Controller\TaskController;
 use Controller\UserController;
 use Controller\ScoreController;
 
-function string_rand()
+function string_rand($length_of_string=20)
 {
-    $symbolSet = "qwertyui opasdfghjklzxcvb nmQWERTYUIOPASDFGH JKLZXCVBNM";
+    $symbolSet = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGH JKLZXCVBNM";
     $fin_str = "";
-    for ($licznik = 0; $licznik < 20; $licznik++) {
+    for ($licznik = 0; $licznik < $length_of_string; $licznik++) {
         $fin_str = $fin_str . substr($symbolSet, rand(1, strlen($symbolSet) - 1), 1);
     }
     return $fin_str;
@@ -48,30 +48,32 @@ foreach ($controller->returnArray() as $item){
 }*/
 
 $controllerTask = TaskController::getInstance();
-/*$controllerTask->removeAll();
+$controllerTask->removeAll();/*
 $controllerTask->add(rand(1, 3), string_rand(), 2, 100);
 $controllerTask->add(rand(1, 3), string_rand(), 3, 100);
 $controllerTask->add(rand(1, 3), string_rand(), 4, 100);*/
 $controllerUser = UserController::getInstance();
 $controllerScore = ScoreController::getInstance();
-
-//$controllerUser->add("test", "test", "3");
-
-foreach ($controllerUser->returnArray() as $user) {
-    $controllerScore->add(rand(1,100));
-}
-
-
-foreach ($controllerTask->returnArray() as $item) {
-    print_r($item);
-}
-$controllerTask->add(rand(1, 3), string_rand(), 5, 99);
-foreach ($controllerTask->returnArray() as $item) {
-    print_r($item);
-}
-foreach ($controllerScore->returnArray() as $item) {
-    print_r($item);
-}
-/*foreach ($controllerUser->returnArray() as $item){
-    print_r($item);
+/*for ($i = 0; $i < 4; $i++) {
+    $controllerUser->add(string_rand(), "123", rand(3, 5));
 }*/
+
+foreach ($controllerUser->returnArray() as $item){
+    print_r($item);
+}
+
+for ($counter=0; $counter<10; $counter++){
+
+}
+
+foreach ($controllerUser->returnArray() as $item){
+    print_r($item);
+}
+
+/*    echo "User\t\tTask\tUser\n";
+    echo "========================================";
+
+foreach ($controllerTask->_ToTEST__returnUserAndtAsk() as $value){
+    echo $value["mail"]."\t\t".$value["task"]."\t".$value["user"].'\n';
+}
+

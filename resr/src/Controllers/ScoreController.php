@@ -9,6 +9,7 @@
 namespace Controller;
 use Controller\MySQLController;
 use Controller\Score;
+use Controller\UserController;
 
 include_once __DIR__."/MySQLController.php";
 include_once __DIR__."/../Class/Score.php";
@@ -53,6 +54,9 @@ class ScoreController
         }else{
             $this->__dataBase__controller->__User__UserScoreAdd($idTask, $idUser);
         }
+    }
+    public function addToAll($idTask){
+
     }
     public function remove(string $Task){
         $this->__dataBase__controller->__User__UserScoreRemove($Task, $_SESSION["idUser"]);

@@ -233,6 +233,14 @@ final class MySQLController
         return ($prepare->rowCount() > 0) ? $prepare->fetchAll() : null;
     }
 
+    public function __test__UserAndTask(){
+        $prepare = $this->pdo->prepare("SELECT `User.email` as `mail`, `Task.LevelTo` as `task`, `User.Level` as `user` FROM `Score`, `User`, `Task` "
+        ."WHERE `Score.idUser`=`User.idUser` AND  `Task.idTask`=`Score.idTask`");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        return ($prepare->rowCount() > 0) ? $prepare->fetchAll() : null;
+    }
+
     public function __User__UserScoreChangeStatus($idTask, $idUser)
     {
         $prepare = $this->pdo->prepare("SELECT * FROM `Score` WHERE `idTask`=:task AND `idUser`=:usser");
