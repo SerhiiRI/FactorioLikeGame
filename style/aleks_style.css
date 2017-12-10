@@ -247,12 +247,12 @@ table, tr, td {
     transition: color var(--transition-color), background-color var(--transition-bg);
 }
 
-/*Szerokość obrazka i kolumny na obrazek*/
+/*SzerokoÅ›Ä‡ obrazka i kolumny na obrazek*/
 .alx_szerokosc_kolumny_dla_grafiki_w_statystyce, .alx_img_src {
     width: 15vh;
 }
 
-/*Właściwości obrazu*/
+/*WÅ‚aÅ›ciwoÅ›ci obrazu*/
 .alx_img_src {
     border-radius: 50%;
     margin: 0;
@@ -275,12 +275,12 @@ table, tr, td {
     width: auto;
 }
 
-.alx_tabela_surowcow_admin_button, .alx_edytor_pytań { /*dziedziczy z wyżej podanego*/
+.alx_tabela_surowcow_admin_button, .alx_edytor_pytaÅ„ { /*dziedziczy z wyÅ¼ej podanego*/
     padding-left: 2%;
     width: 15%;
 }
 
-.alx_edytor_pytań { /*dziedziczy z wyżej podanego*/
+.alx_edytor_pytaÅ„ { /*dziedziczy z wyÅ¼ej podanego*/
     width: auto;
 }
 
@@ -310,12 +310,12 @@ table, tr, td {
     width: 20%;
 }
 
-/*odległość przycisków od inputow*/
+/*odlegÅ‚oÅ›Ä‡ przyciskÃ³w od inputow*/
 .alx_padding_edit_users_button {
     margin-left: 5%;
 }
 
-/*w opcjach edycji użytkowników ustala szerokość kontener na buttony*/
+/*w opcjach edycji uÅ¼ytkownikÃ³w ustala szerokoÅ›Ä‡ kontener na buttony*/
 .alx_btn_space_in_users_edit {
     width: 20%;
 }
@@ -378,7 +378,7 @@ table, tr, td {
 .alx_flex_dla_mapy_diva {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -389,8 +389,6 @@ table, tr, td {
 
 .alx_flexy_w_divie_map {
     flex: 1;
-    padding: 5px;
-    margin: auto;
     transition: background-color 200ms;
     min-width: var(--min-pic-px);
     max-width: var(--max-pic-px);
@@ -422,7 +420,6 @@ table, tr, td {
 /*}*/
 /*}*/
 
-
 .alx_flexkontener_0 {
     opacity: 0;
     background-color: rgba(0, 0, 0, 0.85);
@@ -444,7 +441,7 @@ table, tr, td {
     justify-content: space-around;
     align-items: center;
     box-sizing: border-box;
-    background-color:black;
+    background-color: black;
 }
 
 .alx_user_fabryka_flexkontener_B {
@@ -452,19 +449,19 @@ table, tr, td {
     display: flex;
     flex-direction: column;
     max-height: 50vh;
-    background-color:white;
+    background-color: white;
 }
 
 .alx_flexy_w_edycji_fabryk_pic, .alx_flexy_w_edycji_fabryk_pic_child {
     flex: 1;
     max-height: 50vh;
     min-height: 40vh;
-    background-color:black;
-    text-align:center;
+    background-color: black;
+    text-align: center;
     position: relative;
 }
 
-.alx_flexy_w_edycji_fabryk_pic_child{
+.alx_flexy_w_edycji_fabryk_pic_child {
     flex: 1;
 }
 
@@ -477,46 +474,45 @@ table, tr, td {
     min-height: 15vh;
 }
 
-
-.alx_button_group_ligthbox{
+.alx_button_group_ligthbox {
     flex-direction: column;
     flex-wrap: wrap;
     min-width: 300px;
     display: flex;
-    position:relative;
+    position: relative;
 }
 
-.alx_flexy_w_edycji_fabryk_button{
+.alx_flexy_w_edycji_fabryk_button {
     flex: 1;
     text-shadow: 1px 1px 5px black;
     border: solid 1px white;
 }
 
-.alx_info_group_ligthbox{
+.alx_info_group_ligthbox {
     flex-direction: row;
     min-height: 50px;
     display: flex;
 }
 
-.alx_flexy_w_edycji_fabryk_info{
-    margin:auto;
+.alx_flexy_w_edycji_fabryk_info {
+    margin: auto;
     text-shadow: 1px 1px 25px black;
     min-height: 10vh;
     padding-top: 5vh;
 }
 
+@media (max-width: 615px) {
 
-@media (max-width: 615px){
-
-    .alx_flexy_w_edycji_fabryk_info{
-        flex-wrap:wrap;
-        flex-direction:column;
+    .alx_flexy_w_edycji_fabryk_info {
+        flex-wrap: wrap;
+        flex-direction: column;
     }
+
     .alx_user_fabryka_flexkontener_B {
         max-width: 100vw;
     }
 
-    body{
+    body {
         overflow-y: hidden;
         overflow-x: hidden;
     }
@@ -535,7 +531,115 @@ table, tr, td {
     height: 13vh;
 }
 
-@keyframes working{
-    0%{transform: rotate(0deg); }
-    100%{transform: rotate(720deg); }
+@keyframes working {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(720deg);
+    }
+}
+
+
+.body_bg {
+    background-color: black;
+}
+
+.autorzy {
+    position: relative;
+    max-width: 100%;
+    opacity: 0.8;
+}
+
+.alx_flexkontener_autor{
+    flex:1;
+    display: flex;
+    flex-direction:row;
+
+}
+
+.autorzy_alex, .autorzy_serhi {
+    font-size: 3rem;
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    flex: 1;
+}
+
+.autorzy_serhi {
+    flex: 1;
+    order:3;
+}
+
+.autorzy_info {
+    display:flex;
+    position:absolute;
+    min-width: 100%;
+    min-height: 50px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+    margin: auto;
+    flex-direction: column;
+}
+
+.enjoi{
+    order:2;
+    flex: 1;
+    z-index: 2;
+    position:relative;
+    top: -120px;
+    font-size: 4rem;
+    letter-spacing: 10px;
+    margin: auto;
+    text-align: center;
+}
+
+
+.autorzy_btn{
+    width: 10vh;
+    position:absolute;
+    right:10px;
+    bottom:10px;
+}
+
+
+@media (max-width: 600px){
+
+    .alx_flexkontener_autor{
+        flex-direction:column;
+    }
+    body{
+        overflow-y: visible;
+    }
+
+}
+
+
+@media (max-width: 1263px){
+
+    .enjoi{
+        top: -150px;
+    }
+    body{
+        overflow-y: visible;
+    }
+}
+
+@media (max-width: 944px){
+
+    .enjoi{
+        top: -140px;
+    }
+    body{
+        overflow-y: visible;
+    }
+}
+
+
+@media (max-width: 600px){
+
+    .enjoi{
+        top: 0;
+    }
 }

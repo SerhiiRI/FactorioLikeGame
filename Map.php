@@ -29,6 +29,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
     </head>
 
     <body class="alx_bg_img">
+    <a href="Credits.html"><img src="resr/img/gear6.gif" class="autorzy_btn"></a>
 
     <?php PanelKontrolnyFabryki(); ?>
 
