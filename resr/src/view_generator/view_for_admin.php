@@ -214,9 +214,7 @@ function zarządzanieFabrykamiOrazSurowcami()
 HTML;
         echo $show;
     }
-}
-
-//Edycja fabryk i surowców
+}//Edycja fabryk i surowców
 
 function EdycjaPytanDoGry()
 {
@@ -362,6 +360,69 @@ HTML;
 HTML;
     echo $show;
 }//Edytor pytań
+
+function EdytorZadańDoGry()
+{
+    $action = "#";
+    $task = "Opis zadania";
+    $neededLVL = 1;
+
+    $show = <<<HTML
+                            <div class="collapsible-body active">
+                                <table>
+                                    <tr>
+                                        <form action="$action">
+                                            <td class="alx_task_selectbox">
+                                                    <select>
+                                                              <option value="volvo">Volvo</option>
+                                                              <option value="saab">Saab</option>
+                                                              <option value="mercedes">Mercedes</option>
+                                                              <option value="audi">Audi</option>
+                                                            </select>
+                                            </td>
+                                            <td>
+                                                <div class="input-field col s12">
+                                                    <input type="text" class="alx_task_input" name="" value="$task"> 
+                                                    <label>Zadanie</label>
+                                                </div>
+                                            </td>
+                                            <td class="alx_edytor_pytań">
+                                                <div class="input-field col s12">
+                                                    <input type="number" class="alx_task_input" name="" value="$neededLVL">
+                                                    <label>Wymagany poziom</label>
+                                                </div>
+                                            </td>
+
+                                            <!--                                            BUTTONY-->
+                                            <td class="alx_edit_users_button">
+                                                <table>
+                                                    <tr class="alx_padding_edit_users_button">
+                                                        <div class=" alx_padding_edit_users_button">
+                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
+                                                                    type="submit"
+                                                                    name="edit">
+                                                                Edytuj <i class="icon-cogs alx_h8_font"></i>
+                                                            </button>
+                                                        </div>
+                                                    </tr>
+                                                    <tr class="alx_padding_edit_users_button">
+                                                        <div class="alx_padding_edit_users_button">
+                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
+                                                                    type="submit"
+                                                                    name="del">
+                                                                Usuń <i class="icon-block alx_h8_font"></i>
+                                                            </button>
+                                                        </div>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                </table>
+                            </div><!--Elementy w pętli-->   
+HTML;
+    echo $show;
+}
 
 function EdtyorUzytkownikow()
 {

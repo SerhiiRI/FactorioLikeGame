@@ -84,7 +84,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
                         </div>
 
                         <!--PĘTLA Z WIERSZAMI W PYTANIA DO GRY-->
-                        <?php EdycjaPytanDoGry(); ?>
+                        <?php EdytorZadańDoGry(); ?>
                         <!--Koniec opcji 3-->
                         <!------------------------------------------------------------------------------------------------>
 

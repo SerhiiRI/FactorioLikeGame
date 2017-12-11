@@ -648,3 +648,10 @@ table, tr, td {
 .alx_margin0{
     margin: 5px 0 0 0!important;
 }
+
+.alx_task_input, .alx_task_selectbox{
+    text-align: center;
+}
+
+.alx_task_selectbox{
+}
