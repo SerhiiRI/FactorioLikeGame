@@ -737,14 +737,14 @@ final class MySQLController
 
     public function __Admin__ResourcesQuery()
     {
-        $prepare = $this->pdo->prepare("SELECT * FROM `resources`");
+        $prepare = $this->pdo->prepare("SELECT * FROM `Resources`");
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
-        $prepare->closeCursor();
         if ($prepare->rowCount() > 0) {
             $assoc = $prepare->fetchAll();
             return $assoc;
         }
+        $prepare->closeCursor();
         return null;
     }
 
