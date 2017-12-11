@@ -1,16 +1,20 @@
 <?php
+
 function LewyPanelAdmina()
 {
+    include_once __DIR__ . "/../Controllers/UserController.php";
+    $__userControler = \Controller\UserController::getInstance();
+    $listOfUser = $__userControler->returnArray();
+
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
-    $imageOfUser = "resr/img/defoult_user.svg"; //Grafika admina
+    $imageOfUser = "defoult_user.svg"; //Grafika admina
     $lastVisit = "07-12-2017r.";
     $usersInSysytem = 12;
     $show = <<<HTML
     <div class="aleks_user_panel">
-
                 <!--            Obrazek użytkownika-->
                 <div class="aleks_user_img_div">
-                    <img class="aleks_user_img" src="$imageOfUser"/>
+                    <img class="aleks_user_img" src="resr/img/$imageOfUser"/>
                     <h5>$nameOfUser<br><span class="alx_h6_font_grey">- Administrator -</span></h5>
 
                     <!-- Funkcje dla admina -->
