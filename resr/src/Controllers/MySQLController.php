@@ -737,7 +737,7 @@ final class MySQLController
 
     public function __Admin__ResourcesQuery()
     {
-        $prepare = $this->pdo->prepare("SELECT * FROM `Resource` ");
+        $prepare = $this->pdo->prepare("SELECT * FROM `Resource`");
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         $prepare->closeCursor();
