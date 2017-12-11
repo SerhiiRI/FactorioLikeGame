@@ -52,8 +52,7 @@ class ResourceController
 
     //Zwraca Tablice objektów Resource;
     public function getResourceList(){
-        if (!empty($this->ResourceList)) return $this->ResourceList;
-        return null;
+        return $this->ResourceList;
     }
 
 //=============================================================//
