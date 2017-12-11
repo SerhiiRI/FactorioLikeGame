@@ -5,17 +5,17 @@ function LewyPanelAdmina()
     include_once __DIR__ . "/../Controllers/UserController.php";
     $__userControler = \Controller\UserController::getInstance();
 
-    $uIS_tmp = 0;
+    $uIS_tmp=0;
     $usersInSysytem = $__userControler->returnArray();
-    foreach ($usersInSysytem as &$item) {
+    foreach ($usersInSysytem as &$item){
         $uIS_tmp++;
     }
-    $_SESSION["HowManyUsers"] = $uIS_tmp;
+    $_SESSION["HowManyUsers"]=$uIS_tmp;
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
     $userData = $__userControler->SearchByEmail($nameOfUser);
 
 //    $imageOfUser = $userData->getIMG(); //Grafika admina
-    $imageOfUser = ($userData->getIMG() == '') ? "defoult_user.svg" : $userData->getIMG();
+    $imageOfUser = ($userData->getIMG()=='')?"defoult_user.svg":$userData->getIMG();
     $lastVisit = $_SESSION["LastLogin"];
     $usersInSysytem = $_SESSION["HowManyUsers"];
     $show = <<<HTML
@@ -88,18 +88,33 @@ HTML;
 
 function zarządzanieFabrykamiOrazSurowcami()
 {
-    include_once __DIR__ . "/../Controllers/ResourceController.php";
-    $__ResControler = \Controller\ResourceController::getInstance();
+    $listaTestowa[0]['fabryka'] = 'Wodociąg';
+    $listaTestowa[0]['surowiec'] = 'Woda';
+    $listaTestowa[0]['wydobycie'] = 10;
+    $listaTestowa[0]['grafika'] = "miscellaneous.svg";
 
-    $factoryData = $__ResControler->getResourceList();
+    $listaTestowa[1]['fabryka'] = 'Kopalnia żelaza';
+    $listaTestowa[1]['surowiec'] = 'Żelazo';
+    $listaTestowa[1]['wydobycie'] = 10;
+    $listaTestowa[1]['grafika'] = "zelazo.png";
 
-    foreach ($factoryData as &$item) {
 
+//    include_once __DIR__ . "/../Controllers/ResourceController.php";
+//    $__ResControler = \Controller\ResourceController::getInstance();
+//
+//    $factoryData = $__ResControler->getResourceList();
+
+//    foreach ($factoryData as &$item) {
+    foreach ($listaTestowa as &$item) {
         $action = "#";
-        $fabricName = $item->getFactoryName();//jaka fabryka wydobywa
-        $surowiec = $item->getResourceName();//jaki surowiec jest wydobywany
-        $wydobyciePodstawowe = $item->getProductiveUnit();//wydobycie na 1 lvl
-        $imageOfUser = $item->getIMGFactory(); //Grafika fabryki
+//        $fabricName = $item->getFactoryName();//jaka fabryka wydobywa
+        $fabricName = $item['fabryka'];//jaka fabryka wydobywa
+//        $surowiec = $item->getResourceName();//jaki surowiec jest wydobywany
+        $surowiec = $item['surowiec'];//jaki surowiec jest wydobywany
+//        $wydobyciePodstawowe = $item->getProductiveUnit();//wydobycie na 1 lvl
+        $wydobyciePodstawowe = $item['wydobycie'];//wydobycie na 1 lvl
+//        $imageOfUser = $item->getIMG(); //Grafika fabryki
+        $imageOfUser = $item['grafika']; //Grafika fabryki
 
         $show = <<<HTML
                             <div class="collapsible-body">
@@ -161,7 +176,11 @@ function zarządzanieFabrykamiOrazSurowcami()
                                     </tr>
                                 </table>
                             </div><!-- Elementy do wczytaj i edytuj-->
-                        <div class="collapsible-body">
+HTML;
+        echo $show;
+    }
+    $show_end = <<<HTML
+<div class="collapsible-body">
                             <table>
                                 <tr>
                                     <form action="$action">
@@ -212,11 +231,8 @@ function zarządzanieFabrykamiOrazSurowcami()
                             </table>
                         </div> <!--Element dodający (ostatni)-->
 HTML;
-        echo $show;
-    }
-}
-
-//Edycja fabryk i surowców
+    echo $show_end;
+} //Edycja fabryk i surowców
 
 function EdycjaPytanDoGry()
 {
@@ -375,15 +391,15 @@ function EdtyorUzytkownikow()
 
 //        $action = "db_update.php";
         $action = "#";
-        $grafikaUsera = ($data->getIMG() == '') ? "defoult_user.svg" : $data->getIMG();
+        $grafikaUsera = ($data->getIMG() == '')? "defoult_user.svg" : $data->getIMG();
         $name = $data->getEmail();
-        $lvl = ($data->getLevel() < 0) ? "---" : $data->getLevel();
-        $secure = ($data->getType() == 1) ? "Administrator" : "Gracz";
+        $lvl = ($data->getLevel()<0)? "---" : $data->getLevel();
+        $secure = ($data->getType() == 1)? "Administrator" : "Gracz";
         $passwd = $data->getPasswd();
         $ban = 'BAN';
         $banico = 'icon-universal-access';
         $idOfUser = $data->getidUser();
-        $AdminStyle = ($data->getType() == 1) ? "style='background-color: rgba(188, 234, 131, 1);'" : "";
+        $AdminStyle = ($data->getType()==1)? "style='background-color: black;'":"";
 
         $show = <<<HTML
                             <div class="collapsible-body" $AdminStyle>
@@ -429,6 +445,51 @@ function EdtyorUzytkownikow()
                                                     </tr>
                                                 </table>
                                             </td>
+                                            <!--                                            STATY GRACZA-->
+                                            <td class="alx_info_o_graczu_spadding">
+                                                <table>
+                                                    <tr class="alx_info_bar">
+HTML;
+        echo $show;
+        for($i=0;$i<5;$i++){
+            $surowiec = "surowiec";
+            $progres = 25 * $i;
+            $finish = 100 * ($i+1);
+            $show = <<<HTML
+                                                    <tr>
+                                                        <td class="alx_center_th alx_th_padding">
+                                                            <input value="$surowiec: $progres/$finish" type="text" class="alx_small_input" disabled>
+                                                            <div class="progress">
+                                                                <div class="determinate" style="width: $progres%;"></div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+HTML;
+            echo $show;
+        }
+//        foreach ($item as &$res) {
+//            $surowiec = $res['surowiec'];
+//            $progres = $res['progres'];
+//            $finish = $res['finish'];
+//            $show = <<<HTML
+//                                                    <tr>
+//                                                        <td class="alx_center_th alx_th_padding">
+//                                                            <input value="$surowiec: $progres/$finish" type="text" class="alx_small_input">
+//                                                            <div class="progress">
+//                                                                <div class="determinate" style="width: $progres%;"></div>
+//                                                            </div>
+//                                                        </td>
+//                                                    </tr>
+//HTML;
+//            echo $show;
+//        }
+
+
+        $show = <<<HTML
+                                                    </tr>
+                                                </table>
+
+                                            </td>
 
                                             <!--                                            BUTTONY-->
                                             <td class="alx_btn_space_in_users_edit"
@@ -442,9 +503,9 @@ function EdtyorUzytkownikow()
                                                 </tr>
 
 HTML;
-        echo $show;
-        if ($data->getType() > 1) {
-            $show = <<<HTML
+    echo $show;
+    if ($data->getType()>1) {
+        $show = <<<HTML
                                                 <tr>
                                                     <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
                                                             type="submit"
@@ -460,9 +521,9 @@ HTML;
                                                     </button>
                                                 </tr>
 HTML;
-            echo $show;
-        }
-        $show = <<<HTML
+        echo $show;
+    }
+        $show=<<<HTML
                                                 
                                             </table>
                                             </td>

@@ -11,7 +11,7 @@ namespace Controller;
  * Resource - importowanie klasy pojedynćzego objektu typu Resource
  */
 include_once(dirname(__FILE__)."/MySQLController.php");
-include_once(dirname(__FILE__)."../Class/Resource.php");
+include_once(dirname(__FILE__)."/../Class/Resource.php");
 
 
 /**
