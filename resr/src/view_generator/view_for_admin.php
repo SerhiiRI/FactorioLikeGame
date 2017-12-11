@@ -7,7 +7,6 @@ function LewyPanelAdmina()
     $usersInSysytem = 12;
     $show = <<<HTML
     <div class="aleks_user_panel">
-
                 <!--            Obrazek użytkownika-->
                 <div class="aleks_user_img_div">
                     <img class="aleks_user_img" src="$imageOfUser"/>
