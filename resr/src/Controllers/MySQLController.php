@@ -130,6 +130,14 @@ final class MySQLController
         $prepare->closeCursor();
     }
 
+    public function __User__UpdateLastLogined($login, $LastLogined){
+    $prepare = $this->pdo->prepare("UPDATE `User` SET `LastLogined`=:llg WHERE `Email`=:email");
+        $prepare->bindParam(":email", $login);
+        $prepare->bindParam(":llg", $LastLogined);
+        $prepare->execute();
+        $prepare->closeCursor();
+    }
+
     public function __User__UserMapQuery($idUser)
     {
         $prepare = $this->pdo->prepare("SELECT * FROM `UserMap` WHERE `idUser`=:iduser");
