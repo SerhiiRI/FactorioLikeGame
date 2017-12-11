@@ -30,6 +30,7 @@ class UserController
                 $item["idScore"],
                 $item["Email"],
                 $item["Passwd"],
+                $item["LastLogined"],
                 $item["Type"],
                 $item["Level"],
                 $item["IMG"]
@@ -39,21 +40,23 @@ class UserController
         }
     }
 
-    public function add($login, $password, $idLevel = 0, $type = 2, $idScore = 0, $IMG=""){
+    public function add($login, $password, $LastLogined, $idLevel = 0, $type = 2, $idScore = 0, $IMG=""){
 
-        $this->__dataBase__controller->regestration($login, $password, $type, $idLevel, $idScore, $IMG);
+        $this->__dataBase__controller->regestration($login, $password, $LastLogined, $type, $idLevel, $idScore, $IMG);
         $this->set($this->__dataBase__controller->__Admin__UserQuery());
     }
     public function remove(string $email){
         $this->__dataBase__controller->__Admin__UserRemove($email);
         $this->set($this->__dataBase__controller->__Admin__UserQuery());
 
-
     }
     public function update($EmailToChange, $PasswordToChange, $IMG){
         $this->__dataBase__controller->__Admin__UserUpdate($EmailToChange, $PasswordToChange, $IMG);
         $this->set($this->__dataBase__controller->__Admin__UserQuery());
-
+    }
+    public function updateUserLoginDate($login, $LastLogined){
+        $this->__dataBase__controller->__User__UpdateLastLogined($login, $LastLogined);
+        $this->set($this->__dataBase__controller->__Admin__UserQuery());
     }
     public function nextLevel($email){
         $this->__dataBase__controller->__User__UserNextLevel($email);

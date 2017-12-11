@@ -78,12 +78,13 @@ class ResourceController
          */
         unset($this->ResourceList);
         foreach ($sql_resources as &$rsr) {
-            $this->ResourceList[] = new Resource($rsr["idResources"], $rsr["Resource"], $rsr["ProductionUnit"]);
+            //$idResources, $Resource, $ProductiveUnit, $FactoryName, $IMG, $IMGFac
+            $this->ResourceList[] = new Resource($rsr["idResources"], $rsr["Resource"], $rsr["ProductiveUnit"], $rsr["FactoryName"], $rsr["IMG"], $rsr["IMGFac"]);
         }
         return null;
     }
-    public function add($Resource, $ProductionUnit, $IMG, $IMGFac){
-        $this->__dataBase__controller->__Admin__ResourcesAdd($Resource, $ProductionUnit, $IMG, $IMGFac);
+    public function add($Resource, $ProductionUnit, $FactoryName, $IMG, $IMGFac){
+        $this->__dataBase__controller->__Admin__ResourcesAdd($Resource, $ProductionUnit, $FactoryName, $IMG, $IMGFac);
         $this->set($this->__dataBase__controller->__Admin__ResourcesQuery());
     }
     public function removeByID($idResource){
