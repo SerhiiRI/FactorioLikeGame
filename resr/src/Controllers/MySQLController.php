@@ -55,6 +55,7 @@ final class MySQLController
         $this->login = $login;
         $this->passwd = $passwd;
         try { // przekazujemy dla interfejsa PDO ustanawia dla zdefiniowanego zdarzenia
+//            $this->pdo = new PDO("mysql:host=192.168.1.5;dbname=game", $login, $passwd);
             $this->pdo = new PDO("mysql:host=127.0.0.1;dbname=game", $login, $passwd);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\Exception $e) {

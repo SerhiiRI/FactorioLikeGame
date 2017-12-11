@@ -644,3 +644,7 @@ table, tr, td {
         top: 0;
     }
 }
+
+.alx_margin0{
+    margin: 5px 0 0 0!important;
+}
