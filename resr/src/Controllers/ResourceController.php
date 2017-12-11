@@ -10,8 +10,10 @@ namespace Controller;
  * MySQLController - importowanie clasy controli BD
  * Resource - importowanie klasy pojedynćzego objektu typu Resource
  */
-include_once(dirname(__FILE__)."/MySQLController.php");
-include_once(dirname(__FILE__)."../Class/Resource.php");
+use function PHPSTORM_META\type;
+
+include_once __DIR__."/MySQLController.php";
+include_once __DIR__."/../Class/Resource.php";
 
 
 /**
@@ -43,42 +45,33 @@ class ResourceController
         $this->__dataBase__controller->__Admin__ResourcesUpdate($nameOfResource, $newProductiveUnit, $IMG);
     }
 
-    //Usuwa sórowca o podanej nazwie;
     public function deleteResource($name){
         $id = $this->searchID($name);
         if($id != null)
             $this->__dataBase__controller->__Admin__ResourcesRemove($id);
     }
 
-    //Zwraca Tablice objektów Resource;
-    public function getResourceList(){
-        return $this->ResourceList;
-    }
 
-//=============================================================//
 
     private function __construct()
     {
-        //Constructor klasy;
-        //pobierania danych z MySQLController-a
         $this->__dataBase__controller = MySQLController::getInstance();
-
-        //Wypelnienia tablicy objektami Resource
         $this->set($this->__dataBase__controller->__Admin__ResourcesQuery());
-
     }
-    private function set(array $sql_resources){
-        /*
-         *
-         * Metoda twożę pola ResourceList,
-         * wypelniająć ją objektami typu
-         * Resource;
-         *
-         */
-        unset($this->ResourceList);
-        foreach ($sql_resources as &$rsr) {
-            //$idResources, $Resource, $ProductiveUnit, $FactoryName, $IMG, $IMGFac
-            $this->ResourceList[] = new Resource($rsr["idResources"], $rsr["Resource"], $rsr["ProductiveUnit"], $rsr["FactoryName"], $rsr["IMG"], $rsr["IMGFac"]);
+    private function set($sql_resources){
+        if (!is_null($sql_resources)) {
+            foreach ($sql_resources as $rsr) {
+                $this->ResourceList[] = new Resource(
+                    $rsr["idResources"],
+                    $rsr["Resource"],
+                    $rsr["ProductionUnit"],
+                    $rsr["FactoryName"],
+                    $rsr["IMG"],
+                    $rsr["IMGFac"]
+                );
+            }
+        }else{
+            echo "W domu dzialalo!";
         }
         return null;
     }
@@ -99,16 +92,12 @@ class ResourceController
         $this->set($this->__dataBase__controller->__Admin__ResourcesQuery());
     }
     public function remove_ALL(){
-
         $this->set($this->__dataBase__controller->__Admin__ResourcesQuery());
     }
-
+    public function returnArray(){
+        return $this->ResourceList;
+    }
     private function searchID($name){
-        /**
-         *
-         * wyszukiwania id, o nazwie sórowca;
-         *
-         */
         foreach ($this->ResourceList as &$item){
             if ($item->getResourceName() == $name) return $item->getId();
         }

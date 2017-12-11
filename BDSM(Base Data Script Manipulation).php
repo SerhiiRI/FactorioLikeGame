@@ -1,10 +1,12 @@
 <?php
 include_once __DIR__ . "/resr/src/Controllers/UserController.php";
 include_once __DIR__ . "/resr/src/Controllers/TaskController.php";
+include_once __DIR__ . "/resr/src/Controllers/ResourceController.php";
 include_once __DIR__ . "/resr/src/Controllers/ScoreController.php";
 
 use Controller\TaskController;
 use Controller\UserController;
+use Controller\ResourceController;
 use Controller\ScoreController;
 
 function string_rand($length_of_string=20)
@@ -50,11 +52,12 @@ $controllerTask->add(rand(1, 3), string_rand(), 3, 100);
 $controllerTask->add(rand(1, 3), string_rand(), 4, 100);*/
 $controllerUser = UserController::getInstance();
 $controllerScore = ScoreController::getInstance();
+$controllerResource = ResourceController::getInstance();
 /*for ($i = 0; $i < 4; $i++) {
     $controllerUser->add(string_rand(), "123", rand(3, 5));
 }*/
 
-foreach ($controllerUser->returnArray() as $item){
+foreach ($controllerResource->returnArray() as $item){
     print_r($item);
 }
 
@@ -76,6 +79,6 @@ foreach ($controllerUser->returnArray() as $item){
 
 foreach ($controllerTask->_ToTEST__returnUserAndtAsk() as $value){
     echo $value["task"]."\t\t".$value["user"]."\t\t".$value["mail"]."\t\t".$value["mes"]."\t\t"."\n";
-}
+}*/
 
 ?>
