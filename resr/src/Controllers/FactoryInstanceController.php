@@ -1,18 +1,24 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Serhii
+ * Date: 11.12.17
+ * Time: 23:08
+ */
+
 namespace Controller;
 
-//TODO: dopracuj
 
-class QuestionController
+class FactoryInstanceController
 {
-    private $QuestionList = array();
+    private $FactoryInstance = array();
     static private $instance = null;
     private $__dataBase__controller;
 
     public static function getInstance(){
         if(empty(self::$instance))
             self::$instance = new self();
-        return QuestionController::$instance;
+        return FactoryInstanceController::$instance;
     }
 
     private function __construct()
