@@ -1,4 +1,5 @@
 <?php
+include_once ("db_update.php");
 include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
 if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 

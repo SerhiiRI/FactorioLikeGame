@@ -4,12 +4,20 @@ function LewyPanelAdmina()
 {
     include_once __DIR__ . "/../Controllers/UserController.php";
     $__userControler = \Controller\UserController::getInstance();
-    $listOfUser = $__userControler->returnArray();
 
+    $uIS_tmp=0;
+    $usersInSysytem = $__userControler->returnArray();
+    foreach ($usersInSysytem as &$item){
+        $uIS_tmp++;
+    }
+    $_SESSION["HowManyUsers"]=$uIS_tmp;
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
-    $imageOfUser = "defoult_user.svg"; //Grafika admina
-    $lastVisit = "07-12-2017r.";
-    $usersInSysytem = 12;
+    $userData = $__userControler->SearchByEmail($nameOfUser);
+
+//    $imageOfUser = $userData->getIMG(); //Grafika admina
+    $imageOfUser = ($userData->getIMG()=='')?"defoult_user.svg":$userData->getIMG();
+    $lastVisit = $_SESSION["LastLogin"];
+    $usersInSysytem = $_SESSION["HowManyUsers"];
     $show = <<<HTML
     <div class="aleks_user_panel">
                 <!--            Obrazek użytkownika-->
@@ -55,8 +63,8 @@ HTML;
 function wyswietlanieStatystykSystemu()
 {
 
-    $lastVisit = "07-12-2017r.";
-    $usersInSysytem = 12;
+    $lastVisit = $_SESSION["LastLogin"];
+    $usersInSysytem = $_SESSION["HowManyUsers"];
     $show = <<<HTML
 <div class="collapsible-body alx_ststystyka">
         <table>
@@ -91,11 +99,21 @@ function zarządzanieFabrykamiOrazSurowcami()
     $listaTestowa[1]['grafika'] = "zelazo.png";
 
 
+//    include_once __DIR__ . "/../Controllers/ResourceController.php";
+//    $__ResControler = \Controller\ResourceController::getInstance();
+//
+//    $factoryData = $__ResControler->getResourceList();
+
+//    foreach ($factoryData as &$item) {
     foreach ($listaTestowa as &$item) {
         $action = "#";
+//        $fabricName = $item->getFactoryName();//jaka fabryka wydobywa
         $fabricName = $item['fabryka'];//jaka fabryka wydobywa
+//        $surowiec = $item->getResourceName();//jaki surowiec jest wydobywany
         $surowiec = $item['surowiec'];//jaki surowiec jest wydobywany
+//        $wydobyciePodstawowe = $item->getProductiveUnit();//wydobycie na 1 lvl
         $wydobyciePodstawowe = $item['wydobycie'];//wydobycie na 1 lvl
+//        $imageOfUser = $item->getIMG(); //Grafika fabryki
         $imageOfUser = $item['grafika']; //Grafika fabryki
 
         $show = <<<HTML
@@ -363,74 +381,37 @@ HTML;
 
 function EdtyorUzytkownikow()
 {
-    $listaTestowa[0][0]['graphic'] = "defoult_user.svg";
-    $listaTestowa[0][0]['name'] = "aleks";
-    $listaTestowa[0][0]['lvl'] = 2;
-    $listaTestowa[0][0]['secure'] = "Gracz";
-    $listaTestowa[0][0]['ban'] = "BAN";
-    $listaTestowa[0][0]['banico'] = "icon-block";
+    include_once __DIR__ . "/../Controllers/UserController.php";
+    $__userControler = \Controller\UserController::getInstance();
 
-    $listaTestowa[0][0]['surowiec'] = "Woda";
-    $listaTestowa[0][0]['progres'] = 25;
-    $listaTestowa[0][0]['finish'] = 100;
-    $listaTestowa[0][1]['surowiec'] = "Węgiel";
-    $listaTestowa[0][1]['progres'] = 69;
-    $listaTestowa[0][1]['finish'] = 100;
-    $listaTestowa[0][2]['surowiec'] = "Drewno";
-    $listaTestowa[0][2]['progres'] = 45;
-    $listaTestowa[0][2]['finish'] = 100;
-    $listaTestowa[0][3]['surowiec'] = "Gaz ziemny";
-    $listaTestowa[0][3]['progres'] = 10;
-    $listaTestowa[0][3]['finish'] = 100;
-    $listaTestowa[0][4]['surowiec'] = "Ropa";
-    $listaTestowa[0][4]['progres'] = 88;
-    $listaTestowa[0][4]['finish'] = 100;
+    $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
+    $usersData = $__userControler->returnArray();
 
+    foreach ($usersData as &$data) {
 
-    $listaTestowa[1][0]['graphic'] = "defoult_user.svg";
-    $listaTestowa[1][0]['name'] = "serhii";
-    $listaTestowa[1][0]['lvl'] = 3;
-    $listaTestowa[1][0]['secure'] = "Administrator";
-    $listaTestowa[1][0]['ban'] = "UNBAN";
-    $listaTestowa[1][0]['banico'] = "icon-universal-access";
-
-    $listaTestowa[1][0]['surowiec'] = "Woda";
-    $listaTestowa[1][0]['progres'] = 50;
-    $listaTestowa[1][0]['finish'] = 100;
-    $listaTestowa[1][1]['surowiec'] = "Węgiel";
-    $listaTestowa[1][1]['progres'] = 30;
-    $listaTestowa[1][1]['finish'] = 100;
-    $listaTestowa[1][2]['surowiec'] = "Drewno";
-    $listaTestowa[1][2]['progres'] = 40;
-    $listaTestowa[1][2]['finish'] = 100;
-    $listaTestowa[1][3]['surowiec'] = "Gaz ziemny";
-    $listaTestowa[1][3]['progres'] = 80;
-    $listaTestowa[1][3]['finish'] = 100;
-    $listaTestowa[1][4]['surowiec'] = "Ropa";
-    $listaTestowa[1][4]['progres'] = 3;
-    $listaTestowa[1][4]['finish'] = 100;
-
-    foreach ($listaTestowa as &$item) {
-
-        $data = $item[0];
+//        $action = "db_update.php";
         $action = "#";
-        $grafikaUsera = $data['graphic'];
-        $name = $data['name'];
-        $lvl = $data['lvl'];
-        $secure = $data['secure'];
-        $ban = $data['ban'];
-        $banico = $data['banico'];
+        $grafikaUsera = ($data->getIMG() == '')? "defoult_user.svg" : $data->getIMG();
+        $name = $data->getEmail();
+        $lvl = ($data->getLevel()<0)? "---" : $data->getLevel();
+        $secure = ($data->getType() == 1)? "Administrator" : "Gracz";
+        $passwd = $data->getPasswd();
+        $ban = 'BAN';
+        $banico = 'icon-universal-access';
+        $idOfUser = $data->getidUser();
+        $AdminStyle = ($data->getType()==1)? "style='background-color: rgba(188, 234, 131, 1);'":"";
 
         $show = <<<HTML
-                            <div class="collapsible-body">
-                                <table>
+                            <div class="collapsible-body" $AdminStyle>
+                                <table $AdminStyle>
                                     <tr>
-                                        <form action="$action">
+                                        <form action="$action" method="post">
+                                        <input type="hidden" value="$name"  name="input_name">
                                             <td class="alx_szerokosc_kolumny_dla_grafiki_w_statystyce">
                                                 <div class="file-field input-field">
                                                     <div class="btn-floating alx_btn_floating">
                                                         <i class="icon-wrench"></i>
-                                                        <input type="file" name="input_grafika">
+                                                        <input type="file" name="input_grafika" value="$grafikaUsera">
                                                     </div>
                                                     <img src="resr/img/$grafikaUsera" class="alx_img_src">
                                                 </div>
@@ -438,59 +419,48 @@ function EdtyorUzytkownikow()
                                             <td class="alx_info_o_graczu">
                                                 <table>
                                                     <tr>
-                                                        <div class="input-field">
-                                                            <input value="$name" id="first_name2" type="text" class="validate">
+                                                        <div class="input-field alx_margin0">
+                                                            <input value="$name" id="first_name2" type="text" class="validate" disabled>
                                                             <label class="active" for="first_name2">Użytkownik</label>
                                                         </div>
-
                                                     </tr>
                                                     <tr>
-                                                        <div class="input-field">
-                                                            <input value="$lvl" id="first_name2" type="text" class="validate">
+                                                        <div class="input-field alx_margin0">
+                                                            <input value="$lvl" id="first_name2" type="text" class="validate" disabled>
                                                             <label class="active" for="first_name2">Poziom</label>
                                                         </div>
                                                     </tr>
                                                     <tr>
-                                                        <div class="input-field">
-                                                            <input value="$secure" id="first_name2" type="text" class="validate">
+                                                        <div class="input-field alx_margin0">
+                                                            <input value="$secure" id="first_name2" type="text" class="validate" disabled>
                                                             <label class="active alx_2rem_font" for="first_name2">Uprawnienia</label>
                                                         </div>
                                                     </tr>
-                                                </table>
-                                            </td>
-
-                                            <!--                                            STATY GRACZA-->
-                                            <td class="alx_info_o_graczu_spadding">
-                                                <table>
-                                                    <tr class="alx_info_bar">
-HTML;
-        echo $show;
-        foreach ($item as &$res) {
-            $surowiec = $res['surowiec'];
-            $progres = $res['progres'];
-            $finish = $res['finish'];
-            $show = <<<HTML
+                                                    
                                                     <tr>
-                                                        <td class="alx_center_th alx_th_padding">
-                                                            <input value="$surowiec: $progres/$finish" type="text" class="alx_small_input">
-                                                            <div class="progress">
-                                                                <div class="determinate" style="width: $progres%;"></div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-HTML;
-            echo $show;
-        }
-        $show = <<<HTML
+                                                        <div class="input-field alx_margin0">
+                                                            <input value="$passwd" id="first_name2" type="password" class="validate" name="input_passwd">
+                                                            <label class="active alx_2rem_font" for="first_name2">Hasło</label>
+                                                        </div>
                                                     </tr>
                                                 </table>
-
                                             </td>
 
                                             <!--                                            BUTTONY-->
                                             <td class="alx_btn_space_in_users_edit"
                                             ">
                                             <table>
+                                                <tr>
+                                                    <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
+                                                            type="submit" name="edytuj">
+                                                        Edytuj <i class="icon-cogs alx_h8_font"></i>
+                                                    </button>
+                                                </tr>
+
+HTML;
+    echo $show;
+    if ($data->getType()>1) {
+        $show = <<<HTML
                                                 <tr>
                                                     <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
                                                             type="submit"
@@ -501,20 +471,17 @@ HTML;
                                                 <tr>
                                                     <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
                                                             type="submit"
-                                                            name="edytuj">
-                                                        Edytuj <i class="icon-cogs alx_h8_font"></i>
-                                                    </button>
-                                                </tr>
-                                                <tr>
-                                                    <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                            type="submit"
                                                             name="usuwanie">
                                                         Usuń <i class="icon-user-delete-outline alx_h8_font"></i>
                                                     </button>
                                                 </tr>
+HTML;
+        echo $show;
+    }
+        $show=<<<HTML
+                                                
                                             </table>
                                             </td>
-
                                         </form>
                                     </tr>
                                 </table>

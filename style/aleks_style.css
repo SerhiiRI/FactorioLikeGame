@@ -305,9 +305,9 @@ table, tr, td {
 .alx_info_o_graczu {
     margin: 0;
     padding: 0px;
-    padding-left: 2vw;
+    padding: 0vh 3vw;
     text-align: center;
-    width: 20%;
+    width: auto;
 }
 
 /*odlegÅ‚oÅ›Ä‡ przyciskÃ³w od inputow*/
@@ -643,4 +643,8 @@ table, tr, td {
     .enjoi{
         top: 0;
     }
+}
+
+.alx_margin0{
+    margin: 5px 0 0 0!important;
 }
