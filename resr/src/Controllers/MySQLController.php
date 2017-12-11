@@ -655,7 +655,7 @@ final class MySQLController
         return null;
     }
 
-    public function __Admin__ResourcesAdd($Resource, $ProductionUnit, string $IMG)
+    public function __Admin__ResourcesAdd($Resource, $ProductionUnit, string $IMG, string $IMGFac)
     {
         $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=\":Res\"");
         $sprawdzenia->bindParam(":Res", $Resource);
@@ -663,10 +663,11 @@ final class MySQLController
         $sprawdzenia->execute();
         $sprawdzenia->closeCursor();
         if ($sprawdzenia->rowCount() <= 0) {
-            $prepare = $this->pdo->prepare("INSERT INTO `Resources` VALUES (NULL , :Resource, :ProductionUnit, \":IMG\") ");
+            $prepare = $this->pdo->prepare("INSERT INTO `Resources` VALUES (NULL , :Resource, :ProductionUnit, :IMG, :IMGFac) ");
             $prepare->bindParam(":Resource", $Resource);
             $prepare->bindParam(":ProductionUnit", $ProductionUnit);
             $prepare->bindParam(":IMG", $IMG);
+            $prepare->bindParam(":IMGFac", $IMGFac);
             $prepare->execute();
             $id_New_Added_Resource = $this->pdo->lastInsertId();
             $prepare->closeCursor();
@@ -677,7 +678,7 @@ final class MySQLController
         }
     }
 
-    public function __Admin__ResourcesRemove($idResource)
+    public function __Admin__ResourcesRemoveByID($idResource)
     {
         $prepare = $this->pdo->prepare("DELETE FROM `Resources` WHERE idResource=:idresource");
         $prepare->bindParam(":idresource", $idResource);
@@ -685,20 +686,37 @@ final class MySQLController
         $prepare->closeCursor();
         return null;
     }
-
-    public function __Admin__ResourcesUpdate($Resource, $ProductionUnit, $IMG)
+    public function __Admin__ResourcesRemoveByName($Resource)
     {
-        /**         * Update Resource productUnit;
+        $prepare = $this->pdo->prepare("DELETE FROM `Resources` WHERE `Resource`=:idresource");
+        $prepare->bindParam(":idresource", $Resource);
+        $prepare->execute();
+        $prepare->closeCursor();
+        return null;
+    }
+    public function __Admin__ResourcesRemoveALL($idResource)
+    {
+        $prepare = $this->pdo->prepare("DELETE FROM `Resources`");
+        $prepare->execute();
+        $prepare->closeCursor();
+        return null;
+    }
+
+    public function __Admin__ResourcesUpdate($Resource, $ProductionUnit, $IMG, $IMGFac)
+    {
+        /**
+         * Update Resource productUnit;
          */
-        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=\":Res\"");
+        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE `Resource`=\":Res\"");
         $sprawdzenia->bindParam(":Res", $Resource);
         $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
         $sprawdzenia->execute();
         $sprawdzenia->closeCursor();
         if ($sprawdzenia->rowCount() > 0) {
-            $prepare = $this->pdo->prepare(" UPDATE `Resources` SET `ProductionUnit`=:unit, `IMG`=\":img\" WHERE `Resource`=\":rsr\"");
+            $prepare = $this->pdo->prepare(" UPDATE `Resources` SET `ProductionUnit`=:unit, `IMG`=\":img\", `IMGFac`=\":imgfac\" WHERE `Resource`=\":rsr\"");
             $prepare->bindParam(":rsr", $Resource);
             $prepare->bindParam(":img", $IMG);
+            $prepare->bindParam(":imgfac", $IMGFac);
             $prepare->bindParam(":unit", $ProductionUnit);
             $prepare->execute();
             $prepare->closeCursor();

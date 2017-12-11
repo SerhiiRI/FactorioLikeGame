@@ -65,10 +65,10 @@ class ResourceController
         $this->__dataBase__controller = MySQLController::getInstance();
 
         //Wypelnienia tablicy objektami Resource
-        $this->setResourceList($this->__dataBase__controller->__Admin__ResourcesQuery());
+        $this->set($this->__dataBase__controller->__Admin__ResourcesQuery());
 
     }
-    private function setResourceList(array $sql_resources){
+    private function set(array $sql_resources){
         /*
          *
          * Metoda twożę pola ResourceList,
@@ -76,11 +76,33 @@ class ResourceController
          * Resource;
          *
          */
+        unset($this->ResourceList);
         foreach ($sql_resources as &$rsr) {
             $this->ResourceList[] = new Resource($rsr["idResources"], $rsr["Resource"], $rsr["ProductionUnit"]);
         }
         return null;
     }
+    public function add($Resource, $ProductionUnit, $IMG, $IMGFac){
+        $this->__dataBase__controller->__Admin__ResourcesAdd($Resource, $ProductionUnit, $IMG, $IMGFac);
+        $this->set($this->__dataBase__controller->__Admin__ResourcesQuery());
+    }
+    public function removeByID($idResource){
+        $this->__dataBase__controller->__Admin__ResourcesRemoveByID($idResource);
+        $this->set($this->__dataBase__controller->__Admin__ResourcesQuery());
+    }
+    public function removeByResourceName($Resource){
+        $this->__dataBase__controller->__Admin__ResourcesRemoveByName($Resource);
+        $this->set($this->__dataBase__controller->__Admin__ResourcesQuery());
+    }
+    public function update($Resource, $ProductionUnit, $IMG, $IMGFac){
+        $this->__dataBase__controller->__Admin__ResourcesUpdate($Resource, $ProductionUnit, $IMG, $IMGFac);
+        $this->set($this->__dataBase__controller->__Admin__ResourcesQuery());
+    }
+    public function remove_ALL(){
+
+        $this->set($this->__dataBase__controller->__Admin__ResourcesQuery());
+    }
+
     private function searchID($name){
         /**
          *
