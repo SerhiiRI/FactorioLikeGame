@@ -5,13 +5,19 @@ function LewyPanelAdmina()
     include_once __DIR__ . "/../Controllers/UserController.php";
     $__userControler = \Controller\UserController::getInstance();
 
+    $uIS_tmp=0;
+    $usersInSysytem = $__userControler->returnArray();
+    foreach ($usersInSysytem as &$item){
+        $uIS_tmp++;
+    }
+    $_SESSION["HowManyUsers"]=$uIS_tmp;
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
     $userData = $__userControler->SearchByEmail($nameOfUser);
 
 //    $imageOfUser = $userData->getIMG(); //Grafika admina
     $imageOfUser = ($userData->getIMG()=='')?"defoult_user.svg":$userData->getIMG();
-    $lastVisit = "07-12-2017r.";
-    $usersInSysytem = 12;
+    $lastVisit = $_SESSION["LastLogin"];
+    $usersInSysytem = $_SESSION["HowManyUsers"];
     $show = <<<HTML
     <div class="aleks_user_panel">
                 <!--            Obrazek użytkownika-->
@@ -57,8 +63,8 @@ HTML;
 function wyswietlanieStatystykSystemu()
 {
 
-    $lastVisit = "07-12-2017r.";
-    $usersInSysytem = 12;
+    $lastVisit = $_SESSION["LastLogin"];
+    $usersInSysytem = $_SESSION["HowManyUsers"];
     $show = <<<HTML
 <div class="collapsible-body alx_ststystyka">
         <table>
@@ -375,54 +381,6 @@ HTML;
 
 function EdtyorUzytkownikow()
 {
-    $listaTestowa[0][0]['graphic'] = "defoult_user.svg";
-    $listaTestowa[0][0]['name'] = "aleks";
-    $listaTestowa[0][0]['lvl'] = 2;
-    $listaTestowa[0][0]['secure'] = "Gracz";
-    $listaTestowa[0][0]['ban'] = "BAN";
-    $listaTestowa[0][0]['banico'] = "icon-block";
-
-    $listaTestowa[0][0]['surowiec'] = "Woda";
-    $listaTestowa[0][0]['progres'] = 25;
-    $listaTestowa[0][0]['finish'] = 100;
-    $listaTestowa[0][1]['surowiec'] = "Węgiel";
-    $listaTestowa[0][1]['progres'] = 69;
-    $listaTestowa[0][1]['finish'] = 100;
-    $listaTestowa[0][2]['surowiec'] = "Drewno";
-    $listaTestowa[0][2]['progres'] = 45;
-    $listaTestowa[0][2]['finish'] = 100;
-    $listaTestowa[0][3]['surowiec'] = "Gaz ziemny";
-    $listaTestowa[0][3]['progres'] = 10;
-    $listaTestowa[0][3]['finish'] = 100;
-    $listaTestowa[0][4]['surowiec'] = "Ropa";
-    $listaTestowa[0][4]['progres'] = 88;
-    $listaTestowa[0][4]['finish'] = 100;
-
-
-    $listaTestowa[1][0]['graphic'] = "defoult_user.svg";
-    $listaTestowa[1][0]['name'] = "serhii";
-    $listaTestowa[1][0]['lvl'] = 3;
-    $listaTestowa[1][0]['secure'] = "Administrator";
-    $listaTestowa[1][0]['ban'] = "UNBAN";
-    $listaTestowa[1][0]['banico'] = "icon-universal-access";
-
-    $listaTestowa[1][0]['surowiec'] = "Woda";
-    $listaTestowa[1][0]['progres'] = 50;
-    $listaTestowa[1][0]['finish'] = 100;
-    $listaTestowa[1][1]['surowiec'] = "Węgiel";
-    $listaTestowa[1][1]['progres'] = 30;
-    $listaTestowa[1][1]['finish'] = 100;
-    $listaTestowa[1][2]['surowiec'] = "Drewno";
-    $listaTestowa[1][2]['progres'] = 40;
-    $listaTestowa[1][2]['finish'] = 100;
-    $listaTestowa[1][3]['surowiec'] = "Gaz ziemny";
-    $listaTestowa[1][3]['progres'] = 80;
-    $listaTestowa[1][3]['finish'] = 100;
-    $listaTestowa[1][4]['surowiec'] = "Ropa";
-    $listaTestowa[1][4]['progres'] = 3;
-    $listaTestowa[1][4]['finish'] = 100;
-
-
     include_once __DIR__ . "/../Controllers/UserController.php";
     $__userControler = \Controller\UserController::getInstance();
 
@@ -431,32 +389,29 @@ function EdtyorUzytkownikow()
 
     foreach ($usersData as &$data) {
 
-//        $data = $item[0];
+//        $action = "db_update.php";
         $action = "#";
-//        $grafikaUsera = $data['graphic'];
         $grafikaUsera = ($data->getIMG() == '')? "defoult_user.svg" : $data->getIMG();
-//        $name = $data['name'];
         $name = $data->getEmail();
-//        $lvl = $data['lvl'];
         $lvl = ($data->getLevel()<0)? "---" : $data->getLevel();
-//        $secure = $data['secure'];
         $secure = ($data->getType() == 1)? "Administrator" : "Gracz";
-//        $ban = $data['ban'];
         $passwd = $data->getPasswd();
         $ban = 'BAN';
-//        $banico = $data['banico'];
         $banico = 'icon-universal-access';
+        $idOfUser = $data->getidUser();
+        $AdminStyle = ($data->getType()==1)? "style='background-color: rgba(188, 234, 131, 1);'":"";
 
         $show = <<<HTML
-                            <div class="collapsible-body">
-                                <table>
+                            <div class="collapsible-body" $AdminStyle>
+                                <table $AdminStyle>
                                     <tr>
-                                        <form action="$action">
+                                        <form action="$action" method="post">
+                                        <input type="hidden" value="$name"  name="input_name">
                                             <td class="alx_szerokosc_kolumny_dla_grafiki_w_statystyce">
                                                 <div class="file-field input-field">
                                                     <div class="btn-floating alx_btn_floating">
                                                         <i class="icon-wrench"></i>
-                                                        <input type="file" name="input_grafika">
+                                                        <input type="file" name="input_grafika" value="$grafikaUsera">
                                                     </div>
                                                     <img src="resr/img/$grafikaUsera" class="alx_img_src">
                                                 </div>
@@ -465,10 +420,9 @@ function EdtyorUzytkownikow()
                                                 <table>
                                                     <tr>
                                                         <div class="input-field alx_margin0">
-                                                            <input value="$name" id="first_name2" type="text" class="validate">
+                                                            <input value="$name" id="first_name2" type="text" class="validate" disabled>
                                                             <label class="active" for="first_name2">Użytkownik</label>
                                                         </div>
-
                                                     </tr>
                                                     <tr>
                                                         <div class="input-field alx_margin0">
@@ -485,57 +439,11 @@ function EdtyorUzytkownikow()
                                                     
                                                     <tr>
                                                         <div class="input-field alx_margin0">
-                                                            <input value="$passwd" id="first_name2" type="password" class="validate">
+                                                            <input value="$passwd" id="first_name2" type="password" class="validate" name="input_passwd">
                                                             <label class="active alx_2rem_font" for="first_name2">Hasło</label>
                                                         </div>
                                                     </tr>
                                                 </table>
-                                            </td>
-
-                                            <!--                                            STATY GRACZA-->
-                                            <td class="alx_info_o_graczu_spadding">
-                                                <table>
-                                                    <tr class="alx_info_bar">
-HTML;
-        echo $show;
-        for($i=0;$i<5;$i++){
-            $surowiec = "surowiec";
-            $progres = 25 * $i;
-            $finish = 100 * ($i+1);
-            $show = <<<HTML
-                                                    <tr>
-                                                        <td class="alx_center_th alx_th_padding">
-                                                            <input value="$surowiec: $progres/$finish" type="text" class="alx_small_input" disabled>
-                                                            <div class="progress">
-                                                                <div class="determinate" style="width: $progres%;"></div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-HTML;
-            echo $show;
-        }
-//        foreach ($item as &$res) {
-//            $surowiec = $res['surowiec'];
-//            $progres = $res['progres'];
-//            $finish = $res['finish'];
-//            $show = <<<HTML
-//                                                    <tr>
-//                                                        <td class="alx_center_th alx_th_padding">
-//                                                            <input value="$surowiec: $progres/$finish" type="text" class="alx_small_input">
-//                                                            <div class="progress">
-//                                                                <div class="determinate" style="width: $progres%;"></div>
-//                                                            </div>
-//                                                        </td>
-//                                                    </tr>
-//HTML;
-//            echo $show;
-//        }
-
-
-        $show = <<<HTML
-                                                    </tr>
-                                                </table>
-
                                             </td>
 
                                             <!--                                            BUTTONY-->
@@ -544,12 +452,15 @@ HTML;
                                             <table>
                                                 <tr>
                                                     <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                            type="submit"
-                                                            name="edytuj">
+                                                            type="submit" name="edytuj">
                                                         Edytuj <i class="icon-cogs alx_h8_font"></i>
                                                     </button>
                                                 </tr>
-                                                <!--sjsjhfhisdfugsadfgasldg-->
+
+HTML;
+    echo $show;
+    if ($data->getType()>1) {
+        $show = <<<HTML
                                                 <tr>
                                                     <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
                                                             type="submit"
@@ -564,6 +475,10 @@ HTML;
                                                         Usuń <i class="icon-user-delete-outline alx_h8_font"></i>
                                                     </button>
                                                 </tr>
+HTML;
+        echo $show;
+    }
+        $show=<<<HTML
                                                 
                                             </table>
                                             </td>
