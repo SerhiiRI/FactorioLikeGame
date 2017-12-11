@@ -20,13 +20,15 @@ class Resource
     private $idResources;
     private $Resource;
     private $ProductiveUnit;
+    private $FactoryName;
     private $IMG;
     private $IMGFac;
 
-    public function __construct($idResources, $Resource, $ProductiveUnit, $IMG, $IMGFac)
+    public function __construct($idResources, $Resource, $ProductiveUnit, $FactoryName, $IMG, $IMGFac)
     {
         $this->idResources = $idResources;
         $this->Resource = $Resource;
+        $this->FactoryName = $FactoryName;
         $this->IMG = $IMG;
         $this->IMGFac = $IMGFac;
         $this->ProductiveUnit = $ProductiveUnit;
@@ -37,6 +39,9 @@ class Resource
     }
     public function getResourceName(){
         return $this->Resource;
+    }
+    public function getFactoryName(){
+        return $this->FactoryName;
     }
     public function getProductiveUnit(){
         return $this->ProductiveUnit;

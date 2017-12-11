@@ -655,7 +655,7 @@ final class MySQLController
         return null;
     }
 
-    public function __Admin__ResourcesAdd($Resource, $ProductionUnit, string $IMG, string $IMGFac)
+    public function __Admin__ResourcesAdd($Resource, $ProductionUnit, $FactoryName,  string $IMG, string $IMGFac)
     {
         $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=\":Res\"");
         $sprawdzenia->bindParam(":Res", $Resource);
@@ -663,10 +663,11 @@ final class MySQLController
         $sprawdzenia->execute();
         $sprawdzenia->closeCursor();
         if ($sprawdzenia->rowCount() <= 0) {
-            $prepare = $this->pdo->prepare("INSERT INTO `Resources` VALUES (NULL , :Resource, :ProductionUnit, :IMG, :IMGFac) ");
+            $prepare = $this->pdo->prepare("INSERT INTO `Resources` VALUES (NULL , :Resource, :ProductionUnit, :FactoryName :IMG, :IMGFac) ");
             $prepare->bindParam(":Resource", $Resource);
             $prepare->bindParam(":ProductionUnit", $ProductionUnit);
             $prepare->bindParam(":IMG", $IMG);
+            $prepare->bindParam(":FactoryName", $FactoryName);
             $prepare->bindParam(":IMGFac", $IMGFac);
             $prepare->execute();
             $id_New_Added_Resource = $this->pdo->lastInsertId();
@@ -702,7 +703,7 @@ final class MySQLController
         return null;
     }
 
-    public function __Admin__ResourcesUpdate($Resource, $ProductionUnit, $IMG, $IMGFac)
+    public function __Admin__ResourcesUpdate($Resource, $ProductionUnit, $FactoryName, $IMG, $IMGFac)
     {
         /**
          * Update Resource productUnit;
@@ -713,9 +714,10 @@ final class MySQLController
         $sprawdzenia->execute();
         $sprawdzenia->closeCursor();
         if ($sprawdzenia->rowCount() > 0) {
-            $prepare = $this->pdo->prepare(" UPDATE `Resources` SET `ProductionUnit`=:unit, `IMG`=\":img\", `IMGFac`=\":imgfac\" WHERE `Resource`=\":rsr\"");
+            $prepare = $this->pdo->prepare(" UPDATE `Resources` SET `ProductionUnit`=:unit, `FactoryName`=\":facName\",  `IMG`=\":img\", `IMGFac`=\":imgfac\" WHERE `Resource`=\":rsr\"");
             $prepare->bindParam(":rsr", $Resource);
             $prepare->bindParam(":img", $IMG);
+            $prepare->bindParam(":facName", $FactoryName);
             $prepare->bindParam(":imgfac", $IMGFac);
             $prepare->bindParam(":unit", $ProductionUnit);
             $prepare->execute();
