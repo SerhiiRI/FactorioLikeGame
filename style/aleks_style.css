@@ -648,3 +648,30 @@ table, tr, td {
 .alx_margin0{
     margin: 5px 0 0 0!important;
 }
+
+.alx_flexkontener_task{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+
+.alx_flex_w_edytorze_taskow{
+    flex: 1;
+    padding: 0 2vw 0vh 2vw;
+}
+
+.alx_flex_w_edytorze_taskow_midlle{
+    flex: 2;
+}
+
+
+.alx_flex_w_edytorze_taskow_radio{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding-bottom:2vh;
+}

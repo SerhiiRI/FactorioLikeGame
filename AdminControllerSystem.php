@@ -30,6 +30,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
     </head>
 
     <body class="alx_bg_img">
+
     <a href="Credits.html"><img src="resr/img/gear6.gif" class="autorzy_btn"></a>
     <div class="alx_border_space">
         <div>
@@ -80,11 +81,12 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 
                         <!--POCZĄTEK OPCJI 4 - PYTANIA DO GRY-->
                     <li class="alx_zmiana_stylu_listy_panel_admina">
-                        <div class="collapsible-header"><i class="icon-tools aleks_icon"></i>Edytor zadań
+                        <div class="collapsible-header active"><i class="icon-tools aleks_icon"></i>Edytor zadań
                         </div>
 
+
                         <!--PĘTLA Z WIERSZAMI W PYTANIA DO GRY-->
-                        <?php EdycjaPytanDoGry(); ?>
+                        <?php EdytorZadańDoGry(); ?>
                         <!--Koniec opcji 3-->
                         <!------------------------------------------------------------------------------------------------>
 
