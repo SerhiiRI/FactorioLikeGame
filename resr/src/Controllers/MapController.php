@@ -41,8 +41,9 @@ class MapController
                 );
             }
         }else{
-            echo "w domu dzialalo";
+            echo "NULL";
         }
+
     }
 
     public function add($idFactory){
@@ -65,6 +66,19 @@ class MapController
     }
 
     public function returnArray(){
-        return $this->UserMapList;
+        return (!empty($this->UserMapList))? $this->UserMapList : null;
+    }
+
+    public function returnArrayByID($id){
+        try {
+            foreach ($this->UserMapList as $item) {
+                if ($item->getidUser() == $id) {
+                    return $this->UserMapList;
+                }
+            }
+            return null;
+        }catch (\Exception $ex){
+
+        }
     }
 }
