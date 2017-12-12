@@ -91,7 +91,7 @@ function zarządzanieFabrykamiOrazSurowcami()
     include_once __DIR__ . "/../Controllers/ResourceController.php";
     $__ResControler = \Controller\ResourceController::getInstance();
 
-    $factoryData = $__ResControler->getResourceList();
+    $factoryData = $__ResControler->returnArray();
 
     foreach ($factoryData as &$item) {
 
@@ -99,7 +99,9 @@ function zarządzanieFabrykamiOrazSurowcami()
         $fabricName = $item->getFactoryName();//jaka fabryka wydobywa
         $surowiec = $item->getResourceName();//jaki surowiec jest wydobywany
         $wydobyciePodstawowe = $item->getProductiveUnit();//wydobycie na 1 lvl
-        $imageOfUser = $item->getIMGFactory(); //Grafika fabryki
+//        $imageOfUser = $item->getIMGFactory(); //Grafika fabryki
+        $imageOfUser = ($item->getIMGFactory() == "") ? "image.svg" : $item->getIMGFactory(); //Grafika fabryki
+
 
         $show = <<<HTML
                             <div class="collapsible-body">
@@ -161,6 +163,11 @@ function zarządzanieFabrykamiOrazSurowcami()
                                     </tr>
                                 </table>
                             </div><!-- Elementy do wczytaj i edytuj-->
+HTML;
+        echo $show;
+    }
+
+    $show = <<<HTML
                         <div class="collapsible-body">
                             <table>
                                 <tr>
@@ -212,8 +219,8 @@ function zarządzanieFabrykamiOrazSurowcami()
                             </table>
                         </div> <!--Element dodający (ostatni)-->
 HTML;
-        echo $show;
-    }
+    echo $show;
+
 }//Edycja fabryk i surowców
 
 function EdycjaPytanDoGry()
@@ -363,38 +370,66 @@ HTML;
 
 function EdytorZadańDoGry()
 {
-    $action = "#";
-    $task = "Opis zadania";
-    $neededLVL = 1;
 
-    $show = <<<HTML
-                            <div class="collapsible-body active">
-                                <table>
-                                    <tr>
+    include_once __DIR__ . "/../Controllers/ResourceController.php";
+    $__ResControler = \Controller\ResourceController::getInstance();
+
+    $factoryData = $__ResControler->returnArray();
+
+    include_once __DIR__ . "/../Controllers/TaskController.php";
+    $__TaskControler = \Controller\TaskController::getInstance();
+
+    $TaskData = $__TaskControler->returnArray();
+    $grupa = 0;
+    $sumakoncowa = 0;
+
+    foreach ($TaskData as &$Item) {
+        $grupa++;
+        $sumakoncowa = $sumakoncowa + $grupa;
+        $sgrupa = "grupa".$grupa;
+        $test = "test".$grupa;
+        $resrc = $Item->getidResources();
+
+        $action = "#";
+        $task = $Item->getTask();
+        $neededLVL = $Item->getLevelTo();
+
+        $show = <<<HTML
+                            <div class="collapsible-body">
                                         <form action="$action">
-                                            <td class="alx_task_selectbox">
-                                                    <select>
-                                                              <option value="volvo">Volvo</option>
-                                                              <option value="saab">Saab</option>
-                                                              <option value="mercedes">Mercedes</option>
-                                                              <option value="audi">Audi</option>
-                                                            </select>
-                                            </td>
-                                            <td>
-                                                <div class="input-field col s12">
-                                                    <input type="text" class="alx_task_input" name="" value="$task"> 
-                                                    <label>Zadanie</label>
-                                                </div>
-                                            </td>
-                                            <td class="alx_edytor_pytań">
-                                                <div class="input-field col s12">
-                                                    <input type="number" class="alx_task_input" name="" value="$neededLVL">
-                                                    <label>Wymagany poziom</label>
-                                                </div>
-                                            </td>
+                                            <div class="alx_flexkontener_task">
+                                                <div class="alx_flex_w_edytorze_taskow_radio">
+HTML;
+        echo $show;
+        foreach ($factoryData as &$Item2) {
+            $surowiec = $Item2->getResourceName();
+            $selected = ($Item2->getIdResources()==$resrc)?"checked":"";
+            $show = <<<HTML
+                                                    <p class="alx_flex_w_edytorze_taskow" >
+                                                          <input name = "$sgrupa" type = "radio" id = "$task" $selected/>
+                                                          <label for="$test" >$surowiec</label >
+                                                    </p >
+HTML;
+            echo $show;
+        }
 
+        $show = <<<HTML
+
+                                                </div>                
+                                            <div class="input-field alx_flex_w_edytorze_taskow_midlle">
+                                                <div>
+                                                        <input type="text" class="alx_task_input" name="" value="$task"> 
+                                                        <label>Zadanie</label>
+                                                        </div>
+                                                <div>
+                                                <div class="input-field">
+                                                        <input type="number" class="alx_task_input" name="" value="$neededLVL">
+                                                        <label>Wymagany poziom</label>
+                                                        </div>
+                                            </div>   
+                                            </div>   
                                             <!--                                            BUTTONY-->
-                                            <td class="alx_edit_users_button">
+                                            <div class="alx_flex_w_edytorze_taskow">
                                                 <table>
                                                     <tr class="alx_padding_edit_users_button">
                                                         <div class=" alx_padding_edit_users_button">
@@ -415,13 +450,15 @@ function EdytorZadańDoGry()
                                                         </div>
                                                     </tr>
                                                 </table>
-                                            </td>
+                                            </div>
                                         </form>
                                     </tr>
                                 </table>
                             </div><!--Elementy w pętli-->   
 HTML;
-    echo $show;
+        echo $show;
+        echo $sumakoncowa;
+    }
 }
 
 function EdtyorUzytkownikow()
