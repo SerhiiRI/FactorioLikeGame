@@ -60,6 +60,10 @@ $controllerResource = ResourceController::getInstance();
 foreach ($controllerResource->returnArray() as $item){
     print_r($item);
 }
+echo "========================================\n";
+foreach ($controllerResource->returnArray() as $item){
+    print_r($item);
+}
 
 /*
 for ($i = 0; $i < 10; $i++) {

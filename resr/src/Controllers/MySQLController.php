@@ -340,14 +340,24 @@ final class MySQLController
 
     public function __User__FactoryInstanceRemove(int $idInstance)
     {
-        $prepare = $this->pdo->prepare("DELETE FROM `FactoryInstance` WHERE idFactory=:idFactory");
-        $prepare->bindParam(":idInstance", $idInstance);
+        $prepare = $this->pdo->prepare("DELETE FROM `FactoryInstance` WHERE `idFactoryInstance`=:idInsance");
+        $prepare->bindParam(":idInsance", $idInstance);
         $prepare->execute();
         $prepare->closeCursor();
         return null;
     }
 
-
+    public function __User__FactoryInstanceQuery(){
+        $prepare = $this->pdo->prepare("SELECT * FROM `FactoryInstance`");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        if ($prepare->rowCount() > 0) {
+            $assocc = $prepare->fetchAll();
+            return $assocc;
+        }
+        $prepare->closeCursor();
+        return null;
+    }
 
 
     public function __User__QuestionQuery()
@@ -666,13 +676,13 @@ final class MySQLController
 
     public function __Admin__ResourcesAdd($Resource, $ProductionUnit, $FactoryName,  string $IMG, string $IMGFac)
     {
-        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=\":Res\"");
+        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE Resource=:Res");
         $sprawdzenia->bindParam(":Res", $Resource);
         $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
         $sprawdzenia->execute();
         $sprawdzenia->closeCursor();
         if ($sprawdzenia->rowCount() <= 0) {
-            $prepare = $this->pdo->prepare("INSERT INTO `Resources` VALUES (NULL , :Resource, :ProductionUnit, :FactoryName :IMG, :IMGFac) ");
+            $prepare = $this->pdo->prepare("INSERT INTO `Resources` VALUES (NULL , :Resource, :ProductionUnit, :FactoryName, :IMG, :IMGFac) ");
             $prepare->bindParam(":Resource", $Resource);
             $prepare->bindParam(":ProductionUnit", $ProductionUnit);
             $prepare->bindParam(":IMG", $IMG);
