@@ -389,50 +389,58 @@ function EdytorZadańDoGry()
 //        echo "</pre>";
         $grupa++;
         $sumakoncowa++;
-        $sgrupa = "grupa" . $grupa;
         $resrc = $Item->getidResources();
+        $neededRes = $Item->getResourceTo();
 
         $action = "#";
         $task = $Item->getTask();
         $neededLVL = $Item->getLevelTo();
+        $idOfTask = $Item->getidTask();
 
         $show = <<<HTML
                         <div class="collapsible-body">
-                            <form action="$action">
+                            <form action="$action" method="post">
                                 <div class="alx_flexkontener_task">
-                                    <div class="alx_flex_w_edytorze_taskow_radio">
-
+                                    <div class="input-field alx_flex_w_edytorze_taskow_radio">
+                                        <input type="hidden" value="$idOfTask" name="idOfTask">
+                                        <select name="input_res_task">
+                                        <option value="" disabled selected>Surowce</option>
+                                        
+                                        
 HTML;
         echo $show;
         $tst=0;
         foreach ($factoryData as &$Res) {
             $tst++;
             $surowiec = $Res->getResourceName();
-            $selected = ($Res->getIdResources() == $resrc) ? "checked" : "";
-            $test = "test" .$grupa.$tst;
+            $id_res = $Res->getIdResources();
+            $isSelect = ($Res->getIdResources()==$resrc)?"selected":"";
 //            print_r($test);
             $show = <<<HTML
-<p class="alx_flex_w_edytorze_taskow" >
-    <input name = "$sgrupa" type = "radio" id = "$test" $selected/>
-    <label for="$test" >$surowiec</label >
-</p >
+                                        <option value="$id_res" $isSelect>$surowiec</option>
 HTML;
             echo $show;
         }
 
         $show = <<<HTML
-
+                                        </select>                                    
 
                                     </div>
                                     <div class="input-field alx_flex_w_edytorze_taskow_midlle">
                                         <div>
-                                            <input type="text" class="alx_task_input" name="" value="$task">
+                                            <input type="text" class="alx_task_input" name="input_task" value="$task">
                                             <label>Zadanie</label>
                                         </div>
                                         <div>
                                             <div class="input-field">
-                                                <input type="number" class="alx_task_input" name="" value="$neededLVL">
+                                                <input type="number" class="alx_task_input" name="input_lvl_task" value="$neededLVL">
                                                 <label>Wymagany poziom</label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="input-field">
+                                                <input type="number" class="alx_task_input" name="input_needed_task" value="$neededRes">
+                                                <label>Resource To</label>
                                             </div>
                                         </div>
                                     </div>
@@ -443,7 +451,7 @@ HTML;
                                                 <div class=" alx_padding_edit_users_button">
                                                     <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
                                                             type="submit"
-                                                            name="edit">
+                                                            name="edytuj_task">
                                                         Edytuj <i class="icon-cogs alx_h8_font"></i>
                                                     </button>
                                                 </div>
@@ -452,7 +460,7 @@ HTML;
                                                 <div class="alx_padding_edit_users_button">
                                                     <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
                                                             type="submit"
-                                                            name="del">
+                                                            name="del_task">
                                                         Usuń <i class="icon-block alx_h8_font"></i>
                                                     </button>
                                                 </div>

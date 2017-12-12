@@ -673,5 +673,6 @@ table, tr, td {
     display: flex;
     flex-direction: column;
     margin: 0;
-    padding-bottom:2vh;
+    padding-right:4vh;
 }
+
