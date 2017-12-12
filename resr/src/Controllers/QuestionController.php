@@ -1,7 +1,10 @@
 <?php
 namespace Controller;
 include_once __DIR__."/../Class/Question.php";
+include_once __DIR__."/MySQLController.php";
+
 use \Controller\Question;
+use \Controller\MySQLController;
 
 class QuestionController
 {

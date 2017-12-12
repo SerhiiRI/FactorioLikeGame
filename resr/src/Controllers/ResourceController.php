@@ -105,6 +105,12 @@ class ResourceController
         }
         return null;
     }
+    public function searchByID($idres){
+        foreach ($this->ResourceList as &$item){
+            if ($item->getIdResources() == $idres) return $item->getResourceName();
+        }
+        return null;
+    }
     private function returnArrayForCurrentUserResource(id){
 
     }
