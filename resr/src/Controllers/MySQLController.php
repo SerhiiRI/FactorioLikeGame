@@ -700,7 +700,7 @@ final class MySQLController
 
     public function __Admin__ResourcesRemoveByID($idResource)
     {
-        $prepare = $this->pdo->prepare("DELETE FROM `Resources` WHERE idResource=:idresource");
+        $prepare = $this->pdo->prepare("DELETE FROM `Resources` WHERE `idResources`=:idresource");
         $prepare->bindParam(":idresource", $idResource);
         $prepare->execute();
         $prepare->closeCursor();
@@ -714,7 +714,7 @@ final class MySQLController
         $prepare->closeCursor();
         return null;
     }
-    public function __Admin__ResourcesRemoveALL($idResource)
+    public function __Admin__ResourcesRemoveALL()
     {
         $prepare = $this->pdo->prepare("DELETE FROM `Resources`");
         $prepare->execute();

@@ -59,6 +59,7 @@ class ResourceController
         $this->set($this->__dataBase__controller->__Admin__ResourcesQuery());
     }
     private function set($sql_resources){
+        unset($this->ResourceList);
         if (!is_null($sql_resources)) {
             foreach ($sql_resources as $rsr) {
                 $this->ResourceList[] = new Resource(
