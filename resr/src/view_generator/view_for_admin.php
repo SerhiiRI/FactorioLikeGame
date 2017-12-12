@@ -392,7 +392,7 @@ function EdytorZadańDoGry()
         $resrc = $Item->getidResources();
         $neededRes = $Item->getResourceTo();
 
-        $action = "#";
+        $action = "db_update.php";
         $task = $Item->getTask();
         $neededLVL = $Item->getLevelTo();
         $idOfTask = $Item->getidTask();
@@ -487,7 +487,7 @@ function EdtyorUzytkownikow()
     foreach ($usersData as &$data) {
 
 //        $action = "db_update.php";
-        $action = "#";
+        $action = "db_update.php";
         $grafikaUsera = ($data->getIMG() == '') ? "defoult_user.svg" : $data->getIMG();
         $name = $data->getEmail();
         $lvl = ($data->getLevel() < 0) ? "---" : $data->getLevel();
@@ -544,12 +544,11 @@ function EdtyorUzytkownikow()
                                             </td>
 
                                             <!--                                            BUTTONY-->
-                                            <td class="alx_btn_space_in_users_edit"
-                                            ">
+                                            <td class="alx_btn_space_in_users_edit">
                                             <table>
                                                 <tr>
                                                     <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                            type="submit" name="edytuj">
+                                                            type="submit" name="edytuj_user">
                                                         Edytuj <i class="icon-cogs alx_h8_font"></i>
                                                     </button>
                                                 </tr>
@@ -561,14 +560,14 @@ HTML;
                                                 <tr>
                                                     <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
                                                             type="submit"
-                                                            name="ban">
+                                                            name="ban_user">
                                                         $ban <i class="$banico alx_h8_font"></i>
                                                     </button>
                                                 </tr>
                                                 <tr>
                                                     <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
                                                             type="submit"
-                                                            name="usuwanie">
+                                                            name="del_user">
                                                         Usuń <i class="icon-user-delete-outline alx_h8_font"></i>
                                                     </button>
                                                 </tr>

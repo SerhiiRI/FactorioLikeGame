@@ -1,5 +1,5 @@
 <?php
-include_once("db_update.php");
+//include_once("db_update.php");
 include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
 if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 
@@ -81,7 +81,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 
                         <!--POCZĄTEK OPCJI 4 - PYTANIA DO GRY-->
                     <li class="alx_zmiana_stylu_listy_panel_admina">
-                        <div class="collapsible-header active"><i class="icon-tools aleks_icon"></i>Edytor zadań
+                        <div class="collapsible-header"><i class="icon-tools aleks_icon"></i>Edytor zadań
                         </div>
 
 

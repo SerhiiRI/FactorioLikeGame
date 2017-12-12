@@ -1,5 +1,5 @@
 <?php
-if (isset($_POST["edytuj"])){
+if (isset($_POST["edytuj_user"])){
 
 include_once __DIR__ . "/../git-repo/resr/src/Controllers/MySQLController.php";
 $__update = \Controller\MySQLController::getInstance();
@@ -33,6 +33,7 @@ if (isset($_POST["del_task"])) {
 
     $__TaskControler->remove($_POST["idOfTask"]);
     echo "Usunięto: ".$_POST['idOfTask'];
+    $_POST = null;
 }
-
+header("Location: AdminControllerSystem.php");
 ?>
