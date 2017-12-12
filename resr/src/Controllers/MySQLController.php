@@ -145,24 +145,38 @@ final class MySQLController
         $prepare->bindParam(":idUser", $idUser);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
-        $returnSet = $prepare->fetchAll();
-        return ($prepare->rowCount() > 0) ? $prepare->fetchAll() : null;
+        if ($prepare->rowCount() > 0) {
+            $assocc = $prepare->fetchAll();
+            return $assocc;
+        }
+        $prepare->closeCursor();
+        return null;
+    }
+    public function __Admin__UserMapQuery()
+    {
+        $prepare = $this->pdo->prepare("SELECT * FROM `UserMap`");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        if ($prepare->rowCount() > 0) {
+            $assocc = $prepare->fetchAll();
+            return $assocc;
+        }
+        $prepare->closeCursor();
+        return null;
     }
 
-    public function __User__UserMapAdd($idUser, $idFactory)
+        public function __User__UserMapAdd($idUser, $idFactory)
     {
-        $findCountFactory = $this->pdo->prepare("SELECT * FROM `UserMap` WHERE idFactory=:idfac");
+        $findCountFactory = $this->pdo->prepare("SELECT * FROM `UserMap` WHERE `idFactory`=:idfac AND `idUser`=:usr");
         $findCountFactory->bindParam(":idfac", $idFactory);
+        $findCountFactory->bindParam(":usr", $idUser);
         $findCountFactory->setFetchMode(PDO::FETCH_ASSOC);
         $findCountFactory->execute();
-        $updateMap = 0;
         $iloscFabryk = $findCountFactory->rowCount();
-        if ($iloscFabryk = 0) {
-            $countFactory = 1;
-            $prepare = $this->pdo->prepare("INSERT INTO `UserMap`(`idUserMap`, `idUser`, `idFactory`, `CountFactory`) VALUES (NULL, :idUser, :idFactory, :CountFactory)");
+        if ($iloscFabryk == 0) {
+            $prepare = $this->pdo->prepare("INSERT INTO `UserMap`(`idUserMap`, `idUser`, `idFactory`, `CountFactory`) VALUES (NULL, :idUser, :idFactory, 1)");
             $prepare->bindParam(":idUser", $idUser);
             $prepare->bindParam(":idFactory", $idFactory);
-            $prepare->bindParam(":CountFactory", $countFactory);
             $prepare->execute();
             $id_New_Added_Question = $this->pdo->lastInsertId();
             $prepare->closeCursor();
@@ -182,34 +196,40 @@ final class MySQLController
     }
 
     //?   public function __User__UserMapUpdate(user_){}
-    public function __User__UserMapRemove($idFactory)
+    public function __User__UserMapRemove($idUser, $idFactory)
     {
-        $findCountFactory = $this->pdo->prepare("SELECT * FROM `UserMap` WHERE idFactory=:idfac");
+        $findCountFactory = $this->pdo->prepare("SELECT * FROM `UserMap` WHERE `idFactory`=:idfac AND `idUser`=:usr");
         $findCountFactory->bindParam(":idfac", $idFactory);
+        $findCountFactory->bindParam(":idUser", $idUser);
         $findCountFactory->setFetchMode(PDO::FETCH_ASSOC);
         $findCountFactory->execute();
         $iloscFabryk = $findCountFactory->rowCount();
-        if ($iloscFabryk = 1) {
-
-            $countFactory = 1;
-            $prepare = $this->pdo->prepare("DELETE FROM `UserMap` WHERE idFactory=:idFactory");
+        if ($iloscFabryk == 1) {
+            $prepare = $this->pdo->prepare("DELETE FROM `UserMap` WHERE `idFactory`=:idFactory AND `idUser`=:usr");
             $prepare->bindParam(":idFactory", $idFactory);
-            $prepare->execute();
-            $id_New_Added_Question = $this->pdo->lastInsertId();
-            $prepare->closeCursor();
+            $prepare->bindParam(":idUser", $idUser);
 
+            $prepare->execute();
+            $prepare->closeCursor();
         } elseif ($iloscFabryk > 1) {
-            $row = $findCountFactory->fetch();
-            $updateMap = $row["idUserMap"];
-            $prepare = $this->pdo->prepare("UPDATE `UserMap` SET CountFactory=:countt WHERE idFactory=:idfactory");
+            $prepare = $this->pdo->prepare("UPDATE `UserMap` SET `CountFactory`=:countt WHERE `idFactory`=:idfactory AND `idUser`=:usr");
             $prepare->bindParam(":countt", $iloscFabryk);
+            $prepare->bindParam(":idUser", $idUser);
             $prepare->bindParam(":idFactory", $idFactory);
             $prepare->execute();
             $prepare->closeCursor();
         }
         return null;
     }
-
+    public function __User__UserMapRemoveAll($idUser, $idFactory)
+    {
+        $prepare = $this->pdo->prepare("DELETE FROM `UserMap` WHERE `idUser`=:usr");
+        $prepare->bindParam(":idUser", $idUser);
+        $prepare->bindParam(":idFactory", $idFactory);
+        $prepare->execute();
+        $prepare->closeCursor();
+        return null;
+    }
 
 
     public function __User__UserScoreAdd($idTask, $idUser)

@@ -8,7 +8,7 @@
 
 namespace Controller;
 
-
+//SELECT `idUserMap`, `idUser`, `idFactory`, `CountFactory` FROM `UserMap` WHERE 1
 class MapController
 {
     static private $instance = null;
@@ -24,35 +24,45 @@ class MapController
     private function __construct()
     {
         $this->__dataBase__controller = MySQLController::getInstance();
-        $this->set($this->__dataBase__controller->__Admin__());
+        $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"]));
 
     }
-    private function set(array $sql_question){
-        foreach ($sql_question as &$item){
-            $this->UserList[] = new User(
-                $item["idUser"],
-                $item["idScore"],
-                $item["Email"],
-                $item["Passwd"],
-                $item["Type"],
-                $item["Level"]
-            );
+    private function set($sql_question){
+        unset($this->UserMapList);
+        if(!is_null($sql_question)) {
+            foreach ($sql_question as &$item) {
+                $this->UserMapList[] = new User(
+                    $item["idUserMap"],
+                    $item["idUser"],
+                    $item["idFactory"],
+                    $item["CountFactory"]
+                );
+            }
+        }else{
+            echo "w domu dzialalo";
         }
     }
 
-    public function add($login, $password, $type = 2, $idLevel = 0, $idScore = 0){
-        $this->__dataBase__controller->regestration($login, $password, $type, $idLevel, $idScore);
+    public function add($idFactory){
+        $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"], $idFactory));
+        $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"]));
+
     }
-    public function remove(string $email){
-        $this->__dataBase__controller->__Admin__UserRemove($email);
+    public function remove($idFactory){
+        $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"], $idFactory));
+        $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"]));
     }
-    public function update($EmailToChange, $PasswordToChange){
-        $this->__dataBase__controller->__Admin__UserUpdate($EmailToChange, $PasswordToChange);
+    public function removeAll($idFactory){
+        $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"], $idFactory));
+        $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"]));
     }
-    public function nextLevel($email){
-        $this->__dataBase__controller->__User__UserNextLevel($email);
+    public function queryALL(){
+        if($_SESSION["UserType"]=="1"){
+            $this->__dataBase__controller->__Admin__UserMapQuery();
+        }
     }
+
     public function returnArray(){
-        return $this->UserList;
+        return $this->UserMapList;
     }
 }
