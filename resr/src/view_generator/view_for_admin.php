@@ -58,7 +58,7 @@ function LewyPanelAdmina()
             </div>
 HTML;
     echo $show;
-} //Dane wyświetlane po lewej stronie okna przeglądarki
+} //Dane wyświetlane po lewej stronie okna przeglądarki//FINISH
 
 function wyswietlanieStatystykSystemu()
 {
@@ -84,7 +84,7 @@ function wyswietlanieStatystykSystemu()
     </div>
 HTML;
     echo $show;
-} //Edycja surowców oraz odpowiedzialnych za wydobycie fabryk
+} //Edycja surowców oraz odpowiedzialnych za wydobycie fabryk//FINISH
 
 function zarządzanieFabrykamiOrazSurowcami()
 {
@@ -156,21 +156,23 @@ HTML;
         $surowiec = $item->getResourceName();//jaki surowiec jest wydobywany
         $wydobyciePodstawowe = $item->getProductiveUnit();//wydobycie na 1 lvl
 //        $imageOfUser = $item->getIMGFactory(); //Grafika fabryki
-        $imageOfUser = ($item->getIMGFactory() == "") ? "image.svg" : $item->getIMGFactory(); //Grafika fabryki
-
+        $fabrykaGrafika = ($item->getIMGFactory() == "") ? "image.svg" : $item->getIMGFactory(); //Grafika fabryki
+        $id_res = $item->getIdResources();
 
         $show = <<<HTML
                             <div class="collapsible-body">
                                 <table>
                                     <tr>
                                         <form action="$action" method="post">
+                                          <input type="hidden" value="$id_res" name="input_id_hidden">
                                             <td class="alx_szerokosc_kolumny_dla_grafiki_w_statystyce">
                                                 <div class="file-field input-field">
                                                     <div class="btn-floating alx_btn_floating">
                                                         <i class="icon-wrench"></i>
-                                                        <input type="file" name="input_grafika">
+                                                        <input type="file" name="input_grafika" >
+                                                        <input type="hidden" value="$fabrykaGrafika" name="input_grafika_hidden">
                                                     </div>
-                                                    <img src="resr/img/$imageOfUser" class="alx_img_src">
+                                                    <img src="resr/img/$fabrykaGrafika" class="alx_img_src">
                                                 </div>
                                             </td>
                                             <td class="alx_tabela_surowcow_admin">
@@ -222,100 +224,23 @@ HTML;
 HTML;
         echo $show;
     }
-}//Edycja fabryk i surowców
+}//Edycja fabryk i surowców //FINISH
 
 function EdycjaPytanDoGry()
 {
-    $listaTestowa[0]['pytanie'] = 'Co jest sensem zycia?';
-    $listaTestowa[0]['odp'] = '42';
-    $listaTestowa[0]['zle1'] = "Zycie nie ma sensu.";
-    $listaTestowa[0]['zle2'] = "Piernik torunski.";
-    $listaTestowa[0]['zle3'] = "PHP";
+//    include_once __DIR__ . "/../Controllers/QuestionController.php";
+//    $__QuestControler = \Controller\QuestionController::getInstance();
+//
+//    $QuestData = $__QuestControler->returnArray();
+    $QuestData[0] = '0';
+    $QuestData[1] = '1';
+    $action = "db_update.php";
 
-    $listaTestowa[1]['pytanie'] = 'Ile wazy slonce?';
-    $listaTestowa[1]['odp'] = 'Duzo';
-    $listaTestowa[1]['zle1'] = "Nie wazy.";
-    $listaTestowa[1]['zle2'] = "Tyle co Adas.";
-    $listaTestowa[1]['zle3'] = "Tak";
-
-    foreach ($listaTestowa as &$item) {
-        $action = "#";
-        $pytanie = $item['pytanie'];
-        $odp = $item['odp'];
-        $zle1 = $item['zle1'];
-        $zle2 = $item['zle2'];
-        $zle3 = $item['zle3'];
-        $show = <<<HTML
-                            <div class="collapsible-body">
-                                <table>
-                                    <tr>
-                                        <form action="$action">
-                                            <td>
-                                                <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_pytanie">$pytanie</textarea>
-                                                    <label for="textarea1" >Pytanie</label>
-                                                </div>
-                                            </td>
-                                            <td class="alx_edytor_pytań">
-                                                <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_odp">$odp</textarea>
-                                                    <label for="textarea1">Odpowiedź</label>
-                                                </div>
-                                            </td>
-                                            <td class="alx_edytor_pytań">
-                                                <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle1">$zle1</textarea>
-                                                    <label for="textarea1">Źle</label>
-                                                </div>
-                                            </td>
-                                            <td class="alx_edytor_pytań">
-                                                <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle2">$zle2</textarea>
-                                                    <label for="textarea1">Źle</label>
-                                                </div>
-                                            </td>
-                                            <td class="alx_edytor_pytań">
-                                                <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle3">$zle3</textarea>
-                                                    <label for="textarea1">Źle</label>
-                                                </div>
-                                            </td>
-
-                                            <!--                                            BUTTONY-->
-                                            <td class="alx_edit_users_button">
-                                                <table>
-                                                    <tr class="alx_padding_edit_users_button">
-                                                        <div class=" alx_padding_edit_users_button">
-                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                                    type="submit"
-                                                                    name="edit">
-                                                                Edytuj <i class="icon-cogs alx_h8_font"></i>
-                                                            </button>
-                                                        </div>
-                                                    </tr>
-                                                    <tr class="alx_padding_edit_users_button">
-                                                        <div class="alx_padding_edit_users_button">
-                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                                    type="submit"
-                                                                    name="del">
-                                                                Usuń <i class="icon-block alx_h8_font"></i>
-                                                            </button>
-                                                        </div>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </form>
-                                    </tr>
-                                </table>
-                            </div><!--Elementy w pętli-->   
-HTML;
-        echo $show;
-    }
     $show = <<<HTML
     <div class="collapsible-body">
                                 <table>
                                     <tr>
-                                        <form action="$action">
+                                        <form action="$action" method="post">
                                             <td>
                                                 <div class="input-field col s12">
                                                     <textarea id="textarea1" class="materialize-textarea" name="txt_pytanie"></textarea>
@@ -354,7 +279,7 @@ HTML;
                                                         <div class="alx_padding_edit_users_button">
                                                             <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
                                                                     type="submit"
-                                                                    name="add">
+                                                                    name="add_Question">
                                                                 Dodaj <i class="icon-plus alx_h8_font"></i>
                                                             </button>
                                                         </div>
@@ -367,6 +292,88 @@ HTML;
                             </div> <!--Ostatnii element dodający-->
 HTML;
     echo $show;
+
+
+
+    foreach ($QuestData as &$item) {
+//        $pytanie = $item->getQuestion();
+//        $AnsList = $item->getAnswerList();
+//        $id_quest = $item->getIdQuestion();
+        $id_quest = 0;
+        $pytanie = "???";
+        $odp = "???";
+        $zle1 = "???";
+        $zle2 = "???";
+        $zle3 = "???";
+        $show = <<<HTML
+<div class="collapsible-body">
+    <table>
+        <tr>
+            <form action="$action" method="post">
+            <input type="hidden" value="$id_quest" name="id_quest_hidden">
+                <td>
+                    <div class="input-field col s12">
+                        <textarea id="textarea1" class="materialize-textarea" name="txt_pytanie">$pytanie</textarea>
+                        <label for="textarea1" >Pytanie</label>
+                    </div>
+                </td>
+                <td class="alx_edytor_pytań">
+                    <div class="input-field col s12">
+                        <textarea id="textarea1" class="materialize-textarea" name="txt_odp">$odp</textarea>
+                        <label for="textarea1">Odpowiedź</label>
+                    </div>
+                </td>
+                <td class="alx_edytor_pytań">
+                    <div class="input-field col s12">
+                        <textarea id="textarea1" class="materialize-textarea" name="txt_zle1">$zle1</textarea>
+                        <label for="textarea1">Źle</label>
+                    </div>
+                </td>
+                <td class="alx_edytor_pytań">
+                    <div class="input-field col s12">
+                        <textarea id="textarea1" class="materialize-textarea" name="txt_zle2">$zle2</textarea>
+                        <label for="textarea1">Źle</label>
+                    </div>
+                </td>
+                <td class="alx_edytor_pytań">
+                    <div class="input-field col s12">
+                        <textarea id="textarea1" class="materialize-textarea" name="txt_zle3">$zle3</textarea>
+                        <label for="textarea1">Źle</label>
+                    </div>
+                </td>
+
+                <!--                                            BUTTONY-->
+                <td class="alx_edit_users_button">
+                    <table>
+                        <tr class="alx_padding_edit_users_button">
+                            <div class=" alx_padding_edit_users_button">
+                                <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
+                                        type="submit"
+                                        name="edytuj_Question">
+                                    Edytuj <i class="icon-cogs alx_h8_font"></i>
+                                </button>
+                            </div>
+                        </tr>
+                        <tr class="alx_padding_edit_users_button">
+                            <div class="alx_padding_edit_users_button">
+                                <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
+                                        type="submit"
+                                        name="del_Question">
+                                    Usuń <i class="icon-block alx_h8_font"></i>
+                                </button>
+                            </div>
+                        </tr>
+                    </table>
+                </td>
+            </form>
+        </tr>
+    </table>
+</div><!--Elementy w pętli-->
+HTML;
+        echo $show;
+    }
+
+
 }//Edytor pytań
 
 function EdytorZadańDoGry()
