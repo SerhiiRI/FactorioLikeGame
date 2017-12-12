@@ -2,13 +2,18 @@
 include_once ("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
 
 if(isset($_POST["ok"]) && isset($_POST["email_address"]) && isset($_POST["password"])){
-    $id = $__controller__DataBase->regestration($_POST["email_address"], $_POST["password"]);
-    echo "<h1> id ".print_r($id)."</h1>";
-    if($id!=-1){
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/UserController.php";
+    $id = \Controller\UserController::getInstance();
+
+    $id->add($_POST["email_address"], $_POST["password"], date("Y-m-d"));
+
+    echo "<pre style='color: white;'>print_r($id->returnArray())</pre>";
+    if($id!="-1"){
         $_SESSION["name_of_user"] = $_POST["email_address"];
         $_SESSION["LOGINED"] = "1";
         $_SESSION["idUser"] = $id;
-        if ($id==1) {
+        if ($id=="1") {
             $_SESSION["UserType"] = "1";
         }else{
             $_SESSION["UserType"] = "2";

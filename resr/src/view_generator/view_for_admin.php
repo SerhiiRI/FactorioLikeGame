@@ -92,86 +92,13 @@ function zarządzanieFabrykamiOrazSurowcami()
     $__ResControler = \Controller\ResourceController::getInstance();
 
     $factoryData = $__ResControler->returnArray();
-
-    foreach ($factoryData as &$item) {
-
-        $action = "#";
-        $fabricName = $item->getFactoryName();//jaka fabryka wydobywa
-        $surowiec = $item->getResourceName();//jaki surowiec jest wydobywany
-        $wydobyciePodstawowe = $item->getProductiveUnit();//wydobycie na 1 lvl
-//        $imageOfUser = $item->getIMGFactory(); //Grafika fabryki
-        $imageOfUser = ($item->getIMGFactory() == "") ? "image.svg" : $item->getIMGFactory(); //Grafika fabryki
-
-
-        $show = <<<HTML
-                            <div class="collapsible-body">
-                                <table>
-                                    <tr>
-                                        <form action="$action">
-                                            <td class="alx_szerokosc_kolumny_dla_grafiki_w_statystyce">
-                                                <div class="file-field input-field">
-                                                    <div class="btn-floating alx_btn_floating">
-                                                        <i class="icon-wrench"></i>
-                                                        <input type="file" name="input_grafika">
-                                                    </div>
-                                                    <img src="resr/img/$imageOfUser" class="alx_img_src">
-                                                </div>
-                                            </td>
-                                            <td class="alx_tabela_surowcow_admin">
-                                                <div class="input-field">
-                                                    <input value="$fabricName" id="first_name2" type="text" class="validate" name="input_fabryka">
-                                                    <label class="active" for="first_name2">Fabryka</label>
-                                                </div>
-                                            </td>
-                                            <td class="alx_tabela_surowcow_admin">
-                                                <div class="input-field">
-                                                    <input value="$surowiec" id="first_name2" type="text" class="validate" name="input_surowiec">
-                                                    <label class="active" for="first_name2">Surowiec</label>
-                                                </div>
-                                            </td>
-                                            <td class="alx_tabela_surowcow_admin">
-                                                <div class="input-field">
-                                                    <input value="$wydobyciePodstawowe" id="first_name2" type="number" class="validate" name="input_wydobycie">
-                                                    <label class="active" for="first_name2">Wydobycie</label>
-                                                </div>
-                                            </td>
-
-                                            <!--                                            BUTTONY-->
-                                            <td class="alx_edit_users_button">
-                                                <table>
-                                                    <tr class="alx_padding_edit_users_button">
-                                                        <div class=" alx_padding_edit_users_button">
-                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                                    type="submit"
-                                                                    name="edit">
-                                                                Edytuj <i class="icon-cogs alx_h8_font"></i>
-                                                            </button>
-                                                        </div>
-                                                    </tr>
-                                                    <tr class="alx_padding_edit_users_button">
-                                                        <div class="alx_padding_edit_users_button">
-                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                                    type="submit"
-                                                                    name="del">
-                                                                Usuń <i class="icon-block alx_h8_font"></i>
-                                                            </button>
-                                                        </div>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </form>
-                                    </tr>
-                                </table>
-                            </div><!-- Elementy do wczytaj i edytuj-->
-HTML;
-        echo $show;
-    }
+    $action = "db_update.php";
 
     $show = <<<HTML
                         <div class="collapsible-body">
                             <table>
                                 <tr>
-                                    <form action="$action">
+                                    <form action="$action" method="post">
                                        <td class="alx_szerokosc_kolumny_dla_grafiki_w_statystyce">
                                                 <div class="file-field input-field">
                                                     <div class="btn-floating alx_btn_floating">
@@ -207,7 +134,7 @@ HTML;
                                                     <div class=" alx_padding_edit_users_button">
                                                         <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
                                                                 type="submit"
-                                                                name="ban">
+                                                                name="add_fabryka">
                                                             Dodaj <i class="icon-plus alx_h8_font"></i>
                                                         </button>
                                                     </div>
@@ -220,7 +147,81 @@ HTML;
                         </div> <!--Element dodający (ostatni)-->
 HTML;
     echo $show;
+    //Dodawanie nowego surowca/fabryki
 
+
+    foreach ($factoryData as &$item) {
+
+        $fabricName = $item->getFactoryName();//jaka fabryka wydobywa
+        $surowiec = $item->getResourceName();//jaki surowiec jest wydobywany
+        $wydobyciePodstawowe = $item->getProductiveUnit();//wydobycie na 1 lvl
+//        $imageOfUser = $item->getIMGFactory(); //Grafika fabryki
+        $imageOfUser = ($item->getIMGFactory() == "") ? "image.svg" : $item->getIMGFactory(); //Grafika fabryki
+
+
+        $show = <<<HTML
+                            <div class="collapsible-body">
+                                <table>
+                                    <tr>
+                                        <form action="$action" method="post">
+                                            <td class="alx_szerokosc_kolumny_dla_grafiki_w_statystyce">
+                                                <div class="file-field input-field">
+                                                    <div class="btn-floating alx_btn_floating">
+                                                        <i class="icon-wrench"></i>
+                                                        <input type="file" name="input_grafika">
+                                                    </div>
+                                                    <img src="resr/img/$imageOfUser" class="alx_img_src">
+                                                </div>
+                                            </td>
+                                            <td class="alx_tabela_surowcow_admin">
+                                                <div class="input-field">
+                                                    <input value="$fabricName" id="first_name2" type="text" class="validate" name="input_fabryka">
+                                                    <label class="active" for="first_name2">Fabryka</label>
+                                                </div>
+                                            </td>
+                                            <td class="alx_tabela_surowcow_admin">
+                                                <div class="input-field">
+                                                    <input value="$surowiec" id="first_name2" type="text" class="validate" name="input_surowiec">
+                                                    <label class="active" for="first_name2">Surowiec</label>
+                                                </div>
+                                            </td>
+                                            <td class="alx_tabela_surowcow_admin">
+                                                <div class="input-field">
+                                                    <input value="$wydobyciePodstawowe" id="first_name2" type="number" class="validate" name="input_wydobycie">
+                                                    <label class="active" for="first_name2">Wydobycie</label>
+                                                </div>
+                                            </td>
+
+                                            <!--                                            BUTTONY-->
+                                            <td class="alx_edit_users_button">
+                                                <table>
+                                                    <tr class="alx_padding_edit_users_button">
+                                                        <div class=" alx_padding_edit_users_button">
+                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
+                                                                    type="submit"
+                                                                    name="edytuj_fabryka">
+                                                                Edytuj <i class="icon-cogs alx_h8_font"></i>
+                                                            </button>
+                                                        </div>
+                                                    </tr>
+                                                    <tr class="alx_padding_edit_users_button">
+                                                        <div class="alx_padding_edit_users_button">
+                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
+                                                                    type="submit"
+                                                                    name="del_fabryka">
+                                                                Usuń <i class="icon-block alx_h8_font"></i>
+                                                            </button>
+                                                        </div>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                </table>
+                            </div><!-- Elementy do wczytaj i edytuj-->
+HTML;
+        echo $show;
+    }
 }//Edycja fabryk i surowców
 
 function EdycjaPytanDoGry()
@@ -539,7 +540,7 @@ HTML;
         echo $show;
 //        echo $sumakoncowa;
     }
-}
+} //FINISH
 
 function EdtyorUzytkownikow()
 {
@@ -650,6 +651,6 @@ HTML;
 HTML;
         echo $show;
     }
-}//Edytor użytkowników
+}//Edytor użytkowników //PRAWIE FINISH
 
 ?>
