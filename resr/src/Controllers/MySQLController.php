@@ -453,58 +453,43 @@ final class MySQLController
         }
     }
 
-    public function __Admin__QuestionAdd($idTask, $Question, array $Answer)
+    public function __Admin__QuestionAdd($idTask, $Question, $AnswerTrue, $AnswerFalse1, $AnswerFalse2, $AnswerFalse3)
     {
-
-        /**
-         * Inset into DB Question, without answer;
-         */
-        $prepare = $this->pdo->prepare("INSERT INTO `Question` VALUES (NULL , :question, :idtask) ");
+        $prepare = $this->pdo->prepare("INSERT INTO `Question` VALUES (NULL , :idtask, :question) ");
         $prepare->bindParam(":question", $Question);
         $prepare->bindParam(":idtask", $idTask);
         $prepare->execute();
         $id_New_Added_Question = $this->pdo->lastInsertId();
-        $prepare->closeCursor();
 
-        /**
-         * inset into DB answer to the define question;
-         */
-        $prepare = $this->pdo->prepare("INSERT INTO `Answer` VALUES (NULL, :idquestion, :answer, :isright)");
-        foreach ($Answer as $oneAnswer) {
-            $prepare->bindParam(":idquestion", $id_New_Added_Question);
-            $toPoprawnaOdpowiedz = stripos($oneAnswer, "$") != False ? true : false;
-            $prepare->bindParam(":isright", $toPoprawnaOdpowiedz);
-            $prepare->bindParam(":answer", $oneAnswer);
-            $prepare->execute();
-        }
-        $prepare->closeCursor();
+        /* to jest statycznie dadajace gowno. Nie jest twoj styl, no przedstaw, ze musiales to napisac. */
+        $prepare = $this->pdo->prepare("INSERT INTO `Answers` VALUES (NULL, :idquestion, :answers, :isright)");
+        $toPoprawnaOdpowiedz = true;
+        $Answer = $AnswerTrue;
+        $prepare->bindParam(":idquestion", $id_New_Added_Question);
+        $prepare->bindParam(":isright", $toPoprawnaOdpowiedz);
+        $prepare->bindParam(":answers", $Answer);
+        $prepare->execute();
+        $toPoprawnaOdpowiedz = false;
+        $Answer = $AnswerFalse1;
+        $prepare->execute();
+        $Answer = $AnswerFalse2;
+        $prepare->execute();
+        $Answer = $AnswerFalse3;
+        $prepare->execute();
 
-        /**
-         * jeżeli w odpowidzi będzie znależony znaczek "$" - znaczy, że odpowiedz jest poprawna;
-         * TODO: pod koniec sprawdzenia zrobić obcianania znaka dolara:
-         *
-         * $oneAnswer = preg_replace('/[^\p{L}\p{N}\s]/u', '$', $oneAnswer);
-         */
+        $prepare->closeCursor();
         return true;
     }
 
     public function __Admin__QuestionRemoveById($idQuestion)
     {
-        $prepare = $this->pdo->prepare("DELETE FROM `Question` WHERE idQuestion=:idQuestion");
+        $prepare = $this->pdo->prepare("DELETE FROM `Question` WHERE `idQuestion`=:idQuestion");
         $prepare->bindParam(":idQuestion", $idQuestion);
         $prepare->execute();
         $prepare->closeCursor();
         return null;
     }
 
-    public function __Admin__QuestionRemoveByQuestion($Question)
-    {
-        $prepare = $this->pdo->prepare("DELETE FROM `Question` WHERE `Question`=\":question\"");
-        $prepare->bindParam(":question", $Question);
-        $prepare->execute();
-        $prepare->closeCursor();
-        return null;
-    }
 
     public function __Admin__QuestionQuery()
     {
@@ -518,43 +503,43 @@ final class MySQLController
         $prepare->closeCursor();
         return null;
     }
-
-    public function __Admin__QuestionUpdate($idQuestion, $text)
+/*
+    public function __Admin__QuestionUpdate($idTask, $Question, $AnswerTrue, $AnswerFalse1, $AnswerFalse2, $AnswerFalse3)
     {
-        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Question` WHERE idQuestion=\":id\"");
+        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Question` WHERE `idQuestion`=:id");
         $sprawdzenia->bindParam(":id", $idQuestion);
         $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
         $sprawdzenia->execute();
-        $sprawdzenia->closeCursor();
         if ($sprawdzenia->rowCount() > 0) {
-            $prepare = $this->pdo->prepare(" UPDATE `Question` SET `Question`=\":text\" WHERE `idQuestion`=\":id\"");
+            $prepare = $this->pdo->prepare(" UPDATE `Question` SET `Question`=:txt WHERE `idQuestion`=:id");
             $prepare->bindParam(":id", $idQuestion);
-            $prepare->bindParam(":text", $text);
+            $prepare->bindParam(":txt", $text);
             $prepare->execute();
             $prepare->closeCursor();
         }
+        $sprawdzenia->closeCursor();
         return null;
     }
 
     public function __Admin__AnswerUpdate($idAnswer, $idQuestion, $text, $right)
     {
-        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Answers` WHERE `idQuestion`=\":id\"");
+        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Answers` WHERE `idQuestion`=:id");
         $sprawdzenia->bindParam(":id", $idQuestion);
         $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
         $sprawdzenia->execute();
         $sprawdzenia->closeCursor();
         if (($sprawdzenia->rowCount() > 0) && $right == true) {
-            $prepare = $this->pdo->prepare(" UPDATE `Answers` SET `Right`=FALSE WHERE `idQuestion`=\":id\"");
+            $prepare = $this->pdo->prepare(" UPDATE `Answers` SET `Right`=FALSE WHERE `idQuestion`=:id");
             $prepare->bindParam(":id", $idQuestion);
             $prepare->execute();
             $prepare->closeCursor();
-            $prepare = $this->pdo->prepare("UPDATE `Answers` SET `Answer`=`:text`,`Right`=FALSE WHERE `idAnswers`=\":id\"");
+            $prepare = $this->pdo->prepare("UPDATE `Answers` SET `Answer`=:text,`Right`=FALSE WHERE `idAnswers`=:id");
             $prepare->bindParam(":id", $idAnswer);
             $prepare->bindParam(":text", $text);
             $prepare->execute();
             $prepare->closeCursor();
         } elseif (($sprawdzenia->rowCount() > 0) && $right == false) {
-            $prepare = $this->pdo->prepare("UPDATE `Answers` SET `Answer`=`:text`,`Right`=FALSE WHERE `idAnswers`=\":id\"");
+            $prepare = $this->pdo->prepare("UPDATE `Answers` SET `Answer`=:text,`Right`=FALSE WHERE `idAnswers`=:id");
             $prepare->bindParam(":id", $idAnswer);
             $prepare->bindParam(":text", $text);
             $prepare->execute();
@@ -562,45 +547,18 @@ final class MySQLController
         }
         return null;
     }
-
-    public function __Admin__AnswerAdd($idQuestion, $text, $right)
-    {
-        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Answers` WHERE `idQuestion`=\":id\" AND `Answer`=\":text\"");
-        $sprawdzenia->bindParam(":id", $idQuestion);
-        $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
-        $sprawdzenia->execute();
-        $sprawdzenia->closeCursor();
-        if (($sprawdzenia->rowCount() == 0) && $right == true) {
-            $prepare = $this->pdo->prepare(" UPDATE `Answers` SET `Right`=FALSE WHERE `idQuestion`=\":id\"");
-            $prepare->bindParam(":id", $idQuestion);
-            $prepare->execute();
-            $prepare->closeCursor();
-            $prepare = $this->pdo->prepare(" INSERT INTO `Answers` VALUES (NULL,:id,\":text\",TRUE)");
-            $prepare->bindParam(":id", $idQuestion);
-            $prepare->bindParam(":text", $text);
-            $prepare->execute();
-            $prepare->closeCursor();
-        } elseif (($sprawdzenia->rowCount() == 0) && $right == false) {
-            $prepare = $this->pdo->prepare(" INSERT INTO `Answers` VALUES (NULL,:id,\":text\",FALSE)");
-            $prepare->bindParam(":id", $idQuestion);
-            $prepare->bindParam(":text", $text);
-            $prepare->execute();
-            $prepare->closeCursor();
-        }
-        return null;
-    }
-
+*/
     public function __Admin__AnswerQuery($idQuestion)
     {
-        $prepare = $this->pdo->prepare("SELECT * FROM `Answers` WHERE `idQuestion`=\":id\"");
+        $prepare = $this->pdo->prepare("SELECT * FROM `Answers` WHERE `idQuestion`=:id");
         $prepare->bindParam(":id", $idQuestion);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
-        $prepare->closeCursor();
         if ($prepare->rowCount() > 0) {
             $assoc = $prepare->fetchAll();
             return $assoc;
         }
+        $prepare->closeCursor();
         return null;
     }
 

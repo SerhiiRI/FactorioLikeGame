@@ -1,12 +1,10 @@
 <?php
 namespace Controller;
+
+
+include_once __DIR__."/../Class/Answer.php";
 use Controller\Answer;
 use Controller\MySQLController;
-
-include_once(dirname(__FILE__)."../Controllers/MySQLController.php");
-include_once(dirname(__FILE__)."../Class/Answer.php");
-
-
 
 class Question
 {
@@ -16,14 +14,19 @@ class Question
     private $answers = array();
     private $__dataBase__controller;
 
-    public function __construct(int $idQuestion, int $idTask, string $Question)
+    private function initAnswer($id){
+        foreach ($this->__dataBase__controller->__Admin__AnswerQuery($id) as $value) {
+            $this->answers[] = new Answer($value["idAnswers"], $value["idQuestion"], $value["Answer"], $value["Right"]);
+        }
+        return null;
+    }
+
+    public function __construct( $idQuestion, $idTask, $Question)
     {
             $this->__dataBase__controller = MySQLController::getInstance();
-
             $this->idQuestion = $idQuestion;
             $this->idTask = $idTask;
             $this->Question = $Question;
-
             $this->initAnswer($this->idQuestion);
     }
 
@@ -40,12 +43,6 @@ class Question
         return $this->answers;
     }
 
-    private function initAnswer($id){
-        foreach (($this->__dataBase__controller->__Admin__AnswerQuery($id)) as &$value) {
-            $this->answers[] = new Answer($value["idAnswers"], $value["idQuestion"], $value["Answer"], $value["Right"]);
-        }
-        return null;
-    }
 
 }
 

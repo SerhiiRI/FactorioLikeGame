@@ -1,7 +1,7 @@
 <?php
 namespace Controller;
-
-//TODO: dopracuj
+include_once __DIR__."/../Class/Question.php";
+use \Controller\Question;
 
 class QuestionController
 {
@@ -21,21 +21,21 @@ class QuestionController
         $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
     }
 
-    private function set(array $sql_question){
+    private function set($sql_question){
         unset($this->QuestionList);
-        foreach ($sql_question as &$item){
-            $this->QuestionList[] = new Question($item["idQuestion"], $item["Question"]);
+        if(!is_null($sql_question)) {
+            foreach ($sql_question as &$item) {
+                $this->QuestionList[] = new Question($item["idQuestion"], $item["idTask"], $item["Question"]);
+            }
+        }else{
+            echo "\nw domu dzialalo";
         }
     }
-    public function add($idTask, $Question, array $Answer){
-        $this->__dataBase__controller->__Admin__QuestionAdd($idTask, $Question, $Answer);
+    public function add($idTask, $Question, $AnswerTrue, $AnswerFalse1, $AnswerFalse2, $AnswerFalse3){
+        $this->__dataBase__controller->__Admin__QuestionAdd($idTask, $Question, $AnswerTrue, $AnswerFalse1, $AnswerFalse2, $AnswerFalse3);
         $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
     }
-    public function removeByQuestion(string $Question){
-        $this->__dataBase__controller->__Admin__QuestionRemoveByQuestion($Question);
-        $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
-    }
-    public function removeByID(int $idQuestion){
+    public function remove($idQuestion){
         $this->__dataBase__controller->__Admin__QuestionRemoveById($idQuestion);
         $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
     }
