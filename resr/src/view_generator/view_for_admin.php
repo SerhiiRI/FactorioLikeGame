@@ -382,6 +382,72 @@ function EdytorZadańDoGry()
     $TaskData = $__TaskControler->returnArray();
     $grupa = 0;
     $sumakoncowa = 0;
+    $action = "db_update.php";
+
+    $show = <<<HTML
+                        <div class="collapsible-body">
+                            <form action="$action" method="post">
+                                <div class="alx_flexkontener_task">
+                                    <div class="input-field alx_flex_w_edytorze_taskow_radio">
+                                        <select name="input_res_task">
+                                        <option value="" disabled selected>Surowce</option>
+                                        
+                                        
+HTML;
+    echo $show;
+    $tst=0;
+    foreach ($factoryData as &$Res) {
+        $tst++;
+        $surowiec = $Res->getResourceName();
+        $id_res = $Res->getIdResources();
+//            print_r($test);
+        $show = <<<HTML
+                                        <option value="$id_res">$surowiec</option>
+HTML;
+        echo $show;
+    }
+
+    $show = <<<HTML
+                                        </select>                                    
+
+                                    </div>
+                                    <div class="input-field alx_flex_w_edytorze_taskow_midlle">
+                                        <div>
+                                            <input type="text" class="alx_task_input" name="input_task" value="">
+                                            <label>Zadanie</label>
+                                        </div>
+                                        <div>
+                                            <div class="input-field">
+                                                <input type="number" class="alx_task_input" name="input_lvl_task" value="">
+                                                <label>Wymagany poziom</label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="input-field">
+                                                <input type="number" class="alx_task_input" name="input_needed_task" value="">
+                                                <label>Resource To</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--                                            BUTTONY-->
+                                    <div class="alx_flex_w_edytorze_taskow">
+                                        <table>
+                                            <tr class="alx_padding_edit_users_button">
+                                                <div class=" alx_padding_edit_users_button">
+                                                    <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
+                                                            type="submit"
+                                                            name="add_task">
+                                                        Dodaj <i class="icon-plus alx_h8_font"></i>
+                                                    </button>
+                                                </div>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
+                        </div><!--Elementy w pętli-->   
+HTML;
+    echo $show;
 
     foreach ($TaskData as $Item) {
 //        echo "<pre>";
@@ -392,7 +458,6 @@ function EdytorZadańDoGry()
         $resrc = $Item->getidResources();
         $neededRes = $Item->getResourceTo();
 
-        $action = "db_update.php";
         $task = $Item->getTask();
         $neededLVL = $Item->getLevelTo();
         $idOfTask = $Item->getidTask();
