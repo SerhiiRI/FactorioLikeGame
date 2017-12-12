@@ -5,6 +5,7 @@ include_once __DIR__ . "/resr/src/Controllers/ResourceController.php";
 include_once __DIR__ . "/resr/src/Controllers/ScoreController.php";
 include_once __DIR__ . "/resr/src/Controllers/FactoryInstanceController.php";
 include_once __DIR__ . "/resr/src/Controllers/MapController.php";
+include_once __DIR__ . "/resr/src/Controllers/QuestionController.php";
 
 use Controller\TaskController;
 use Controller\UserController;
@@ -12,6 +13,7 @@ use Controller\ResourceController;
 use Controller\ScoreController;
 use Controller\FactoryInstanceController;
 use Controller\MapController;
+use Controller\QuestionController;
 
 function string_rand($length_of_string=20)
 {
@@ -49,6 +51,7 @@ foreach ($controller->returnArray() as $item){
 
 $controllerTask = TaskController::getInstance();
 $controllerMap = MapController::getInstance();
+$controllerQuestion = QuestionController::getInstance();
 //$controllerTask->removeAll();
 
 /*
@@ -86,11 +89,9 @@ foreach ($controllerUser->returnArray() as $item){
 */
 
 
-echo "\n\n\n";
+$controllerQuestion->remove("13");
 
-$controllerMap->remove("7");
-foreach ($controllerMap->returnArray() as $value){
+foreach ($controllerQuestion->returnArray() as $value){
     print_r($value);
 }
-
 ?>
