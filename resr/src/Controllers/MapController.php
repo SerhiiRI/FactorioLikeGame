@@ -7,6 +7,8 @@
  */
 
 namespace Controller;
+include_once __DIR__."/../Class/UserMap.php";
+use \Controller\UserMap;
 
 class MapController
 {
@@ -22,6 +24,7 @@ class MapController
 
     private function __construct()
     {
+        $_SESSION["idUser"] = "5";
         $this->__dataBase__controller = MySQLController::getInstance();
         $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"]));
 
@@ -29,8 +32,8 @@ class MapController
     private function set($sql_question){
         unset($this->UserMapList);
         if(!is_null($sql_question)) {
-            foreach ($sql_question as &$item) {
-                $this->UserMapList[] = new User(
+            foreach ($sql_question as $item) {
+                $this->UserMapList[] = new UserMap(
                     $item["idUserMap"],
                     $item["idUser"],
                     $item["idFactory"],
@@ -43,16 +46,16 @@ class MapController
     }
 
     public function add($idFactory){
-        $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"], $idFactory));
+        $this->set($this->__dataBase__controller->__User__UserMapAdd($_SESSION["idUser"], $idFactory));
         $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"]));
 
     }
     public function remove($idFactory){
-        $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"], $idFactory));
+        $this->set($this->__dataBase__controller->__User__UserMapRemove($_SESSION["idUser"], $idFactory));
         $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"]));
     }
     public function removeAll($idFactory){
-        $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"], $idFactory));
+        $this->set($this->__dataBase__controller->__User__UserMapRemoveAll($_SESSION["idUser"], $idFactory));
         $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"]));
     }
     public function queryALL(){

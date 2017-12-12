@@ -143,7 +143,7 @@ final class MySQLController
     public function __User__UserMapQuery($idUser)
     {
         $prepare = $this->pdo->prepare("SELECT * FROM `UserMap` WHERE `idUser`=:iduser");
-        $prepare->bindParam(":idUser", $idUser);
+        $prepare->bindParam(":iduser", $idUser);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         if ($prepare->rowCount() > 0) {
@@ -181,17 +181,13 @@ final class MySQLController
             $prepare->execute();
             $id_New_Added_Question = $this->pdo->lastInsertId();
             $prepare->closeCursor();
-            return $id_New_Added_Question;
         } elseif ($iloscFabryk > 0) {
-            $iloscFabryk += 2;
             $row = $findCountFactory->fetch();
             $updateMap = $row["idUserMap"];
-            $prepare = $this->pdo->prepare("UPDATE `UserMap` SET CountFactory=:countt WHERE idFactory=:idfactory");
-            $prepare->bindParam(":countt", $iloscFabryk);
-            $prepare->bindParam(":idFactory", $idFactory);
+            $prepare = $this->pdo->prepare("UPDATE `UserMap` SET `CountFactory`=`CountFactory` + 1 WHERE `idFactory`=:idfactory");
+            $prepare->bindParam(":idfactory", $idFactory);
             $prepare->execute();
             $prepare->closeCursor();
-            return $updateMap;
         }
         return null;
     }
@@ -201,22 +197,22 @@ final class MySQLController
     {
         $findCountFactory = $this->pdo->prepare("SELECT * FROM `UserMap` WHERE `idFactory`=:idfac AND `idUser`=:usr");
         $findCountFactory->bindParam(":idfac", $idFactory);
-        $findCountFactory->bindParam(":idUser", $idUser);
+        $findCountFactory->bindParam(":usr", $idUser);
         $findCountFactory->setFetchMode(PDO::FETCH_ASSOC);
         $findCountFactory->execute();
-        $iloscFabryk = $findCountFactory->rowCount();
+        $row = $findCountFactory->fetchAll();
+        $iloscFabryk = $row[0]["CountFactory"];
         if ($iloscFabryk == 1) {
-            $prepare = $this->pdo->prepare("DELETE FROM `UserMap` WHERE `idFactory`=:idFactory AND `idUser`=:usr");
-            $prepare->bindParam(":idFactory", $idFactory);
-            $prepare->bindParam(":idUser", $idUser);
+            $prepare = $this->pdo->prepare("DELETE FROM `UserMap` WHERE `idFactory`=:idfac AND `idUser`=:usr");
+            $prepare->bindParam(":idfac", $idFactory);
+            $prepare->bindParam(":usr", $idUser);
 
             $prepare->execute();
             $prepare->closeCursor();
         } elseif ($iloscFabryk > 1) {
-            $prepare = $this->pdo->prepare("UPDATE `UserMap` SET `CountFactory`=:countt WHERE `idFactory`=:idfactory AND `idUser`=:usr");
-            $prepare->bindParam(":countt", $iloscFabryk);
-            $prepare->bindParam(":idUser", $idUser);
-            $prepare->bindParam(":idFactory", $idFactory);
+            $prepare = $this->pdo->prepare("UPDATE `UserMap` SET `CountFactory`=`CountFactory` - 1 WHERE `idFactory`=:idfactory AND `idUser`=:usr");
+            $prepare->bindParam(":usr", $idUser);
+            $prepare->bindParam(":idfactory", $idFactory);
             $prepare->execute();
             $prepare->closeCursor();
         }

@@ -84,16 +84,11 @@ foreach ($controllerUser->returnArray() as $item){
     echo "User\tTask\tUser\n";
     echo "=======================================\n";
 */
-$_SESSION["idUser"] = "2";
-foreach ($controllerUser->returnArray() as $value){
-    print_r($value);
-}
 
-foreach ($controllerMap->returnArray() as $value){
-    print_r($value);
-}
+
 echo "\n\n\n";
-$controllerMap->
+
+$controllerMap->remove("7");
 foreach ($controllerMap->returnArray() as $value){
     print_r($value);
 }
