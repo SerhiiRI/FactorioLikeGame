@@ -4,6 +4,7 @@ include_once __DIR__ . "/resr/src/Controllers/TaskController.php";
 include_once __DIR__ . "/resr/src/Controllers/ResourceController.php";
 include_once __DIR__ . "/resr/src/Controllers/ScoreController.php";
 include_once __DIR__ . "/resr/src/Controllers/FactoryInstanceController.php";
+include_once __DIR__ . "/resr/src/Controllers/UserController.php";
 
 use Controller\TaskController;
 use Controller\UserController;
@@ -81,8 +82,15 @@ foreach ($controllerUser->returnArray() as $item){
     echo "User\tTask\tUser\n";
     echo "=======================================\n";
 */
-foreach ($controllerTask->returnArray() as $value){
+
+foreach ($controllerUser->returnArray() as $value){
     print_r($value);
 }
+echo "\n\n\n";
+$controllerUser->add("suka", "bliat",date("Y-m-d"));
+foreach ($controllerUser->returnArray() as $value){
+    print_r($value);
+}
+
 
 ?>
