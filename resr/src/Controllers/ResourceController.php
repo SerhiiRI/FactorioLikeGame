@@ -32,6 +32,7 @@ class ResourceController
     private $ResourceList = array();
     static private $instance = null;
     private $__dataBase__controller;
+    private $ResourceListForCurrentUser = array();
 
 
     //funkcja tworzy konstruktora, gdy go nie ma
@@ -103,6 +104,9 @@ class ResourceController
             if ($item->getResourceName() == $name) return $item->getId();
         }
         return null;
+    }
+    private function returnArrayForCurrentUserResource(id){
+
     }
 
 }
