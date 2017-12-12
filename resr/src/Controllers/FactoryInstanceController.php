@@ -24,7 +24,7 @@ class FactoryInstanceController
     private function __construct()
     {
         $this->__dataBase__controller = MySQLController::getInstance();
-        $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
+        $this->set($this->__dataBase__controller->__User__FactoryQuery());
     }
 
     private function set(array $sql_question){
@@ -34,15 +34,15 @@ class FactoryInstanceController
         }
     }
     public function add($idTask, $Question, array $Answer){
-        $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
+        $this->set($this->__dataBase__controller->__User__FactoryQuery());
         $this->__dataBase__controller->__Admin__QuestionAdd($idTask, $Question, $Answer);
     }
     public function removeByQuestion(string $Question){
-        $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
+        $this->set($this->__dataBase__controller->__User__FactoryQuery());
         $this->__dataBase__controller->__Admin__QuestionRemoveByQuestion($Question);
     }
     public function removeByID(int $idQuestion){
-        $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
+        $this->set($this->__dataBase__controller->__User__FactoryQuery());
         $this->__dataBase__controller->__Admin__QuestionRemoveById($idQuestion);
     }
     public function returnArray(){

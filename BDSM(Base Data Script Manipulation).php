@@ -60,6 +60,11 @@ $controllerResource = ResourceController::getInstance();
 foreach ($controllerResource->returnArray() as $item){
     print_r($item);
 }
+echo "========================================\n";
+//$controllerResource->add("uska", 12, string_rand(), string_rand(), string_rand());
+foreach ($controllerResource->returnArray() as $item){
+    print_r($item);
+}
 
 /*
 for ($i = 0; $i < 10; $i++) {

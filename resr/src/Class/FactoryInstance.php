@@ -17,7 +17,6 @@ class FactoryInstance
     private $Upgrade;
     private $idUser;
 
-
     public function __construct($idFactoryInstance, $idResource, $Upgrade, $idUser)
     {
         $this->idFactoryInstance = $idFactoryInstance;
