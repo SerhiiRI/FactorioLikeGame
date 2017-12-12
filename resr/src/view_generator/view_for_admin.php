@@ -228,10 +228,10 @@ HTML;
 
 function EdycjaPytanDoGry()
 {
-//    include_once __DIR__ . "/../Controllers/QuestionController.php";
-//    $__QuestControler = \Controller\QuestionController::getInstance();
-//
-//    $QuestData = $__QuestControler->returnArray();
+    include_once __DIR__ . "/../Controllers/QuestionController.php";
+    $__QuestControler = \Controller\QuestionController::getInstance();
+
+    $QuestData = $__QuestControler->returnArray();
     $QuestData[0] = '0';
     $QuestData[1] = '1';
     $action = "db_update.php";

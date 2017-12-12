@@ -2,33 +2,24 @@
 
 function LewyPanelAdmina()
 {
+    include_once __DIR__ . "/../Controllers/UserController.php";
+    $__userControler = \Controller\UserController::getInstance();
 
-    $listaTestowa[0][0]['graphic'] = "defoult_user.svg";
-    $listaTestowa[0][0]['name'] = "aleks";
-    $listaTestowa[0][0]['lvl'] = 2;
-    $listaTestowa[0][0]['secure'] = "Gracz";
-    $listaTestowa[0][0]['ban'] = "BAN";
-    $listaTestowa[0][0]['banico'] = "icon-block";
+//    include_once __DIR__ . "/../Controllers/FactoryInstanceController.php";
+//    $__facControler = \Controller\FactoryInstanceController::getInstance();
 
-    $listaTestowa[0][0]['surowiec'] = "Woda";
-    $listaTestowa[0][0]['progres'] = 25;
-    $listaTestowa[0][0]['finish'] = 100;
-    $listaTestowa[0][1]['surowiec'] = "Węgiel";
-    $listaTestowa[0][1]['progres'] = 69;
-    $listaTestowa[0][1]['finish'] = 100;
-    $listaTestowa[0][2]['surowiec'] = "Drewno";
-    $listaTestowa[0][2]['progres'] = 45;
-    $listaTestowa[0][2]['finish'] = 100;
-    $listaTestowa[0][3]['surowiec'] = "Gaz ziemny";
-    $listaTestowa[0][3]['progres'] = 10;
-    $listaTestowa[0][3]['finish'] = 100;
-    $listaTestowa[0][4]['surowiec'] = "Ropa";
-    $listaTestowa[0][4]['progres'] = 88;
-    $listaTestowa[0][4]['finish'] = 100;
+    include_once __DIR__ . "/../Controllers/ResourceController.php";
+    $__resControler = \Controller\ResourceController::getInstance();
 
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
-    $imageOfUser = "resr/img/defoult_user.svg"; //Grafika usera
-    $lvlGracza = 2;
+    $userData = $__userControler->SearchByEmail($nameOfUser);
+//    $factoryData = $__facControler->returnArray();
+    $__surowce = $__resControler->returnArray();
+
+    $imageOfUser = "resr/img/".$userData->getIMG(); //Grafika usera
+    $lvlGracza = $userData->getLevel();
+    $LastLogin = $userData->getLastLogined();
+    $secure = ($userData->getType() == 1) ? "Administrator" : "Gracz";
 
     $show = <<<HTML
     <div class="aleks_user_panel">
@@ -43,28 +34,41 @@ function LewyPanelAdmina()
                     <br/>
 HTML;
     echo $show;
+    $progress_start_calc=0;
+    $progress_finish_calc=0;
+    foreach ($__surowce as &$res) {
+//            $surowiec = $__resControler->searchByID($res->getidResource());
+            $surowiec = $res->getResourceName();
+            $progres = rand(0, 100);
+            $finish = 100;
+            $progres_procent=($progres*100)/$finish;
+            $progress_start_calc=$progress_start_calc+$progres;
+            $progress_finish_calc=$progress_finish_calc+$finish;
 
-    foreach ($listaTestowa as &$item) {
-        foreach ($item as &$res) {
-            $surowiec = $res['surowiec'];
-            $progres = $res['progres'];
-            $finish = $res['finish'];
             $show = <<<HTML
                                                     <tr>
                                                         <td class="alx_center_th alx_th_padding">
                                                             <input value="$surowiec: $progres/$finish" type="text" class="alx_small_input" disabled>
                                                             <div class="progress">
-                                                                <div class="determinate" style="width: $progres%;"></div>
+                                                                <div class="determinate" style="width: $progres_procent%;"></div>
                                                             </div>
                                                         </td>
                                                     </tr>
 HTML;
             echo $show;
-        }
     }
+
+    $progres_procent=($progress_start_calc*100)/$progress_finish_calc;
+    $ButtonDisabled=($progres_procent==100)?:"disabled";
+    $ButtonValue=($progres_procent==100)?"LVL UP!":"Postęp: ".$progres_procent."%";
 
     $show = <<<HTML
 
+                <div class="alx_lvl_up_btn">
+                    <button name="levelup_btn" class="btn btn_lvlup" $ButtonDisabled>
+                    $ButtonValue
+                    </button>
+                </div>
                 </div>
                         
                         <!--                        WYLOGOWANIE-->
