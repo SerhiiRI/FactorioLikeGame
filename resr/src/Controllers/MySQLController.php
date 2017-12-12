@@ -759,13 +759,13 @@ final class MySQLController
         /**
          * Update Resource productUnit;
          */
-        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE `Resource`=\":Res\"");
+        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Resources` WHERE `Resource`=:Res");
         $sprawdzenia->bindParam(":Res", $Resource);
         $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
         $sprawdzenia->execute();
         $sprawdzenia->closeCursor();
         if ($sprawdzenia->rowCount() > 0) {
-            $prepare = $this->pdo->prepare(" UPDATE `Resources` SET `ProductionUnit`=:unit, `FactoryName`=\":facName\",  `IMG`=\":img\", `IMGFac`=\":imgfac\" WHERE `Resource`=\":rsr\"");
+            $prepare = $this->pdo->prepare(" UPDATE `Resources` SET `ProductionUnit`=:unit, `FactoryName`=:facName,  `IMG`=:img, `IMGFac`=:imgfac WHERE `Resource`=:rsr");
             $prepare->bindParam(":rsr", $Resource);
             $prepare->bindParam(":img", $IMG);
             $prepare->bindParam(":facName", $FactoryName);

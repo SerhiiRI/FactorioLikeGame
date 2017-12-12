@@ -8,7 +8,6 @@
 
 namespace Controller;
 
-//SELECT `idUserMap`, `idUser`, `idFactory`, `CountFactory` FROM `UserMap` WHERE 1
 class MapController
 {
     static private $instance = null;

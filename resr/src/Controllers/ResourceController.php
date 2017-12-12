@@ -88,8 +88,8 @@ class ResourceController
         $this->__dataBase__controller->__Admin__ResourcesRemoveByName($Resource);
         $this->set($this->__dataBase__controller->__Admin__ResourcesQuery());
     }
-    public function update($Resource, $ProductionUnit, $IMG, $IMGFac){
-        $this->__dataBase__controller->__Admin__ResourcesUpdate($Resource, $ProductionUnit, $IMG, $IMGFac);
+    public function update($Resource, $ProductionUnit, $FactoryName, $IMG, $IMGFac){
+        $this->__dataBase__controller->__Admin__ResourcesUpdate($Resource, $ProductionUnit, $FactoryName, $IMG, $IMGFac);
         $this->set($this->__dataBase__controller->__Admin__ResourcesQuery());
     }
     public function remove_ALL(){
