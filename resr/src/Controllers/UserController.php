@@ -40,7 +40,7 @@ class UserController
         }
     }
 
-    public function add($login, $password, $LastLogined, $idLevel = 0, $type = 2, $idScore = 0, $IMG=""){
+    public function add($login, $password, $LastLogined="0000-00-00", $idLevel = 0, $type = 2, $idScore = 0, $IMG="defoult_user.svg"){
 
         $this->__dataBase__controller->regestration($login, $password, $LastLogined, $type, $idLevel, $idScore, $IMG);
         $this->set($this->__dataBase__controller->__Admin__UserQuery());

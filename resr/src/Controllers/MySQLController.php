@@ -83,7 +83,7 @@ final class MySQLController
      * @return int|string $idUzytkownika of new user, or -1 if Insertion was failed;
      *
      */
-    public function regestration($login, $password, $type = 2, $idLevel = 0, $idScore = 0, $IMG = "defoult_user.svg")
+    public function regestration($login, $password, $llogin="0000-00-00", $type = 2, $idLevel = 0, $idScore = 0, $IMG = "defoult_user.svg")
     {
         $prepare = $this->pdo->prepare("SELECT * FROM `User` WHERE Email=:e_mail ");
         $prepare->bindParam(":e_mail", $login);
@@ -91,9 +91,10 @@ final class MySQLController
         $prepare->execute();
         $idUzytkownika = -1;
         if ($prepare->rowCount() <= 0) {
-            $rejestracja = $this->pdo->prepare(" INSERT INTO User VALUES (NULL , :email, :pass, :type, :score, :userlevel, :image) ");
+            $rejestracja = $this->pdo->prepare(" INSERT INTO User VALUES (NULL , :email, :pass, :dat,  :type, :score, :userlevel, :image) ");
             $rejestracja->bindParam(":email", $login);
             $rejestracja->bindParam(":pass", $password);
+            $rejestracja->bindParam(":dat", $password);
             $rejestracja->bindParam(":type", $type);
             $rejestracja->bindParam(":score", $idScore);
             $rejestracja->bindParam(":userlevel", $idLevel);
