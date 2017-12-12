@@ -4,17 +4,18 @@ include_once __DIR__ . "/resr/src/Controllers/TaskController.php";
 include_once __DIR__ . "/resr/src/Controllers/ResourceController.php";
 include_once __DIR__ . "/resr/src/Controllers/ScoreController.php";
 include_once __DIR__ . "/resr/src/Controllers/FactoryInstanceController.php";
-include_once __DIR__ . "/resr/src/Controllers/UserController.php";
+include_once __DIR__ . "/resr/src/Controllers/MapController.php";
 
 use Controller\TaskController;
 use Controller\UserController;
 use Controller\ResourceController;
 use Controller\ScoreController;
 use Controller\FactoryInstanceController;
+use Controller\MapController;
 
 function string_rand($length_of_string=20)
 {
-    $symbolSet = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGH JKLZXCVBNM";
+    $symbolSet = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
     $fin_str = "";
     for ($licznik = 0; $licznik < $length_of_string; $licznik++) {
         $fin_str = $fin_str . substr($symbolSet, rand(1, strlen($symbolSet) - 1), 1);
@@ -47,6 +48,7 @@ foreach ($controller->returnArray() as $item){
 }*/
 
 $controllerTask = TaskController::getInstance();
+$controllerMap = MapController::getInstance();
 //$controllerTask->removeAll();
 
 /*
@@ -82,15 +84,18 @@ foreach ($controllerUser->returnArray() as $item){
     echo "User\tTask\tUser\n";
     echo "=======================================\n";
 */
-
+$_SESSION["idUser"] = "2";
 foreach ($controllerUser->returnArray() as $value){
+    print_r($value);
+}
+
+foreach ($controllerMap->returnArray() as $value){
     print_r($value);
 }
 echo "\n\n\n";
-$controllerUser->add("suka", "bliat",date("Y-m-d"));
-foreach ($controllerUser->returnArray() as $value){
+$controllerMap->
+foreach ($controllerMap->returnArray() as $value){
     print_r($value);
 }
-
 
 ?>
