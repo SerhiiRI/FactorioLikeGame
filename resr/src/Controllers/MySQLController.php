@@ -292,40 +292,27 @@ final class MySQLController
 
 
 
-    public function __User__FactoryInstanceAdd($idResource, $idFactory, $UpgradeLVL, $idUser)
+    public function __User__FactoryInstanceAdd($idResource, $upgradeLevel, $idUser)
     {
-        $prepare = $this->pdo->prepare("SELECT * FROM `FactoryInstance` WHERE `idResource`=:resource AND `idFactory`=:factory AND `Upgrade`=:up AND `idUser`=:usr");
+        $prepare = $this->pdo->prepare("SELECT * FROM `FactoryInstance` WHERE `idResource`=:resource AND `Upgrade`=:up AND `idUser`=:usr");
         $prepare->bindParam(":resource", $idResource);
-        $prepare->bindParam(":factory", $idFactory);
-        $prepare->bindParam(":up", $UpgradeLVL);
+        $prepare->bindParam(":up", $upgradeLevel);
         $prepare->bindParam(":usr", $idUser);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
-        $prepare->closeCursor();
         if ($prepare->rowCount() == 0) {
             $prepare = $this->pdo->prepare(
-                "INSERT INTO `FactoryInstance`(`idFactoryInstance`, `idResource`, `idFactory`, `Upgrade`, `idUser`)" .
-                " VALUES (NULL,:resource,:factory,:up,:usr)");
+                "INSERT INTO `FactoryInstance`(`idFactoryInstance`, `idResource`, `Upgrade`, `idUser`)" .
+                " VALUES (NULL,:resource,:up,:usr)");
             $prepare->bindParam(":resource", $idResource);
-            $prepare->bindParam(":factory", $idFactory);
-            $prepare->bindParam(":up", $UpgradeLVL);
+            $prepare->bindParam(":up", $upgradeLevel);
             $prepare->bindParam(":usr", $idUser);
             $prepare->execute();
             $insertedScore = $this->pdo->lastInsertId();
             $prepare->closeCursor();
             return $insertedScore;
-        } else {
-            $prepare = $this->pdo->prepare("SELECT * FROM `FactoryInstance` WHERE `idResource`=:resource AND `idFactory`=:factory AND `Upgrade`=:up AND `idUser`=:usr");
-            $prepare->bindParam(":resource", $idResource);
-            $prepare->bindParam(":factory", $idFactory);
-            $prepare->bindParam(":up", $UpgradeLVL);
-            $prepare->bindParam(":usr", $idUser);
-            $prepare->setFetchMode(PDO::FETCH_ASSOC);
-            $prepare->execute();
-            $linia = $prepare->fetch();
-            $prepare->closeCursor();
-            return $linia["idFactoryInstance"];
         }
+        $prepare->closeCursor();
         return null;
     }
 
@@ -338,7 +325,7 @@ final class MySQLController
         return null;
     }
 
-    public function __User__FactoryInstanceRemove(int $idInstance)
+    public function __User__FactoryInstanceRemoveByID(int $idInstance)
     {
         $prepare = $this->pdo->prepare("DELETE FROM `FactoryInstance` WHERE `idFactoryInstance`=:idInsance");
         $prepare->bindParam(":idInsance", $idInstance);
@@ -347,8 +334,32 @@ final class MySQLController
         return null;
     }
 
-    public function __User__FactoryInstanceQuery(){
+    public function __User__FactoryInstanceRemoveByParam($idResource, $upgradeLevel, $idUser)
+    {
+        $prepare = $this->pdo->prepare("DELETE FROM `FactoryInstance`  WHERE `idResource`=:resource AND `Upgrade`=:up AND `idUser`=:usr");
+        $prepare->bindParam(":resource", $idResource);
+        $prepare->bindParam(":up", $upgradeLevel);
+        $prepare->bindParam(":usr", $idUser);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        $prepare->closeCursor();
+        return null;
+    }
+
+    public function __Admin__FactoryInstanceQuery(){
         $prepare = $this->pdo->prepare("SELECT * FROM `FactoryInstance`");
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        if ($prepare->rowCount() > 0) {
+            $assocc = $prepare->fetchAll();
+            return $assocc;
+        }
+        $prepare->closeCursor();
+        return null;
+    }
+    public function __User__FactoryInstanceQuery($idUser){
+        $prepare = $this->pdo->prepare("SELECT * FROM `FactoryInstance` WHERE `idUser`=:id");
+        $prepare->bindParam(":id", $idUser);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         if ($prepare->rowCount() > 0) {
@@ -483,11 +494,11 @@ final class MySQLController
         $prepare = $this->pdo->prepare("SELECT * FROM `Question`");
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
-        $prepare->closeCursor();
         if ($prepare->rowCount() > 0) {
             $assoc = $prepare->fetchAll();
             return $assoc;
         }
+        $prepare->closeCursor();
         return null;
     }
 
