@@ -12,7 +12,7 @@ class QuestionController
     public static function getInstance(){
         if(empty(self::$instance))
             self::$instance = new self();
-        return QuestionController::$instance;
+        return self::$instance;
     }
 
     private function __construct()
@@ -28,16 +28,16 @@ class QuestionController
         }
     }
     public function add($idTask, $Question, array $Answer){
-        $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
         $this->__dataBase__controller->__Admin__QuestionAdd($idTask, $Question, $Answer);
+        $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
     }
     public function removeByQuestion(string $Question){
-        $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
         $this->__dataBase__controller->__Admin__QuestionRemoveByQuestion($Question);
+        $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
     }
     public function removeByID(int $idQuestion){
-        $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
         $this->__dataBase__controller->__Admin__QuestionRemoveById($idQuestion);
+        $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
     }
     public function returnArray(){
         return $this->QuestionList;

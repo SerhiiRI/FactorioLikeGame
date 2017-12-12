@@ -26,16 +26,16 @@ class FactoryInstance
     }
 
 
-    public function getIdFactoryInstance(){
+    public function getidFactoryInstance(){
         return $this->idFactoryInstance;
     }
-    public function getIdResource(){
+    public function getidResource(){
         return $this->idResource;
     }
     public function getUpgrade(){
         return $this->Upgrade;
     }
-    public function getIdUser(){
+    public function getidUser(){
         return $this->idUser;
     }
 }
