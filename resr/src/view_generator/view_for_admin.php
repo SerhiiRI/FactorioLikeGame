@@ -231,17 +231,38 @@ function EdycjaPytanDoGry()
     include_once __DIR__ . "/../Controllers/QuestionController.php";
     $__QuestControler = \Controller\QuestionController::getInstance();
 
+    include_once __DIR__ . "/../Controllers/TaskController.php";
+    $__TaskControler = \Controller\TaskController::getInstance();
+
+    $TaskData = $__TaskControler->returnArray();
     $QuestData = $__QuestControler->returnArray();
-    $QuestData[0] = '0';
-    $QuestData[1] = '1';
     $action = "db_update.php";
 
     $show = <<<HTML
     <div class="collapsible-body">
-                                <table>
-                                    <tr>
+        <div class="alx_flexkontener_quest">
                                         <form action="$action" method="post">
-                                            <td>
+                                        <select name="select_task">
+                                        <option value="" disabled selected>Lista Zadań</option>
+                                        
+                                        
+HTML;
+    echo $show;
+    foreach ($TaskData as &$Item) {
+        $task = $Item->getTask();
+        $task_id = $Item->getidTask();
+//            print_r($test);
+        $show = <<<HTML
+                                        <option value="$task_id">$task</option>
+HTML;
+        echo $show;
+    }
+
+    $show = <<<HTML
+                                        </select>                                    
+                                    <table>
+                                    <tr>
+                                            <td class="alx_flex_quest_input">
                                                 <div class="input-field col s12">
                                                     <textarea id="textarea1" class="materialize-textarea" name="txt_pytanie"></textarea>
                                                     <label for="textarea1" >Pytanie</label>
@@ -253,6 +274,11 @@ function EdycjaPytanDoGry()
                                                     <label for="textarea1">Odpowiedź</label>
                                                 </div>
                                             </td>
+                                            </tr>
+                                            </table>
+                                            
+                                            <table>
+                                            <tr>                                           
                                             <td class="alx_edytor_pytań">
                                                 <div class="input-field col s12">
                                                     <textarea id="textarea1" class="materialize-textarea" name="txt_zle1"></textarea>
@@ -286,89 +312,115 @@ function EdycjaPytanDoGry()
                                                     </tr>
                                                 </table>
                                             </td>
+                                            </tr>
+                                            </table>
                                         </form>
-                                    </tr>
-                                </table>
+                                </div>
                             </div> <!--Ostatnii element dodający-->
 HTML;
     echo $show;
 
-
-
     foreach ($QuestData as &$item) {
-//        $pytanie = $item->getQuestion();
-//        $AnsList = $item->getAnswerList();
-//        $id_quest = $item->getIdQuestion();
-        $id_quest = 0;
-        $pytanie = "???";
-        $odp = "???";
-        $zle1 = "???";
-        $zle2 = "???";
-        $zle3 = "???";
-        $show = <<<HTML
-<div class="collapsible-body">
-    <table>
-        <tr>
-            <form action="$action" method="post">
-            <input type="hidden" value="$id_quest" name="id_quest_hidden">
-                <td>
-                    <div class="input-field col s12">
-                        <textarea id="textarea1" class="materialize-textarea" name="txt_pytanie">$pytanie</textarea>
-                        <label for="textarea1" >Pytanie</label>
-                    </div>
-                </td>
-                <td class="alx_edytor_pytań">
-                    <div class="input-field col s12">
-                        <textarea id="textarea1" class="materialize-textarea" name="txt_odp">$odp</textarea>
-                        <label for="textarea1">Odpowiedź</label>
-                    </div>
-                </td>
-                <td class="alx_edytor_pytań">
-                    <div class="input-field col s12">
-                        <textarea id="textarea1" class="materialize-textarea" name="txt_zle1">$zle1</textarea>
-                        <label for="textarea1">Źle</label>
-                    </div>
-                </td>
-                <td class="alx_edytor_pytań">
-                    <div class="input-field col s12">
-                        <textarea id="textarea1" class="materialize-textarea" name="txt_zle2">$zle2</textarea>
-                        <label for="textarea1">Źle</label>
-                    </div>
-                </td>
-                <td class="alx_edytor_pytań">
-                    <div class="input-field col s12">
-                        <textarea id="textarea1" class="materialize-textarea" name="txt_zle3">$zle3</textarea>
-                        <label for="textarea1">Źle</label>
-                    </div>
-                </td>
+        $task_id_InQuest = $item->getIdTask();
+        $pytanie = $item->getQuestion();
+        $answers = $item->getAnswerList();
+        $idQuest = $item->getIdQuestion();
 
-                <!--                                            BUTTONY-->
-                <td class="alx_edit_users_button">
-                    <table>
-                        <tr class="alx_padding_edit_users_button">
-                            <div class=" alx_padding_edit_users_button">
-                                <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                        type="submit"
-                                        name="edytuj_Question">
-                                    Edytuj <i class="icon-cogs alx_h8_font"></i>
-                                </button>
-                            </div>
-                        </tr>
-                        <tr class="alx_padding_edit_users_button">
-                            <div class="alx_padding_edit_users_button">
-                                <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                        type="submit"
-                                        name="del_Question">
-                                    Usuń <i class="icon-block alx_h8_font"></i>
-                                </button>
-                            </div>
-                        </tr>
-                    </table>
-                </td>
-            </form>
-        </tr>
-    </table>
-</div><!--Elementy w pętli-->
+        $odp = $answers[0]->getAnswer();
+        $zle1 = $answers[1]->getAnswer();
+        $zle2 = $answers[2]->getAnswer();
+        $zle3 = $answers[3]->getAnswer();
+
+        $show = <<<HTML
+    <div class="collapsible-body">
+        <div class="alx_flexkontener_quest">
+                                        <form action="$action" method="post">
+                                        <input type="hidden" value="$idQuest" name="quest_id">
+                                        <select name="select_task">
+                                        <option value="" disabled selected>Lista Zadań</option>
+                                        
+                                        
+HTML;
+        echo $show;
+        foreach ($TaskData as &$Item) {
+            $task = $Item->getTask();
+            $task_id = $Item->getidTask();
+            $isSelect = ($Item->getidTask()==$task_id_InQuest)?"selected":"";
+//            print_r($test);
+            $show = <<<HTML
+                                        <option value="$task_id" $isSelect>$task</option>
+HTML;
+            echo $show;
+        }
+
+        $show = <<<HTML
+                                        </select>                                    
+                                    <table>
+                                    <tr>
+                                            <td class="alx_flex_quest_input">
+                                                <div class="input-field col s12">
+                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_pytanie">$pytanie</textarea>
+                                                    <label for="textarea1" >Pytanie</label>
+                                                </div>
+                                            </td>
+                                            <td class="alx_edytor_pytań">
+                                                <div class="input-field col s12">
+                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_odp">$odp</textarea>
+                                                    <label for="textarea1">Odpowiedź</label>
+                                                </div>
+                                            </td>
+                                            </tr>
+                                            </table>
+                                            
+                                            <table>
+                                            <tr>                                           
+                                            <td class="alx_edytor_pytań">
+                                                <div class="input-field col s12">
+                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle1">$zle1</textarea>
+                                                    <label for="textarea1">Źle</label>
+                                                </div>
+                                            </td>
+                                            <td class="alx_edytor_pytań">
+                                                <div class="input-field col s12">
+                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle2">$zle2</textarea>
+                                                    <label for="textarea1">Źle</label>
+                                                </div>
+                                            </td>
+                                            <td class="alx_edytor_pytań">
+                                                <div class="input-field col s12">
+                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle3">$zle3</textarea>
+                                                    <label for="textarea1">Źle</label>
+                                                </div>
+                                            </td>
+
+                                            <!--                                            BUTTONY-->
+                                            <td class="alx_edit_users_button">
+                                                <table>
+                                                    <tr class="alx_padding_edit_users_button">
+                                                        <div class=" alx_padding_edit_users_button">
+                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
+                                                                    type="submit"
+                                                                    name="edytuj_Question">
+                                                                Edytuj <i class="icon-cogs alx_h8_font"></i>
+                                                            </button>
+                                                        </div>
+                                                    </tr>
+                                                    <tr class="alx_padding_edit_users_button">
+                                                        <div class="alx_padding_edit_users_button">
+                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
+                                                                    type="submit"
+                                                                    name="del_Question">
+                                                                Usuń <i class="icon-block alx_h8_font"></i>
+                                                            </button>
+                                                        </div>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            </tr>
+                                            </table>
+                                        </form>
+                                </div>
+                            </div> <!--Ostatnii element dodający-->
 HTML;
         echo $show;
     }

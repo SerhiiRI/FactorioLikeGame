@@ -689,3 +689,12 @@ table, tr, td {
     height: 6vh;
     margin: 0;
 }
+
+.alx_flexkontener_quest{
+    display: flex;
+    flex-direction: column;
+}
+
+.alx_flex_quest{
+    flex:1;
+}

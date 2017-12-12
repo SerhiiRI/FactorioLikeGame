@@ -128,49 +128,52 @@ if (isset($_POST["del_fabryka"])) {
 
 if (isset($_POST["add_Question"])) {
 
-    if ($_POST['txt_pytanie'] != "" && $_POST['txt_odp'] != "" && $_POST["txt_zle1"] != "" && ["txt_zle2"] != "" && $_POST["txt_zle3"] != "") {
-//        include_once __DIR__ . "/../git-repo/resr/src/Controllers/QuestionController.php";
-//        $__QuestControl = \Controller\QuestionController::getInstance();
+    if ($_POST['select_task'] != "" && $_POST['txt_pytanie'] != "" && $_POST['txt_odp'] != "" && $_POST["txt_zle1"] != "" && ["txt_zle2"] != "" && $_POST["txt_zle3"] != "") {
+        include_once __DIR__ . "/../git-repo/resr/src/Controllers/QuestionController.php";
+        $__QuestControl = \Controller\QuestionController::getInstance();
 
-        echo "POST<br/>";
-        echo "Pytanie: " . $_POST["txt_pytanie"] . "<br/>";
-        echo "Odp: " . $_POST["txt_odp"] . "<br/>";
-        echo "Źle: " . $_POST['txt_zle1'] . "<br/>";
-        echo "Źle: " . $_POST['txt_zle2'] . "<br/>";
-        echo "Źle: " . $_POST['txt_zle3'] . "<br/>";
-//        $_SESSION["ActionInfo"] = "Dodano surowiec/fabrykę: " . $_POST["input_surowiec"];
+//        echo "POST<br/>";
+//        echo "Task ID: " . $_POST["select_task"] . "<br/>";
+//        echo "Pytanie: " . $_POST["txt_pytanie"] . "<br/>";
+//        echo "Odp: " . $_POST["txt_odp"] . "<br/>";
+//        echo "Źle: " . $_POST['txt_zle1'] . "<br/>";
+//        echo "Źle: " . $_POST['txt_zle2'] . "<br/>";
+//        echo "Źle: " . $_POST['txt_zle3'] . "<br/>";
+        $__QuestControl->add($_POST["select_task"], $_POST["txt_pytanie"], $_POST["txt_odp"],$_POST["txt_zle1"],$_POST["txt_zle2"],$_POST["txt_zle3"]);
+
+            $_SESSION["ActionInfo"] = "Dodano Pytanie: " . $_POST["txt_pytanie"];
     }
-}
+}//FINISH
 
 if (isset($_POST["edytuj_Question"])) {
 
-    if ($_POST['txt_pytanie'] != "" && $_POST['txt_odp'] != "" && $_POST["txt_zle1"] != "" && ["txt_zle2"] != "" && $_POST["txt_zle3"] != "") {
-
-//        include_once __DIR__ . "/../git-repo/resr/src/Controllers/QuestionController.php";
-//        $__QuestControl = \Controller\QuestionController::getInstance();
+    if ($_POST['select_task'] != "" && $_POST['txt_pytanie'] != "" && $_POST['txt_odp'] != "" && $_POST["txt_zle1"] != "" && ["txt_zle2"] != "" && $_POST["txt_zle3"] != "") {
+        include_once __DIR__ . "/../git-repo/resr/src/Controllers/QuestionController.php";
+        $__QuestControl = \Controller\QuestionController::getInstance();
 
         echo "POST<br/>";
-        echo "ID: " . $_POST["id_quest_hidden"] . "<br/>";
+        echo "Task ID: " . $_POST["select_task"] . "<br/>";
+        echo "Quest ID: " . $_POST["quest_id"] . "<br/>";
         echo "Pytanie: " . $_POST["txt_pytanie"] . "<br/>";
         echo "Odp: " . $_POST["txt_odp"] . "<br/>";
         echo "Źle: " . $_POST['txt_zle1'] . "<br/>";
         echo "Źle: " . $_POST['txt_zle2'] . "<br/>";
         echo "Źle: " . $_POST['txt_zle3'] . "<br/>";
-//        $_SESSION["ActionInfo"] = "Dodano surowiec/fabrykę: " . $_POST["input_surowiec"];
+        $__QuestControl->remove($_POST["quest_id"]);
+        $__QuestControl->add($_POST["select_task"], $_POST["txt_pytanie"], $_POST["txt_odp"],$_POST["txt_zle1"],$_POST["txt_zle2"],$_POST["txt_zle3"]);
+        $_SESSION["ActionInfo"] = "Edytowano pytanie: " . $_POST["txt_pytanie"];
     }
-}
+}//FINISH
 
 if (isset($_POST["del_Question"])) {
-//
-//        include_once __DIR__ . "/../git-repo/resr/src/Controllers/QuestionController.php";
-//        $__QuestControl = \Controller\QuestionController::getInstance();
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/QuestionController.php";
+    $__QuestControl = \Controller\QuestionController::getInstance();
+//    echo "Quest ID: " . $_POST["quest_id"] . "<br/>";
+    $__QuestControl->remove($_POST["quest_id"]);
+    $_SESSION["ActionInfo"] = "Usunięto pytanie: " . $_POST["quest_id"];
+}//FINISH
 
-    echo "ID: " . $_POST["id_quest_hidden"];
-//        $__QuestControl->removeByID($_POST["id_quest_hidden"]);
-//        $_SESSION["ActionInfo"] = "Dodano surowiec/fabrykę: " . $_POST["input_surowiec"];
-}
-
-//header("Location: AdminControllerSystem.php");
+header("Location: AdminControllerSystem.php");
 ?>
 <br/>
 <a href="AdminControllerSystem.php">Back to Admin</a>
