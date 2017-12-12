@@ -383,11 +383,13 @@ function EdytorZadańDoGry()
     $grupa = 0;
     $sumakoncowa = 0;
 
-    foreach ($TaskData as &$Item) {
+    foreach ($TaskData as $Item) {
+//        echo "<pre>";
+//        print_r($Item);
+//        echo "</pre>";
         $grupa++;
-        $sumakoncowa = $sumakoncowa + $grupa;
-        $sgrupa = "grupa".$grupa;
-        $test = "test".$grupa;
+        $sumakoncowa++;
+        $sgrupa = "grupa" . $grupa;
         $resrc = $Item->getidResources();
 
         $action = "#";
@@ -395,69 +397,74 @@ function EdytorZadańDoGry()
         $neededLVL = $Item->getLevelTo();
 
         $show = <<<HTML
-                            <div class="collapsible-body">
-                                        <form action="$action">
-                                            <div class="alx_flexkontener_task">
-                                                <div class="alx_flex_w_edytorze_taskow_radio">
+                        <div class="collapsible-body">
+                            <form action="$action">
+                                <div class="alx_flexkontener_task">
+                                    <div class="alx_flex_w_edytorze_taskow_radio">
+
 HTML;
         echo $show;
-        foreach ($factoryData as &$Item2) {
-            $surowiec = $Item2->getResourceName();
-            $selected = ($Item2->getIdResources()==$resrc)?"checked":"";
+        $tst=0;
+        foreach ($factoryData as &$Res) {
+            $tst++;
+            $surowiec = $Res->getResourceName();
+            $selected = ($Res->getIdResources() == $resrc) ? "checked" : "";
+            $test = "test" .$grupa.$tst;
+//            print_r($test);
             $show = <<<HTML
-                                                    <p class="alx_flex_w_edytorze_taskow" >
-                                                          <input name = "$sgrupa" type = "radio" id = "$task" $selected/>
-                                                          <label for="$test" >$surowiec</label >
-                                                    </p >
+<p class="alx_flex_w_edytorze_taskow" >
+    <input name = "$sgrupa" type = "radio" id = "$test" $selected/>
+    <label for="$test" >$surowiec</label >
+</p >
 HTML;
             echo $show;
         }
 
         $show = <<<HTML
 
-                                                </div>                
-                                            <div class="input-field alx_flex_w_edytorze_taskow_midlle">
-                                                <div>
-                                                        <input type="text" class="alx_task_input" name="" value="$task"> 
-                                                        <label>Zadanie</label>
-                                                        </div>
-                                                <div>
-                                                <div class="input-field">
-                                                        <input type="number" class="alx_task_input" name="" value="$neededLVL">
-                                                        <label>Wymagany poziom</label>
-                                                        </div>
-                                            </div>   
-                                            </div>   
-                                            <!--                                            BUTTONY-->
-                                            <div class="alx_flex_w_edytorze_taskow">
-                                                <table>
-                                                    <tr class="alx_padding_edit_users_button">
-                                                        <div class=" alx_padding_edit_users_button">
-                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                                    type="submit"
-                                                                    name="edit">
-                                                                Edytuj <i class="icon-cogs alx_h8_font"></i>
-                                                            </button>
-                                                        </div>
-                                                    </tr>
-                                                    <tr class="alx_padding_edit_users_button">
-                                                        <div class="alx_padding_edit_users_button">
-                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                                    type="submit"
-                                                                    name="del">
-                                                                Usuń <i class="icon-block alx_h8_font"></i>
-                                                            </button>
-                                                        </div>
-                                                    </tr>
-                                                </table>
+
+                                    </div>
+                                    <div class="input-field alx_flex_w_edytorze_taskow_midlle">
+                                        <div>
+                                            <input type="text" class="alx_task_input" name="" value="$task">
+                                            <label>Zadanie</label>
+                                        </div>
+                                        <div>
+                                            <div class="input-field">
+                                                <input type="number" class="alx_task_input" name="" value="$neededLVL">
+                                                <label>Wymagany poziom</label>
                                             </div>
-                                        </form>
-                                    </tr>
-                                </table>
-                            </div><!--Elementy w pętli-->   
+                                        </div>
+                                    </div>
+                                    <!--                                            BUTTONY-->
+                                    <div class="alx_flex_w_edytorze_taskow">
+                                        <table>
+                                            <tr class="alx_padding_edit_users_button">
+                                                <div class=" alx_padding_edit_users_button">
+                                                    <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
+                                                            type="submit"
+                                                            name="edit">
+                                                        Edytuj <i class="icon-cogs alx_h8_font"></i>
+                                                    </button>
+                                                </div>
+                                            </tr>
+                                            <tr class="alx_padding_edit_users_button">
+                                                <div class="alx_padding_edit_users_button">
+                                                    <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
+                                                            type="submit"
+                                                            name="del">
+                                                        Usuń <i class="icon-block alx_h8_font"></i>
+                                                    </button>
+                                                </div>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
+                        </div><!--Elementy w pętli-->   
 HTML;
         echo $show;
-        echo $sumakoncowa;
+//        echo $sumakoncowa;
     }
 }
 
