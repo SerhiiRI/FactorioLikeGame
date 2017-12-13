@@ -45,4 +45,32 @@ class QuestionController
     public function returnArray(){
         return $this->QuestionList;
     }
+
+    public function onClickAndCheckQuestion($idQuestion, $idAnswer){
+        $temp = $this->searchQuestionByIdOf_Question($idQuestion);
+        foreach ($temp->getAnswerList() as $odpowiedz){
+            if(($odpowiedz->getidAnswers() == $idAnswer) && ($odpowiedz->getRight()==true)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function searchQuestionByIdOf_Question($idQuestion){
+        foreach ($this->QuestionList as $item){
+            if ($item->getIdQuestion() == $idQuestion){
+                return $item;
+            }
+        }
+        return false;
+    }
+
+    private function searchQuestionByIdOf_Task($idTask){
+        foreach ($this->QuestionList as $item){
+            if ($item->getIdQuestion() == $idTask){
+                return $item;
+            }
+        }
+        return false;
+    }
 }
