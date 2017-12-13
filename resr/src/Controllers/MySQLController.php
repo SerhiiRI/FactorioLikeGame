@@ -287,8 +287,8 @@ final class MySQLController
         return null;
     }
     public function __User__UserResource($idUser){
-        $prepare = $this->pdo->prepare("SELECT `idResource` FROM `Score`, `Task` WHERE".
-            " `Score`.idTask=`Task`.idTask AND `Score`.idUser=:usser AND `Score`.FinishedTask=True");
+        $prepare = $this->pdo->prepare("SELECT `idResources` FROM `Score`, `Task` WHERE".
+            " `Score`.idTask=`Task`.idTask AND `Score`.idUser=:usser AND `Score`.FinishedTask=False");
         $prepare->bindParam(":usser", $idUser);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
@@ -296,7 +296,7 @@ final class MySQLController
     }
 
     public function __User__TaskList($idUser){
-        $prepare = $this->pdo->prepare("SELECT `idTask`, `idResources`, `Task`, `LevelTo`, `ResourceTo` FROM `Score`, `Task` WHERE `Task`.idTask=`Score`.idTask AND `Score`.idUser=:usser");
+        $prepare = $this->pdo->prepare("SELECT `Task`.idTask as `idTask`, `idResources`, `Task`, `LevelTo`, `ResourceTo` FROM `Score`, `Task` WHERE `Task`.idTask=`Score`.idTask AND `Score`.idUser=:usser");
         $prepare->bindParam(":usser", $idUser);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();

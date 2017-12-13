@@ -177,26 +177,40 @@ HTML;
 
 function ListaTaskowDlaUsera()
 {
+    include_once __DIR__ . "/../Controllers/UserController.php";
+    $__userControler = \Controller\UserController::getInstance();
 
-    $lvl = "Poziom: 5";
-    $opis = "Nowoczesne metody wydobywcze.";
-    $odkrycie = "Nowoczesna rafineria";
-    $var = "456";
+    include_once __DIR__ . "/../Controllers/TaskController.php";
+    $__taskControler = \Controller\TaskController::getInstance();
 
-    for ($i = 0; $i < 10; $i++) {
+    include_once __DIR__ . "/../Controllers/MapController.php";
+    $__mapControler = \Controller\MapController::getInstance();
+
+    include_once __DIR__ . "/../Controllers/ResourceController.php";
+    $__resControler = \Controller\ResourceController::getInstance();
+
+    $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
+    $userData = $__userControler->SearchByEmail($nameOfUser);
+    $userID = $userData->getidUser();
+
+    $TaskList = $__taskControler->returnOnlyCurrentUserTaskArray();
+    foreach ($TaskList as $item) {
+
+        $lvl = $item->getLevelTo();
+        $opis = $item->getTask();
+        $odkrycie = $item->getResourceTo();
+//        $var = "456";
+
         $show = <<<HTML
 <div class="collapsible-body alx_flexkontener_user_task">
                             <div class="alx_flex_user_task">
-                                $lvl
+                                Wymagany poziom: $lvl
                             </div>
                             <div class="alx_flex_user_task">
-                                $opis
+                                Opis: $opis
                             </div>
                             <div class="alx_flex_user_task">
-                                $odkrycie
-                            </div>
-                            <div class="alx_flex_user_task">
-                                $var
+                                Wymagania: $odkrycie
                             </div>
                             <div class="alx_flex_user_task">
                                 <div class="alx_flex_user_task_forbtn">
@@ -224,8 +238,9 @@ function ListaFabrykDoBudowyDlaUsera()
     $idUser = $userData->getidUser();
     $_SESSION['idUser'] = $idUser;
 
-    $factoryData = $__ResControler->returnArray();
+    $factoryData = $__ResControler->returnArrayForCurrentUserResource($idUser);
     $action = "db_update_user.php";
+//    echo "<pre>";print_r($factoryData);echo"</pre>";
 
     foreach ($factoryData as &$item) {
 

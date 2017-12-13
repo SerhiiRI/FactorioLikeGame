@@ -107,19 +107,18 @@ class ResourceController
     }
 
     private function setUserResourceArray($idUser=-1){
-        unset($this->ResourceListForCurrentUser);
-        $list = ($idUser <= 0)?
-            $this->__dataBase__controller->__User__UserResource($_SESSION["idUser"]):
-            $this->__dataBase__controller->__User__UserResource($idUser);
+        //unset($this->ResourceListForCurrentUser);
+        $list = $this->__dataBase__controller->__User__UserResource($idUser);
         foreach ($list as $value){
-            $temp = $this->searchByIDAndReturnObject($value["idResource"]);
+            $temp = $this->searchByIDAndReturnObject($value["idResources"]);
+//            echo "<pre>";print_r($temp);echo"</pre>";
             if(!is_null($temp)) $this->ResourceListForCurrentUser[] = $temp;
         }
     }
 
     public function returnArrayForCurrentUserResource($idUser){
         $this->setUserResourceArray($idUser);
-        if(empty($this->ResourceListForCurrentUser)){ return null; } else{
+        if(empty($this->ResourceListForCurrentUser)){ echo "w domu działało"; } else{
         return $this->ResourceListForCurrentUser;}
     }
 
