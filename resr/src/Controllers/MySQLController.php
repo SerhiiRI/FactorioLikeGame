@@ -101,7 +101,8 @@ final class MySQLController
             $rejestracja->bindParam(":image", $IMG);
             $rejestracja->setFetchMode(PDO::FETCH_ASSOC);
             $rejestracja->execute();
-            $idUzytkownika = $this->pdo->lastInsertId();
+            //$idUzytkownika = $this->pdo->lastInsertId();
+            $idUzytkownika = 1;
             $rejestracja->closeCursor();
         } else {
             $fetchOBJ = $prepare->fetch();
