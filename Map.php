@@ -48,6 +48,21 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
                     <?php MapaFabryki(); ?>
                 </div>
                 <!--Koniec części z Mapą Fabryki-->
+
+                <br/>
+                <br/>
+                <ul class="collapsible popout" data-collapsible="accordion">
+
+                    <!------------------------------------------------------------------------------------------------>
+                    <!--Lista zadań-->
+                    <li>
+                        <div class="collapsible-header active"><i class="material-icons">sort</i>Postęp technologiczny</div>
+                        <!--PIERWSZY ELEMENT PO ROZWINIECIU-->
+                        <?php ListaTaskowDlaUsera(); ?>
+
+                        <!--KONIEC PIERWSZEGO ELEMENTU-->
+                    </li>
+                </ul>
             </div>
 
         </div>

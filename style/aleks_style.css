@@ -387,7 +387,6 @@ table, tr, td {
     --min-pic-px: var(--max-pic-px);
 }
 
-
 .alx_flexy_w_divie_map {
     flex: 1;
     transition: background-color 200ms;
@@ -402,6 +401,7 @@ table, tr, td {
     cursor: pointer;
     transition: background-color 200ms;
 }
+
 /*@media (max-width: 1200px){*/
 /*.alx_flexy_w_divie_map{*/
 /*width: 100px;*/
@@ -493,7 +493,7 @@ table, tr, td {
     flex-direction: row;
     min-height: 50px;
     display: flex;
-    font-size:1.4rem;
+    font-size: 1.4rem;
 }
 
 .alx_flexy_w_edycji_fabryk_info {
@@ -542,7 +542,6 @@ table, tr, td {
     }
 }
 
-
 .body_bg {
     background-color: black;
 }
@@ -553,10 +552,10 @@ table, tr, td {
     opacity: 0.8;
 }
 
-.alx_flexkontener_autor{
-    flex:1;
+.alx_flexkontener_autor {
+    flex: 1;
     display: flex;
-    flex-direction:row;
+    flex-direction: row;
 
 }
 
@@ -569,12 +568,12 @@ table, tr, td {
 
 .autorzy_serhi {
     flex: 1;
-    order:3;
+    order: 3;
 }
 
 .autorzy_info {
-    display:flex;
-    position:absolute;
+    display: flex;
+    position: absolute;
     min-width: 100%;
     min-height: 50px;
     background-color: black;
@@ -585,11 +584,11 @@ table, tr, td {
     flex-direction: column;
 }
 
-.enjoi{
-    order:2;
+.enjoi {
+    order: 2;
     flex: 1;
     z-index: 2;
-    position:relative;
+    position: relative;
     top: -120px;
     font-size: 4rem;
     letter-spacing: 10px;
@@ -597,61 +596,60 @@ table, tr, td {
     text-align: center;
 }
 
-
-.autorzy_btn{
+.autorzy_btn {
     width: 10vh;
-    position:fixed;
-    right:10px;
-    bottom:10px;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
     z-index: 2;
 }
 
+@media (max-width: 600px) {
 
-@media (max-width: 600px){
-
-    .alx_flexkontener_autor{
-        flex-direction:column;
+    .alx_flexkontener_autor {
+        flex-direction: column;
     }
-    body{
+
+    body {
         overflow-y: visible;
     }
 
 }
 
+@media (max-width: 1263px) {
 
-@media (max-width: 1263px){
-
-    .enjoi{
+    .enjoi {
         top: -150px;
     }
-    body{
+
+    body {
         overflow-y: visible;
     }
 }
 
-@media (max-width: 944px){
+@media (max-width: 944px) {
 
-    .enjoi{
+    .enjoi {
         top: -140px;
     }
-    body{
+
+    body {
         overflow-y: visible;
     }
 }
 
+@media (max-width: 600px) {
 
-@media (max-width: 600px){
-
-    .enjoi{
+    .enjoi {
         top: 0;
     }
 }
 
-.alx_margin0{
-    margin: 5px 0 0 0!important;
+.alx_margin0 {
+    margin: 5px 0 0 0 !important;
 }
 
-.alx_flexkontener_task{
+.alx_flexkontener_task {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -659,42 +657,76 @@ table, tr, td {
     align-items: center;
 }
 
-
-.alx_flex_w_edytorze_taskow{
+.alx_flex_w_edytorze_taskow {
     flex: 1;
     padding: 0 2vw 0vh 2vw;
 }
 
-.alx_flex_w_edytorze_taskow_midlle{
+.alx_flex_w_edytorze_taskow_midlle {
     flex: 2;
 }
 
-
-.alx_flex_w_edytorze_taskow_radio{
+.alx_flex_w_edytorze_taskow_radio {
     flex: 1;
     display: flex;
     flex-direction: column;
     margin: 0;
-    padding-right:4vh;
+    padding-right: 4vh;
 }
 
-
-.alx_lvl_up_btn, .btn_lvlup{
+.alx_lvl_up_btn, .btn_lvlup {
     padding: 5vh 0vw;
     width: 100%;
 }
 
-.btn_lvlup{
-    padding:0;
+.btn_lvlup {
+    padding: 0;
     height: 6vh;
     margin: 0;
 }
 
-.alx_flexkontener_quest{
+.alx_flexkontener_quest {
     display: flex;
     flex-direction: column;
 }
 
-.alx_flex_quest{
-    flex:1;
+.alx_flex_quest {
+    flex: 1;
+}
+
+.alx_flexkontener_user_task {
+    display: flex;
+    flex-direction: row;
+}
+
+.alx_flex_user_task {
+    flex: 1;
+    background-color: #4db6ac;
+    margin: 1px;
+    padding: 1vh;
+    text-align: center;
+    color: white;
+    cursor: default;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.alx_flex_user_task:nth-child(2) {
+    flex: 2;
+}
+
+
+.alx_flex_user_task:last-child {
+    background-color: rgba(0,0,0,0);
+}
+
+
+.alx_flex_user_task_forbtn {
+    flex: 1;
+    display: flex;
+    text-align: center;
+    flex-direction:column;
+}
+
+.alx_flex_user_task_btn{
+    flex: 1;
 }

@@ -113,6 +113,29 @@ function MapaFabryki()
     $listaTestowa[4]['wydobycie'] = 50;
     $listaTestowa[4]['grafika'] = "gear5.svg";
 
+
+    include_once __DIR__ . "/../Controllers/UserController.php";
+    $__userControler = \Controller\UserController::getInstance();
+
+    include_once __DIR__ . "/../Controllers/FactoryInstanceController.php";
+    $__facControler = \Controller\FactoryInstanceController::getInstance();
+
+    include_once __DIR__ . "/../Controllers/MapController.php";
+    $__mapControler = \Controller\MapController::getInstance();
+
+    include_once __DIR__ . "/../Controllers/ResourceController.php";
+    $__resControler = \Controller\ResourceController::getInstance();
+
+    $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
+    $userData = $__userControler->SearchByEmail($nameOfUser);
+    $userID = $userData->getidUser();
+
+   //$userMap = $__mapControler->returnArrayByID($userID);
+   $userMap = $__mapControler->returnArray();
+    if($userMap == null){
+        echo "<h1>MAPA JEST PUSTA</h1>";
+    }
+
     foreach ($listaTestowa as &$item) {
 
         $lvl = $item['lvl'];
@@ -165,6 +188,41 @@ HTML;
     echo $show;
 
 
+}
+
+function ListaTaskowDlaUsera(){
+
+    $lvl = "Poziom: 5";
+    $opis = "Nowoczesne metody wydobywcze.";
+    $odkrycie = "Nowoczesna rafineria";
+    $var = "456";
+
+    for($i=0;$i<10; $i++) {
+        $show = <<<HTML
+<div class="collapsible-body alx_flexkontener_user_task">
+                            <div class="alx_flex_user_task">
+                                $lvl
+                            </div>
+                            <div class="alx_flex_user_task">
+                                $opis
+                            </div>
+                            <div class="alx_flex_user_task">
+                                $odkrycie
+                            </div>
+                            <div class="alx_flex_user_task">
+                                $var
+                            </div>
+                            <div class="alx_flex_user_task">
+                                <div class="alx_flex_user_task_forbtn">
+                                    <div class="alx_flex_user_task_btn">
+                                        <button class="btn">Badaj</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+HTML;
+        echo $show;
+    }
 }
 
 ?>
