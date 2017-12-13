@@ -8,7 +8,14 @@
 
 namespace Controller;
 include_once __DIR__."/../Class/UserMap.php";
+include_once __DIR__."/MySQLController.php";
 use \Controller\UserMap;
+
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 
 class MapController
 {
@@ -24,8 +31,8 @@ class MapController
 
     private function __construct()
     {
-        $_SESSION["idUser"] = "5";
-        $this->__dataBase__controller = MySQLController::getInstance();
+//        $_SESSION["idUser"] = "5";
+        $this->__dataBase__controller = \Controller\MySQLController::getInstance();
         $this->set($this->__dataBase__controller->__User__UserMapQuery($_SESSION["idUser"]));
 
     }
@@ -41,7 +48,7 @@ class MapController
                 );
             }
         }else{
-            echo "NULL";
+//            echo "NULL";
         }
 
     }
@@ -70,15 +77,14 @@ class MapController
     }
 
     public function returnArrayByID($id){
-        try {
+        if(!empty($this->UserMapList)) {
             foreach ($this->UserMapList as $item) {
                 if ($item->getidUser() == $id) {
-                    return $this->UserMapList;
+                    if (!empty($this->UserMapList)) {
+                        return $this->UserMapList;
+                    } else return null;
                 }
             }
-            return null;
-        }catch (\Exception $ex){
-
-        }
+        }else return null;
     }
 }

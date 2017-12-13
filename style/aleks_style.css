@@ -43,7 +43,7 @@ body {
     border-radius: 10vh 0% 0% 0%;
 }
 
-.aleks_content_panel {
+.aleks_content_panel, .aleks_content_panel_user {
     float: left;
     padding: 6vh 6vw;
     position: absolute;
@@ -51,6 +51,10 @@ body {
     width: var(--szerokosc-kontentu);
     margin-left: var(--margines-kontentu);
     border-radius: 0% 0% 10vh 0%;
+}
+
+.aleks_content_panel_userfix {
+    padding: 6vh 5vw!important;
 }
 
 .aleks_icon {
@@ -383,7 +387,7 @@ table, tr, td {
 }
 
 :root {
-    --max-pic-px: 165px;
+    --max-pic-px: 150px;
     --min-pic-px: var(--max-pic-px);
 }
 
@@ -696,7 +700,7 @@ table, tr, td {
 
 .alx_flexkontener_user_task {
     display: flex;
-    flex-direction: row;
+    flex-wrap:wrap;
 }
 
 .alx_flex_user_task {
@@ -729,4 +733,9 @@ table, tr, td {
 
 .alx_flex_user_task_btn{
     flex: 1;
+}
+
+.alx_h1_title_fix{
+    margin: 0;
+    padding: 1vh;
 }

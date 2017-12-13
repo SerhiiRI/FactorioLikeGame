@@ -10,6 +10,11 @@ namespace Controller;
 include_once __DIR__."/MySQLController.php";
 include_once __DIR__."/../Class/FactoryInstance.php";
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+
 class FactoryInstanceController
 {
     private $FactoryInstanceList = array();
@@ -25,12 +30,13 @@ class FactoryInstanceController
     private function __construct()
     {
         $this->__dataBase__controller = MySQLController::getInstance();
-        $this->set($this->__dataBase__controller->__User__FactoryInstanceQuery($_SESSION['idUser']));
+//        echo "LIST ";print_r($_SESSION["idUser"]);echo "!";
+        $this->set($this->__dataBase__controller->__User__FactoryInstanceQuery($_SESSION["idUser"]));
     }
 
     private function set($sql_question){
-        unset($this->FactoryInstanceList);
         if(!is_null($sql_question)) {
+        unset($this->FactoryInstanceList);
             foreach ($sql_question as &$item) {
                 $this->FactoryInstanceList[] = new FactoryInstance(
                     $item["idFactoryInstance"],
@@ -39,8 +45,9 @@ class FactoryInstanceController
                     $item["idUser"]
                 );
             }
+
         }else{
-            echo "w domu dzialo";
+//            echo "w domu dzialo";
         }
     }
     public function add($idResource, $upgradeLevel, $idUser){
@@ -64,7 +71,36 @@ class FactoryInstanceController
             $this->__dataBase__controller->__Admin__FactoryInstanceQuery();
         }
     }
-    public function returnArray(){
-        return $this->FactoryInstanceList;
+    public function returnArray()
+    {
+
+        if(!empty($this->FactoryInstanceList)) {
+            return $this->FactoryInstanceList;
+        }else echo "FactoryInstanceList jest pusty :'(";
+
+//        print_r($this->FactoryInstanceList);
+//        foreach ($this->FactoryInstanceList as $item){
+//            echo "<pre>";
+//            print_r($item);
+//            echo "</pre>";
+//        }
+    }
+    public function returnFactoryIDbyParametr($idResource, $upgradeLevel, $idUser){
+        if(!empty($this->FactoryInstanceList)) {
+            foreach ($this->FactoryInstanceList as $item) {
+                if (($item->getidResource() == $idResource) && ($item->getidUser() == $idUser) && ($item->getUpgrade() == $upgradeLevel)){
+                    return $item->getidFactoryInstance();
+                }
+            }
+        }else return null;
+    }
+    public function returnFactoryByID($id){
+        if(!empty($this->FactoryInstanceList)) {
+            foreach ($this->FactoryInstanceList as $item) {
+                if ($item->getidFactoryInstance()==$id){
+                    return $item;
+                }
+            }
+        }else return null;
     }
 }

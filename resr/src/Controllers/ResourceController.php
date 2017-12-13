@@ -110,5 +110,11 @@ class ResourceController
         }
         return null;
     }
+    public function returnArrayByID($idres){
+        foreach ($this->ResourceList as &$item){
+            if ($item->getIdResources() == $idres) return $item;
+        }
+        return null;
+    }
 
 }

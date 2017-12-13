@@ -1,7 +1,10 @@
 <?php
+
+//Strona admina
+
 if (isset($_POST["edytuj_user"])) {
 
-    if ($_POST["input_name"] != "" && $_POST["input_passwd"] != "" && $_POST["input_grafika"] != "" ) {
+    if ($_POST["input_name"] != "" && $_POST["input_passwd"] != "" && $_POST["input_grafika"] != "") {
 
         include_once __DIR__ . "/../git-repo/resr/src/Controllers/MySQLController.php";
         $__update = \Controller\MySQLController::getInstance();
@@ -82,11 +85,11 @@ if (isset($_POST["add_fabryka"])) {
         include_once __DIR__ . "/../git-repo/resr/src/Controllers/ResourceController.php";
         $__ResControl = \Controller\ResourceController::getInstance();
 
-        echo "POST<br/>";
-        echo "Grafika: " . $_POST["input_grafika"] . "<br/>";
-        echo "Name: " . $_POST["input_fabryka"] . "<br/>";
-        echo "Surowiec: " . $_POST['input_surowiec'] . "<br/>";
-        echo "Wydobycie: " . $_POST['input_wydobycie'] . "<br/>";
+//        echo "POST<br/>";
+//        echo "Grafika: " . $_POST["input_grafika"] . "<br/>";
+//        echo "Name: " . $_POST["input_fabryka"] . "<br/>";
+//        echo "Surowiec: " . $_POST['input_surowiec'] . "<br/>";
+//        echo "Wydobycie: " . $_POST['input_wydobycie'] . "<br/>";
         $__ResControl->add($_POST['input_surowiec'], $_POST['input_wydobycie'], $_POST["input_fabryka"], $_POST["input_grafika"], $_POST["input_grafika"]);
         $_SESSION["ActionInfo"] = "Dodano surowiec/fabrykę: " . $_POST["input_surowiec"];
     }
@@ -139,9 +142,9 @@ if (isset($_POST["add_Question"])) {
 //        echo "Źle: " . $_POST['txt_zle1'] . "<br/>";
 //        echo "Źle: " . $_POST['txt_zle2'] . "<br/>";
 //        echo "Źle: " . $_POST['txt_zle3'] . "<br/>";
-        $__QuestControl->add($_POST["select_task"], $_POST["txt_pytanie"], $_POST["txt_odp"],$_POST["txt_zle1"],$_POST["txt_zle2"],$_POST["txt_zle3"]);
+        $__QuestControl->add($_POST["select_task"], $_POST["txt_pytanie"], $_POST["txt_odp"], $_POST["txt_zle1"], $_POST["txt_zle2"], $_POST["txt_zle3"]);
 
-            $_SESSION["ActionInfo"] = "Dodano Pytanie: " . $_POST["txt_pytanie"];
+        $_SESSION["ActionInfo"] = "Dodano Pytanie: " . $_POST["txt_pytanie"];
     }
 }//FINISH
 
@@ -160,7 +163,7 @@ if (isset($_POST["edytuj_Question"])) {
         echo "Źle: " . $_POST['txt_zle2'] . "<br/>";
         echo "Źle: " . $_POST['txt_zle3'] . "<br/>";
         $__QuestControl->remove($_POST["quest_id"]);
-        $__QuestControl->add($_POST["select_task"], $_POST["txt_pytanie"], $_POST["txt_odp"],$_POST["txt_zle1"],$_POST["txt_zle2"],$_POST["txt_zle3"]);
+        $__QuestControl->add($_POST["select_task"], $_POST["txt_pytanie"], $_POST["txt_odp"], $_POST["txt_zle1"], $_POST["txt_zle2"], $_POST["txt_zle3"]);
         $_SESSION["ActionInfo"] = "Edytowano pytanie: " . $_POST["txt_pytanie"];
     }
 }//FINISH
@@ -173,7 +176,25 @@ if (isset($_POST["del_Question"])) {
     $_SESSION["ActionInfo"] = "Usunięto pytanie: " . $_POST["quest_id"];
 }//FINISH
 
-header("Location: AdminControllerSystem.php");
+
+//Strona usera
+
+if (isset($_POST["create_factory"])) {
+
+        include_once __DIR__ . "/../git-repo/resr/src/Controllers/ResourceController.php";
+        $__ResControl = \Controller\ResourceController::getInstance();
+
+        echo "POST<br/>";
+        echo "Grafika: " . $_POST["input_grafika"] . "<br/>";
+        echo "Name: " . $_POST["input_fabryka"] . "<br/>";
+        echo "Surowiec: " . $_POST['input_surowiec'] . "<br/>";
+        echo "Wydobycie: " . $_POST['input_wydobycie'] . "<br/>";
+}//FINISH
+
+
+//Koniec
+
+//header("Location: AdminControllerSystem.php");
 ?>
 <br/>
 <a href="AdminControllerSystem.php">Back to Admin</a>
