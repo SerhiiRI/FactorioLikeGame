@@ -1,6 +1,7 @@
 <?php
 namespace Controller;
 include_once __DIR__."/../Class/User.php";
+include_once __DIR__."/ScoreController.php";
 
 class UserController
 {
@@ -42,13 +43,15 @@ class UserController
 
     public function add($login, $password, $LastLogined="0000-00-00", $idLevel = 0, $type = 2, $idScore = 0, $IMG="defoult_user.svg"){
 
-        $this->__dataBase__controller->regestration($login, $password, $LastLogined, $type, $idLevel, $idScore, $IMG);
+        $IdUSera = $this->__dataBase__controller->regestration($login, $password, $LastLogined, $type, $idLevel, $idScore, $IMG);
+        if($IdUSera > 0) {
+            $this->setOfScoreTaskForUserCurrentLevel($login, "0");
+        }
         $this->set($this->__dataBase__controller->__Admin__UserQuery());
     }
     public function remove(string $email){
         $this->__dataBase__controller->__Admin__UserRemove($email);
         $this->set($this->__dataBase__controller->__Admin__UserQuery());
-
     }
     public function update($EmailToChange, $PasswordToChange, $IMG){
         $this->__dataBase__controller->__Admin__UserUpdate($EmailToChange, $PasswordToChange, $IMG);
@@ -60,6 +63,17 @@ class UserController
     }
     public function nextLevel($email){
         $this->__dataBase__controller->__User__UserNextLevel($email);
+        $this->set($this->__dataBase__controller->__Admin__UserQuery());
+        $userLevel = $this->SearchByEmail($email);
+        $this->setOfScoreTaskForUserCurrentLevel($email, $userLevel->getLevel());
+    }
+    private function setOfScoreTaskForUserCurrentLevel($login, $level){
+        $ScoreCTRL = \Controller\ScoreController::getInstance();
+        $TaskCTRL = \Controller\TaskController::getInstance();
+        foreach ($TaskCTRL->returnTaskByLvl($level) as $value) {
+            $usertemp = $this->SearchByEmail($login);
+            $ScoreCTRL->add($value->getidTask(), $usertemp->getidUser());
+        }
     }
     public function returnArray(){
         return $this->UserList;

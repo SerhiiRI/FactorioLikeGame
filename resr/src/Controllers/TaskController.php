@@ -85,6 +85,15 @@ class TaskController
     public function returnArray(){
         return $this->TaskList;
     }
+    public function returnTaskByLvl($level){
+        $ArrayOfLevelTask = array();
+        foreach ($this->TaskList as $iHate_PHP) {
+            if($iHate_PHP->getLevelTo() ==$level) {
+                $ArrayOfLevelTask[] = $iHate_PHP;
+            }
+        }
+        return $ArrayOfLevelTask;
+    }
 
     /***
      * @return array|null
