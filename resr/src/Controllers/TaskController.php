@@ -4,13 +4,14 @@ include_once __DIR__."/MySQLController.php";
 include_once __DIR__."/UserController.php";
 include_once __DIR__."/ScoreController.php";
 include_once __DIR__."/../Class/Task.php";
-
+session_start();
 use Controller\MySQLController;
 
 class TaskController
 {
     static private $instance = null;
     private $TaskList = array();
+    private $TaskListForCurrentUser = array();
     private $__user__controller;
     private $__dataBase__controller;
     private $__score__controller;
@@ -79,6 +80,34 @@ class TaskController
     }
     public function returnArray(){
         return $this->TaskList;
+    }
+
+    /***
+     * @return array|null
+     * zwraca lista tasków dla użytkownika w sessji;
+     * operując na danych z tabeli TaskForCurrentUser[]
+     * która i jest twożona nabierzącą po wywolywaniu
+     * tej metody
+     * 1.     SQL =>    <Task>[]   =>TaskForCurrentUser[]
+     * 2.       return (this => TaskForCurrentUser[]);
+     */
+    public function returnOnlyCurrentUserTaskArray()
+    {
+        if (isset($_SESSION["idUser"])) {
+            unset($this->TaskListForCurrentUser);
+            $result =  $this->__dataBase__controller->__User__TaskList($_SESSION["idUser"]);
+                foreach ($result as $item) {
+                $this->TaskListForCurrentUser[] = new Task(
+                    $item["idTask"],
+                    $item["idResources"],
+                    $item["Task"],
+                    $item["LevelTo"],
+                    $item["ResourceTo"]
+                );
+            }
+            return $this->TaskListForCurrentUser;
+        }
+        return null;
     }
     private function searchLevel($id){
         foreach ($this->TaskList as $item){

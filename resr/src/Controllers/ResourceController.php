@@ -105,14 +105,36 @@ class ResourceController
         }
         return null;
     }
+
+    private function setUserResourceArray($idUser=-1){
+        unset($this->ResourceListForCurrentUser);
+        $list = ($idUser <= 0)?
+            $this->__dataBase__controller->__User__UserResource($_SESSION["idUser"]):
+            $this->__dataBase__controller->__User__UserResource($idUser);
+        foreach ($list as $value){
+            $temp = $this->searchByIDAndReturnObject($value["idResource"]);
+            if(!is_null($temp)) $this->ResourceListForCurrentUser[] = $temp;
+        }
+    }
+
+    public function returnArrayForCurrentUserResource($idUser){
+        $this->setUserResourceArray($idUser);
+        if(empty($this->ResourceListForCurrentUser)){ return null; } else{
+        return $this->ResourceListForCurrentUser;}
+    }
+
     public function searchByID($idres){
         foreach ($this->ResourceList as &$item){
             if ($item->getIdResources() == $idres) return $item->getResourceName();
         }
         return null;
     }
-    private function returnArrayForCurrentUserResource(id){
 
+    public function searchByIDAndReturnObject($idres){
+        foreach ($this->ResourceList as $item){
+            if ($item->getIdResources() == $idres) return $item;
+        }
+        return null;
     }
 
 }

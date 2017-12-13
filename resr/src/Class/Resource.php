@@ -24,7 +24,8 @@ class Resource
     private $IMG;
     private $IMGFac;
 
-    public function __construct($idResources, $Resource, $ProductiveUnit, $FactoryName, $IMG, $IMGFac)
+    public function
+    __construct($idResources, $Resource, $ProductiveUnit, $FactoryName, $IMG, $IMGFac)
     {
         $this->idResources = $idResources;
         $this->Resource = $Resource;
