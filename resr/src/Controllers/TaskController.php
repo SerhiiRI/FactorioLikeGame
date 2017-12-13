@@ -4,8 +4,12 @@ include_once __DIR__."/MySQLController.php";
 include_once __DIR__."/UserController.php";
 include_once __DIR__."/ScoreController.php";
 include_once __DIR__."/../Class/Task.php";
-session_start();
 use Controller\MySQLController;
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 
 class TaskController
 {
