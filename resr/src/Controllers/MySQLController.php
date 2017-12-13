@@ -286,7 +286,22 @@ final class MySQLController
         }
         return null;
     }
+    public function __User__UserResource($idUser){
+        $prepare = $this->pdo->prepare("SELECT `idResource` FROM `Score`, `Task` WHERE".
+            " `Score`.idTask=`Task`.idTask AND `Score`.idUser=:usser AND `Score`.FinishedTask=True");
+        $prepare->bindParam(":usser", $idUser);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        return $prepare->fetchAll();
+    }
 
+    public function __User__TaskList($idUser){
+        $prepare = $this->pdo->prepare("SELECT `idTask`, `idResources`, `Task`, `LevelTo`, `ResourceTo` FROM `Score`, `Task` WHERE `Task`.idTask=`Score`.idTask AND `Score`.idUser=:usser");
+        $prepare->bindParam(":usser", $idUser);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        return $prepare->fetchAll();
+    }
     public function __User__UserScoreRemove($idTask, $idUser)
     {
         $prepare = $this->pdo->prepare("SELECT * FROM `Score` WHERE `idTask`=:task AND `idUser`=:usser");
@@ -337,6 +352,24 @@ final class MySQLController
     {
         $prepare = $this->pdo->prepare("UPDATE `FactoryInstance` SET `Upgrade` = `Upgrade` + 1 WHERE `idFactoryInstance`=:idInstance");
         $prepare->bindParam(":idInstance", $idInstance);
+        $prepare->execute();
+        $prepare->closeCursor();
+        return null;
+    }
+    public function __User__FactoryInstanceUpdateAndCreateNew($idResource, $upgradeLevel, $idUser)
+    {
+        $prepare = $this->pdo->prepare("SELECT * FROM `FactoryInstance` WHERE `idResource`=:resource AND `Upgrade`=:up AND `idUser`=:usr");
+        $prepare->bindParam(":resource", $idResource);
+        $prepare->bindParam(":up", $upgradeLevel);
+        $prepare->bindParam(":usr", $idUser);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+
+        $prepare = $this->pdo->prepare("INSERT INTO `FactoryInstance`(`idFactoryInstance`, `idResource`, `Upgrade`, `idUser`)" .
+            " VALUES (NULL,:resource,:up,:usr)");
+        $prepare->bindParam(":resource", $idResource);
+        $prepare->bindParam(":up", $upgradeLevel);
+        $prepare->bindParam(":usr", $idUser);
         $prepare->execute();
         $prepare->closeCursor();
         return null;

@@ -29,8 +29,8 @@ class ScoreController
     private function __construct()
     {
         $this->__dataBase__controller = MySQLController::getInstance();
-        //$this->set($this->__dataBase__controller->__User__UserScoreQuery($_SESSION["idUser"]));
-        $this->set($this->__dataBase__controller->__User__UserScoreQuery());
+        $this->set($this->__dataBase__controller->__User__UserScoreQuery($_SESSION["idUser"]));
+        //$this->set($this->__dataBase__controller->__User__UserScoreQuery());
     }
 
     private function set( $sql_question){
@@ -47,6 +47,7 @@ class ScoreController
             echo "no CHUJ!";
         }
     }
+
     public function add($idTask, $idUser=-1)
     {
         if ($idUser < 0) {
@@ -55,9 +56,7 @@ class ScoreController
             $this->__dataBase__controller->__User__UserScoreAdd($idTask, $idUser);
         }
     }
-    public function addToAll($idTask){
 
-    }
     public function remove(string $Task){
         $this->__dataBase__controller->__User__UserScoreRemove($Task, $_SESSION["idUser"]);
     }
