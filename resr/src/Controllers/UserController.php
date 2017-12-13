@@ -2,6 +2,7 @@
 namespace Controller;
 include_once __DIR__."/../Class/User.php";
 include_once __DIR__."/ScoreController.php";
+include_once __DIR__."/TaskController.php";
 
 class UserController
 {
@@ -44,12 +45,12 @@ class UserController
     public function add($login, $password, $LastLogined="0000-00-00", $idLevel = 0, $type = 2, $idScore = 0, $IMG="defoult_user.svg"){
 
         $IdUSera = $this->__dataBase__controller->regestration($login, $password, $LastLogined, $type, $idLevel, $idScore, $IMG);
-        if($IdUSera > 0) {
-            $this->setOfScoreTaskForUserCurrentLevel($login, "0");
-        }
         $this->set($this->__dataBase__controller->__Admin__UserQuery());
+        if($IdUSera > 0) {
+            $this->setOfScoreTaskForUserCurrentLevel($login, "1");
+        }
     }
-    public function remove(string $email){
+    public function remove($email){
         $this->__dataBase__controller->__Admin__UserRemove($email);
         $this->set($this->__dataBase__controller->__Admin__UserQuery());
     }

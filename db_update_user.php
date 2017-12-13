@@ -44,7 +44,7 @@ if (isset($_POST["destroy_factory"])) {
 
 //Koniec
 
-//header("Location: AdminControllerSystem.php");
+header("Location: AdminControllerSystem.php");
 ?>
 <br/>
 <a href="AdminControllerSystem.php">Back to Admin</a>

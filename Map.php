@@ -44,12 +44,12 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
                 <!--Lista zadań-->
                 <ul class="collapsible popout" data-collapsible="accordion">
                     <li>
-                        <div class="collapsible-header active"><i class="material-icons">sort</i>Postęp technologiczny
+                        <div class="collapsible-header"><i class="material-icons">sort</i>Postęp technologiczny
                         </div>
                             <?php ListaTaskowDlaUsera(); ?>
                     </li>
                     <li>
-                        <div class="collapsible-header"><i class="material-icons">sort</i>Mapa Fabryki
+                        <div class="collapsible-header active"><i class="material-icons">sort</i>Mapa Fabryki
                         </div>
                         <!--Mapa gracza-->
                         <div class="collapsible-body coll-body-first">
