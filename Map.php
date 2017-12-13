@@ -31,6 +31,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
     <body class="alx_bg_img">
     <a href="Credits.html"><img src="resr/img/gear6.gif" class="autorzy_btn"></a>
 
+    <?php lvlupLightbox(); ?>
     <?php PanelKontrolnyFabryki(); ?>
 
     <div>
@@ -46,7 +47,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
                     <li>
                         <div class="collapsible-header"><i class="material-icons">sort</i>Postęp technologiczny
                         </div>
-                            <?php ListaTaskowDlaUsera(); ?>
+                        <?php ListaTaskowDlaUsera(); ?>
                     </li>
                     <li>
                         <div class="collapsible-header active"><i class="material-icons">sort</i>Mapa Fabryki
@@ -84,7 +85,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
             document.getElementById("wydobycie_ligthbox").innerHTML = "Wydobycie: " + wydobycie + "/h";
             document.getElementById("opis_fabryki").innerHTML = "Obiekt: " + nameOfFactory + "<br>Wydobycie: " + nameOfResource;
             document.getElementById("alx_flexkontener_0").style.transition = "all 500ms";
-            document.getElementById("idOfFactoryOnMap").value=idOfFactory;
+            document.getElementById("idOfFactoryOnMap").value = idOfFactory;
         }
 
         function func_close_zindex() {
@@ -105,6 +106,17 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
             document.getElementById("onClickWorking").setAttribute("onClick", "javascript: start_working();")
         }
 
+        // function lvlup_open_zindex(task, quest, odp1, odp2, odp3, odp4) {
+        function lvlup_open_zindex() {
+            document.getElementById("lvlup_lightbox").style.opacity = 1;
+            document.getElementById("lvlup_lightbox").style.zIndex = 5;
+            // document.getElementById("task_lightbox").innerHTML = task;
+            // document.getElementById("quest_lightbox").innerHTML = quest;
+            // document.getElementById("odp1").innerHTML = odp1;
+            // document.getElementById("odp2").innerHTML = odp2;
+            // document.getElementById("odp3").innerHTML = odp3;
+            // document.getElementById("odp4").innerHTML = odp4;
+        }
 
     </script>
 

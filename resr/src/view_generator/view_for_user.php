@@ -59,13 +59,14 @@ HTML;
     }
 
     $progres_procent = ($progress_start_calc * 100) / $progress_finish_calc;
+    $progres_procent = 100;
     $ButtonDisabled = ($progres_procent == 100) ?: "disabled";
     $ButtonValue = ($progres_procent == 100) ? "LVL UP!" : "Postęp: " . $progres_procent . "%";
 
     $show = <<<HTML
 
                 <div class="alx_lvl_up_btn">
-                    <button name="levelup_btn" class="btn btn_lvlup" $ButtonDisabled>
+                    <button name="levelup_btn" class="btn btn_lvlup" $ButtonDisabled onclick="lvlup_open_zindex()">
                     $ButtonValue
                     </button>
                 </div>
@@ -310,6 +311,32 @@ function ListaFabrykDoBudowyDlaUsera()
 HTML;
         echo $show;
     }
+}
+
+function lvlupLightbox()
+{
+    $action="#";
+    $task = "Podstawowe wydobywanie rudy węgla.";
+    $quest = "Czy możesz użyć węgla jako paliwa?";
+    $odp1="Tak";
+        $odp2="Nie";
+            $odp3="Może";
+                $odp4="PHP";
+    $show = <<<HTML
+<div class="alx_flexkontener_lvlup_bg" id="lvlup_lightbox">
+        <div class="alx_flexkontener_lvlup_1">
+            <div class="alx_flex_lvlup_1" id="task_lightbox">Pytanie do zadania: <br/>$task</div>
+            <div class="alx_flex_lvlup_3" id="quest_lightbox">Pytanie: <br/>$quest</div>
+            <form class="alx_flex_lvlup_2" method="post" action="$action">
+                <button class="btn alx_flex_lvlup_2_1" id="odp1">$odp1</button>
+                <button class="btn alx_flex_lvlup_2_1" id="odp2">$odp2</button>
+                <button class="btn alx_flex_lvlup_2_1" id="odp3">$odp3</button>
+                <button class="btn alx_flex_lvlup_2_1" id="odp4">$odp4</button>
+            </form>
+        </div>
+    </div>
+HTML;
+    echo $show;
 }
 
 ?>
