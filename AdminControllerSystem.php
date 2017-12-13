@@ -48,7 +48,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
                     <!------------------------------------------------------------------------------------------------>
                     <!--PIERWSZE NARZĘDZIE "STATYSTYKA"-->
                     <li class="alx_zmiana_stylu_listy_panel_admina">
-                        <div class="collapsible-header"><i class="material-icons">sort</i>Statystyka</div>
+                        <div class="collapsible-header active"><i class="material-icons">sort</i>Statystyka</div>
                         <!--PIERWSZY ELEMENT PO ROZWINIECIU-->
                         <?php wyswietlanieStatystykSystemu(); ?>
                         <!--KONIEC PIERWSZEGO ELEMENTU-->
@@ -70,7 +70,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 
                         <!--POCZĄTEK OPCJI 3 - PYTANIA DO GRY-->
                     <li class="alx_zmiana_stylu_listy_panel_admina">
-                        <div class="collapsible-header active"><i class="icon-code-outline aleks_icon"></i>Edytor pytań
+                        <div class="collapsible-header"><i class="icon-code-outline aleks_icon"></i>Edytor pytań
                         </div>
 
                         <!--PĘTLA Z WIERSZAMI W PYTANIA DO GRY-->

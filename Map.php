@@ -40,41 +40,51 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
             <!--KONIEC PANELU LEWEGO-->
 
             <!--prawy panel Admina (content)-->
-            <div class="aleks_content_panel">
+            <div class="aleks_content_panel aleks_content_panel_userfix">
+                <!--Lista zadań-->
+                <ul class="collapsible popout" data-collapsible="accordion">
+                    <li>
+                        <div class="collapsible-header active"><i class="material-icons">sort</i>Postęp technologiczny
+                        </div>
+                            <?php ListaTaskowDlaUsera(); ?>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">sort</i>Mapa Fabryki
+                        </div>
+                        <!--Mapa gracza-->
+                        <div class="collapsible-body coll-body-first">
+                            <h1 class="alx_h1_title alx_h1_title_fix">Mapa Fabryki</h1>
+                        </div>
+                        <div class="collapsible-body alx_flex_dla_mapy_diva">
+                            <?php MapaFabryki(); ?>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">sort</i>Budowa obiektów fabryki
+                        </div>
+                        <?php ListaFabrykDoBudowyDlaUsera(); ?>
+                    </li>
+                </ul>
 
-                <h1 class="alx_h1_title">Mapa Fabryki</h1>
-                <!--Mapa gracza-->
-                <div class="alx_flex_dla_mapy_diva">
-                    <?php MapaFabryki(); ?>
-                </div>
+
                 <!--Koniec części z Mapą Fabryki-->
 
                 <br/>
                 <br/>
-                <ul class="collapsible popout" data-collapsible="accordion">
-
-                    <!------------------------------------------------------------------------------------------------>
-                    <!--Lista zadań-->
-                    <li>
-                        <div class="collapsible-header active"><i class="material-icons">sort</i>Postęp technologiczny</div>
-                        <!--PIERWSZY ELEMENT PO ROZWINIECIU-->
-                        <?php ListaTaskowDlaUsera(); ?>
-
-                        <!--KONIEC PIERWSZEGO ELEMENTU-->
-                    </li>
-                </ul>
             </div>
 
         </div>
     </div>
     <script>
-        function func_open_zindex(grafika, wydobycie, lvl) {
+        function func_open_zindex(grafika, wydobycie, lvl, nameOfFactory, nameOfResource, idOfFactory) {
             document.getElementById("alx_flexkontener_0").style.opacity = 1;
             document.getElementById("alx_flexkontener_0").style.zIndex = 5;
             document.getElementById("grafika_ligthbox").src = "resr/img/" + grafika;
             document.getElementById("lvl_ligthbox").innerHTML = "Poziom: " + lvl;
             document.getElementById("wydobycie_ligthbox").innerHTML = "Wydobycie: " + wydobycie + "/h";
+            document.getElementById("opis_fabryki").innerHTML = "Obiekt: " + nameOfFactory + "<br>Wydobycie: " + nameOfResource;
             document.getElementById("alx_flexkontener_0").style.transition = "all 500ms";
+            document.getElementById("idOfFactoryOnMap").value=idOfFactory;
         }
 
         function func_close_zindex() {
