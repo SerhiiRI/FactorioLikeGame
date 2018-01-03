@@ -85,7 +85,7 @@ final class MySQLController
      */
     public function regestration($login, $password, $llogin="0000-00-00", $type = 2, $idLevel = 0, $idScore = 0, $IMG = "defoult_user.svg")
     {
-        $prepare = $this->pdo->prepare("SELECT * FROM `User` WHERE Email=:e_mail ");
+        $prepare = $this->pdo->prepare("SELECT * FROM `User` WHERE LOWER(Email) = LOWER(:e_mail)");
         $prepare->bindParam(":e_mail", $login);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
