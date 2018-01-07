@@ -128,5 +128,14 @@ class TaskController
                 return $item->getLevelTo();
             }
         }
+        return null;
+    }
+    public function searchLevelByIdResorce($id){
+        foreach ($this->TaskList as $item){
+            if ($item->getidResources() == $id){
+                return $item->getResourceTo();
+            }
+        }
+        return null;
     }
 }
