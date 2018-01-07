@@ -3,7 +3,16 @@
 include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
 if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 
-    include_once("resr/src/view_generator/view_for_admin.php"); ?>
+    include_once("resr/src/view_generator/view_for_admin.php");
+    $whatShouldOpen = $_SESSION["whatShouldOpen"];
+    if(isset($_SESSION["ActionInfo"])){
+        if($_SESSION["ActionInfo"]!="0"){
+            javamessage($_SESSION["ActionInfo"]);
+            $_SESSION["ActionInfo"]="0";
+        }
+    }
+    ?>
+
 
     <!DOCTYPE html>
     <html lang="pl">
@@ -48,7 +57,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
                     <!------------------------------------------------------------------------------------------------>
                     <!--PIERWSZE NARZĘDZIE "STATYSTYKA"-->
                     <li class="alx_zmiana_stylu_listy_panel_admina">
-                        <div class="collapsible-header active"><i class="material-icons">sort</i>Statystyka</div>
+                        <div class="collapsible-header <?php if($whatShouldOpen == "statystyka" || $whatShouldOpen == "startPage"){echo "active";} ?>"><i class="material-icons">sort</i>Statystyka</div>
                         <!--PIERWSZY ELEMENT PO ROZWINIECIU-->
                         <?php wyswietlanieStatystykSystemu(); ?>
                         <!--KONIEC PIERWSZEGO ELEMENTU-->
@@ -58,7 +67,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 
                     <!--DRUGIE NARZĘDZIE "EDYCJA SUROWCOW"-->
                     <li class="alx_zmiana_stylu_listy_panel_admina">
-                        <div class="collapsible-header">
+                        <div class="collapsible-header <?php if($whatShouldOpen == "edytor fabryk"){echo "active";} ?>">
                             <i class="icon-industrial-building aleks_icon"></i>
                             Edytor fabryk/surowców
                         </div>
@@ -70,7 +79,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 
                         <!--POCZĄTEK OPCJI 3 - PYTANIA DO GRY-->
                     <li class="alx_zmiana_stylu_listy_panel_admina">
-                        <div class="collapsible-header"><i class="icon-code-outline aleks_icon"></i>Edytor pytań
+                        <div class="collapsible-header <?php if($whatShouldOpen == "edytor pytań"){echo "active";} ?>"><i class="icon-code-outline aleks_icon"></i>Edytor pytań
                         </div>
 
                         <!--PĘTLA Z WIERSZAMI W PYTANIA DO GRY-->
@@ -79,13 +88,13 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
                         <!------------------------------------------------------------------------------------------------>
 
 
-                        <!--POCZĄTEK OPCJI 4 - PYTANIA DO GRY-->
-                    <li class="alx_zmiana_stylu_listy_panel_admina">
-                        <div class="collapsible-header"><i class="icon-tools aleks_icon"></i>Edytor zadań
+                        <!--POCZĄTEK OPCJI 4 - Taski DO GRY-->
+                    <li class="alx_zmiana_stylu_listy_panel_admina ">
+                        <div class="collapsible-header  <?php if($whatShouldOpen == "edytor zadań"){echo "active";} ?>"><i class="icon-tools aleks_icon"></i>Edytor zadań
                         </div>
 
 
-                        <!--PĘTLA Z WIERSZAMI W PYTANIA DO GRY-->
+                        <!--PĘTLA Z WIERSZAMI W Taski DO GRY-->
                         <?php EdytorZadańDoGry(); ?>
                         <!--Koniec opcji 3-->
                         <!------------------------------------------------------------------------------------------------>
@@ -93,7 +102,8 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 
                         <!--POCZĄTEK OPCJI 5 - Edytor użytkownikow-->
                     <li class="alx_zmiana_stylu_listy_panel_admina">
-                        <div class="collapsible-header"><i class="icon-key aleks_icon"></i>Zarządzaj użytkownikami
+                        <div class="collapsible-header <?php if($whatShouldOpen == "edytuj usera"){echo "active";} ?>">
+                            <i class="icon-key aleks_icon"></i>Zarządzaj użytkownikami
                         </div>
 
                         <!--PĘTLA Z WIERSZAMI W ZARZĄDZAJ UŻYTKOWNIKAMI-->

@@ -1,5 +1,9 @@
 <?php
 
+function javamessage($txt){
+    echo "<script type='text/javascript'>alert('$txt');</script>";
+}
+
 function LewyPanelAdmina()
 {
     include_once __DIR__ . "/../Controllers/UserController.php";
@@ -11,10 +15,36 @@ function LewyPanelAdmina()
     include_once __DIR__ . "/../Controllers/ResourceController.php";
     $__resControler = \Controller\ResourceController::getInstance();
 
+
+    include_once __DIR__ . "/../Controllers/TaskController.php";
+    $__taskControler = \Controller\TaskController::getInstance();
+
+
+    include_once __DIR__ . "/../Controllers/TaskController.php";
+    $__scoreControler = \Controller\ScoreController::getInstance();
+
+
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
     $userData = $__userControler->SearchByEmail($nameOfUser);
 //    $factoryData = $__facControler->returnArray();
     $__surowce = $__resControler->returnArray();
+
+    $howManyTask = 0;
+    $TaskListByLvl = $__taskControler->returnTaskByLvl(1);
+    foreach ($TaskListByLvl as $item) {
+        $howManyTask++;
+    }
+
+    $howManyCurrentTask=0;
+    $TaskList = $__taskControler->returnOnlyCurrentUserTaskArray();
+    foreach ($TaskList as $item) {
+        $status = $__scoreControler->searchByIdTask($item->getidTask());
+        if($status==false){
+            $howManyCurrentTask++;
+        }
+    }
+        //javamessage("Task: $howManyTask, CTask: $howManyCurrentTask");
+
 
     $imageOfUser = "resr/img/" . $userData->getIMG(); //Grafika usera
     $lvlGracza = $userData->getLevel();
@@ -58,15 +88,16 @@ HTML;
         echo $show;
     }
 
-    $progres_procent = ($progress_start_calc * 100) / $progress_finish_calc;
-    $progres_procent = 100;
+    $finishTask = $howManyTask - $howManyCurrentTask;
+    $progres_procent = ($finishTask * 100) / $howManyTask;
+//    $progres_procent = 100;
     $ButtonDisabled = ($progres_procent == 100) ?: "disabled";
-    $ButtonValue = ($progres_procent == 100) ? "LVL UP!" : "Postęp: " . $progres_procent . "%";
+    $ButtonValue = ($progres_procent == 100) ? "LVL UP!" : "Postęp: " . round($progres_procent) . "%";
 
     $show = <<<HTML
 
                 <div class="alx_lvl_up_btn">
-                    <button name="levelup_btn" class="btn btn_lvlup" $ButtonDisabled onclick="lvlup_open_zindex()">
+                    <button name="levelup_btn" class="btn btn_lvlup" onclick="lvlup_gratulation_open()" $ButtonDisabled ">
                     $ButtonValue
                     </button>
                 </div>
@@ -145,7 +176,7 @@ function PanelKontrolnyFabryki()
 <div class="alx_flexkontener_0" id="alx_flexkontener_0">
         <div id="edit_bg_1" class="alx_user_fabryka_flexkontener_A">
             <div class="alx_flexy_w_edycji_fabryk_pic">
-                <img src="resr/img/zelazotest.jpg" class="alx_flexy_w_edycji_fabryk_pic_child" id="grafika_ligthbox">
+                <img src="resr/img/Wood.png" class="alx_flexy_w_edycji_fabryk_pic_child" id="grafika_ligthbox">
                 <img src="resr/img/gear3.svg" class="alx_btn_floating_ligthbox" id="working_ico">
             </div>
             <div class="alx_user_fabryka_flexkontener_B">
@@ -187,22 +218,40 @@ function ListaTaskowDlaUsera()
     include_once __DIR__ . "/../Controllers/MapController.php";
     $__mapControler = \Controller\MapController::getInstance();
 
-    include_once __DIR__ . "/../Controllers/ResourceController.php";
-    $__resControler = \Controller\ResourceController::getInstance();
+    include_once __DIR__ . "/../Controllers/QuestionController.php";
+    $__questController = \Controller\QuestionController::getInstance();
+
+    include_once __DIR__ . "/../Controllers/TaskController.php";
+    $__scoreControler = \Controller\ScoreController::getInstance();
 
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
     $userData = $__userControler->SearchByEmail($nameOfUser);
     $userID = $userData->getidUser();
 
+    $howManyCurrentTask=0;
     $TaskList = $__taskControler->returnOnlyCurrentUserTaskArray();
     foreach ($TaskList as $item) {
-
-        $lvl = $item->getLevelTo();
-        $opis = $item->getTask();
-        $odkrycie = $item->getResourceTo();
+        $status = $__scoreControler->searchByIdTask($item->getidTask());
+        if($status==false) {
+            $howManyCurrentTask++;
+            $lvl = $item->getLevelTo();
+            $opis = $item->getTask();
+            $taskID = $item->getidTask();
+            $odkrycie = $item->getResourceTo();
 //        $var = "456";
 
-        $show = <<<HTML
+            $QuestData = $__questController->searchQuestionByIdOf_Task($taskID);
+//            echo "<pre>";print_r($QuestData);echo"</pre>";
+            $task = $opis;
+            $quest = $QuestData->getQuestion();
+            $answers = $QuestData->getAnswerList();
+            $idQuest = $QuestData->getIdQuestion();
+            $odp1 = $answers[0]->getAnswer();
+            $odp2 = $answers[1]->getAnswer();
+            $odp3 = $answers[2]->getAnswer();
+            $odp4 = $answers[3]->getAnswer();
+
+            $show = <<<HTML
 <div class="collapsible-body alx_flexkontener_user_task">
                             <div class="alx_flex_user_task">
                                 Wymagany poziom: $lvl
@@ -211,18 +260,41 @@ function ListaTaskowDlaUsera()
                                 Opis: $opis
                             </div>
                             <div class="alx_flex_user_task">
-                                Wymagania: $odkrycie
-                            </div>
-                            <div class="alx_flex_user_task">
                                 <div class="alx_flex_user_task_forbtn">
                                     <div class="alx_flex_user_task_btn">
-                                        <button class="btn">Badaj</button>
+                                        <button class="btn" onclick="lvlup_open_zindex('$task', '$quest', '$odp1', '$odp2', '$odp3', '$odp4')">Badaj</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 HTML;
-        echo $show;
+            echo $show;
+        }else{
+            $lvl = $item->getLevelTo();
+            $opis = $item->getTask();
+            $odkrycie = $item->getResourceTo();
+//        $var = "456";
+
+            $show = <<<HTML
+<div class="collapsible-body alx_flexkontener_user_task">
+                            <div class="alx_flex_user_task">
+                                Wymagany poziom: $lvl
+                            </div>
+                            <div class="alx_flex_user_task">
+                                Opis: $opis
+                            </div>
+                            <div class="alx_flex_user_task">
+                                <div class="alx_flex_user_task_forbtn">
+                                    <div class="alx_flex_user_task_btn">
+                                        <button class="btn" onclick="lvlup_open_zindex()" disabled>Finished</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+HTML;
+            //---------------Desibled tasks
+            echo $show;
+        }
     }
 }
 
@@ -240,19 +312,20 @@ function ListaFabrykDoBudowyDlaUsera()
     $_SESSION['idUser'] = $idUser;
 
     $factoryData = $__ResControler->returnArrayForCurrentUserResource($idUser);
-    $action = "db_update_user.php";
+    if(!empty($factoryData)) {
+        $action = "db_update_user.php";
 //    echo "<pre>";print_r($factoryData);echo"</pre>";
 
-    foreach ($factoryData as &$item) {
+        foreach ($factoryData as &$item) {
 
-        $fabricName = $item->getFactoryName();//jaka fabryka wydobywa
-        $surowiec = $item->getResourceName();//jaki surowiec jest wydobywany
-        $wydobyciePodstawowe = $item->getProductiveUnit();//wydobycie na 1 lvl
-        $fabrykaGrafika = ($item->getIMGFactory() == "") ? "image.svg" : $item->getIMGFactory(); //Grafika fabryki
-        $id_res = $item->getIdResources();
-        $upgradeLvl = 1;
+            $fabricName = $item->getFactoryName();//jaka fabryka wydobywa
+            $surowiec = $item->getResourceName();//jaki surowiec jest wydobywany
+            $wydobyciePodstawowe = $item->getProductiveUnit();//wydobycie na 1 lvl
+            $fabrykaGrafika = ($item->getIMGFactory() == "") ? "image.svg" : $item->getIMGFactory(); //Grafika fabryki
+            $id_res = $item->getIdResources();
+            $upgradeLvl = 1;
 
-        $show = <<<HTML
+            $show = <<<HTML
                             <div class="collapsible-body">
                                 <table>
                                     <tr>
@@ -309,13 +382,22 @@ function ListaFabrykDoBudowyDlaUsera()
                                 </table>
                             </div><!-- Elementy do wczytaj i edytuj-->
 HTML;
-        echo $show;
+            echo $show;
+        }
+    }else{
+        echo "<div class=\"collapsible-body\"><h4 style='padding: 2rem; text-align: center'>Nie odkryto jeszcze technologii</h4></div>";
     }
 }
 
 function lvlupLightbox()
 {
+    include_once __DIR__ . "/../Controllers/QuestionController.php";
+    $__questControler = \Controller\QuestionController::getInstance();
+
+    $_SESSION["whatShouldOpen"] = "Task";
+
     $action="#";
+    $action="db_update_user.php";
     $task = "Podstawowe wydobywanie rudy węgla.";
     $quest = "Czy możesz użyć węgla jako paliwa?";
     $odp1="Tak";
@@ -323,20 +405,36 @@ function lvlupLightbox()
             $odp3="Może";
                 $odp4="PHP";
     $show = <<<HTML
-<div class="alx_flexkontener_lvlup_bg" id="lvlup_lightbox">
-        <div class="alx_flexkontener_lvlup_1">
+<div class="alx_flexkontener_lvlup_bg" id="lvlup_lightbox" onclick="lvlup_close_zindex()">
+        <div class="alx_flexkontener_lvlup_1" >
             <div class="alx_flex_lvlup_1" id="task_lightbox">Pytanie do zadania: <br/>$task</div>
             <div class="alx_flex_lvlup_3" id="quest_lightbox">Pytanie: <br/>$quest</div>
             <form class="alx_flex_lvlup_2" method="post" action="$action">
-                <button class="btn alx_flex_lvlup_2_1" id="odp1">$odp1</button>
-                <button class="btn alx_flex_lvlup_2_1" id="odp2">$odp2</button>
-                <button class="btn alx_flex_lvlup_2_1" id="odp3">$odp3</button>
-                <button class="btn alx_flex_lvlup_2_1" id="odp4">$odp4</button>
+                <button class="btn alx_flex_lvlup_2_1" id="odp1" name="odp1">$odp1</button>
+                <button class="btn alx_flex_lvlup_2_1" id="odp2" name="odp2">$odp2</button>
+                <button class="btn alx_flex_lvlup_2_1" id="odp3" name="odp3">$odp3</button>
+                <button class="btn alx_flex_lvlup_2_1" id="odp4" name="odp4">$odp4</button>
             </form>
         </div>
     </div>
 HTML;
     echo $show;
 }
+
+
+function lvlupGratulation()
+{
+    $show = <<<HTML
+<div class="alx_flexkontener_lvlup_bg" id="lvlup_gratulation">
+        <div class="alx_pepe_lvlup">
+        <h1 class="alx_pepe_text">LEVEL UP!</h1>
+            <img src="resr/img/DancingPepe.gif" class="alx_pepe_size" onclick="lvlup_gratulation_close()">
+        <h1 class="alx_pepe_text">Congratulation!</h1>
+        </div>
+    </div>
+HTML;
+    echo $show;
+}
+
 
 ?>

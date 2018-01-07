@@ -73,7 +73,7 @@ class ResourceController
                 );
             }
         }else{
-            echo "W domu dzialalo!";
+            //javamessage("W domu dzialalo!");
         }
         return null;
     }
@@ -118,7 +118,9 @@ class ResourceController
 
     public function returnArrayForCurrentUserResource($idUser){
         $this->setUserResourceArray($idUser);
-        if(empty($this->ResourceListForCurrentUser)){ echo "w domu działało"; } else{
+        if(empty($this->ResourceListForCurrentUser)){
+            //javamessage("W domu działało ; - ;");
+             } else{
         return $this->ResourceListForCurrentUser;}
     }
 

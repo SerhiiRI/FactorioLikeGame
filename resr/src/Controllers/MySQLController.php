@@ -289,7 +289,7 @@ final class MySQLController
     }
     public function __User__UserResource($idUser){
         $prepare = $this->pdo->prepare("SELECT `idResources` FROM `Score`, `Task` WHERE".
-            " `Score`.idTask=`Task`.idTask AND `Score`.idUser=:usser AND `Score`.FinishedTask=False");
+            " `Score`.idTask=`Task`.idTask AND `Score`.idUser=:usser AND `Score`.FinishedTask=True");
         $prepare->bindParam(":usser", $idUser);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
@@ -684,13 +684,14 @@ final class MySQLController
 
     public function __Admin__TaskUpdate($idTask, $Task, $idResource, $LevelTo, $ResourceTo)
     {
-        $prepare = $this->pdo->prepare("UPDATE `Task` SET `idResources`=:idresource, `Task`=:task, `LevelTo`=:levelTo, `ResourceTo`=:resourceTo WHERE `idTask`=:idtask");
-        $prepare->bindParam(":idtask", $idTask);
-        $prepare->bindParam(":idresources", $idResource);
-        $prepare->bindParam(":task", $Task);
-        $prepare->bindParam(":levelTo", $LevelTo);
-        $prepare->bindParam(":resourceTo", $ResourceTo);
+        $prepare = $this->pdo->prepare("UPDATE `task` SET `idResources`=:idres, `Task`=:tsk, `LevelTo`=:lvlto, `ResourceTo`=:rsrto WHERE `idTask`=:idtsk");
+        $prepare->bindParam(":idtsk", $idTask);
+        $prepare->bindParam(":idres", $idResource);
+        $prepare->bindParam(":tsk", $Task);
+        $prepare->bindParam(":lvlto", $LevelTo);
+        $prepare->bindParam(":rsrto", $ResourceTo);
         $prepare->execute();
+        $prepare->closeCursor();
         return null;
     }
 

@@ -25,7 +25,8 @@ if (isset($_POST["create_factory"])) {
     echo "<pre> TO jest";print_r($factoryInst); echo "</pre>";
 
     $__MapControl->add($factoryInst);
-
+    $_SESSION["ActionInfo"] = "Dodano fabrykę!";
+    $_SESSION["whatShouldOpen"] = "startPage";
 //    public function add($idResource, $upgradeLevel, $idUser){
 }//FINISH
 
@@ -39,11 +40,14 @@ if (isset($_POST["destroy_factory"])) {
     echo "IDres: " . $_POST["idOfFactoryOnMap"] . "<br/>";
 
     $__MapControl->remove($_POST["idOfFactoryOnMap"]);
+    $_SESSION["ActionInfo"] = "Usunięto fabrykę!";
+
+    $_SESSION["whatShouldOpen"] = "startPage";
 }//FINISH
 
 
 //Koniec
-
+if($_SESSION["ActionInfo"] == "0"){$_SESSION["ActionInfo"] = "Niepowodzenie działania.";}
 header("Location: AdminControllerSystem.php");
 ?>
 <br/>

@@ -31,7 +31,7 @@ class QuestionController
                 $this->QuestionList[] = new Question($item["idQuestion"], $item["idTask"], $item["Question"]);
             }
         }else{
-            echo "\nw domu dzialalo";
+           //javamessage("Lista Pytań: Nie znaleziono wartości. A w domu działało ; - ;");
         }
     }
     public function add($idTask, $Question, $AnswerTrue, $AnswerFalse1, $AnswerFalse2, $AnswerFalse3){
@@ -43,7 +43,12 @@ class QuestionController
         $this->set($this->__dataBase__controller->__Admin__QuestionQuery());
     }
     public function returnArray(){
-        return $this->QuestionList;
+        if(!empty($this->QuestionList)){
+            return $this->QuestionList;
+        }else{
+            //javamessage("Null");
+            return null;
+        }
     }
 
     public function onClickAndCheckQuestion($idQuestion, $idAnswer){
@@ -65,9 +70,9 @@ class QuestionController
         return false;
     }
 
-    private function searchQuestionByIdOf_Task($idTask){
+    public function searchQuestionByIdOf_Task($idTask){
         foreach ($this->QuestionList as $item){
-            if ($item->getIdQuestion() == $idTask){
+            if ($item->getIdTask() == $idTask){
                 return $item;
             }
         }

@@ -61,7 +61,7 @@ class TaskController
 
         $task_level = $this->searchLevel($lastAddedIndex);
         foreach ($this->__user__controller->returnArray() as $item){
-            if($item->getLevel() >= $task_level ){
+            if($item->getLevel()+1 >= $task_level ){
                 $this->__score__controller->add($lastAddedIndex, $item->getidUser());
             }
         }
@@ -77,8 +77,8 @@ class TaskController
     public function removeAll(){
         $this->__dataBase__controller->__Admin__TaskRemoveAll();
     }
-    public function update($idTask, $idResource,  $Task, $LevelTo, $ResourceTo){
-        $this->__dataBase__controller->__Admin__TaskUpdate($idTask, $idResource,  $Task, $LevelTo, $ResourceTo);
+    public function update($idTask,  $Task, $idResource, $LevelTo, $ResourceTo){
+        $this->__dataBase__controller->__Admin__TaskUpdate($idTask, $Task, $idResource, $LevelTo, $ResourceTo);
         unset($this->TaskList);
         $this->set($this->__dataBase__controller->__Admin__TaskQuery());
     }

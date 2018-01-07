@@ -1,5 +1,10 @@
 <?php
+
 include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
+
+function javamessage($txt){
+    echo "<script type='text/javascript'>alert('$txt');</script>";
+}
 
 if (isset($_POST["ok"])) {
     $id = $__controller__DataBase->validateUser($_POST["login"], $_POST["password"]);
@@ -17,12 +22,14 @@ if (isset($_POST["ok"])) {
         $_SESSION["idUser"] = $id["idUser"];
         $_SESSION["UserType"] = $id["Type"];
         $_SESSION["przekierowanie"] = "indexpage";
+        $_SESSION["whatShouldOpen"] = "startPage";
     } else {
+        javamessage("Coś poszło nie tak! Sprawdź swoje dane logowania.")
         ?>
-        <div class="form">
-            <p class="message" style="font-size: 30px;"> Login is failed, may be you want <a
-                        href="Regestration.php"> create an account</a></p>
-        </div>
+<!--        <div class="form">-->
+<!--            <p class="message" style="font-size: 30px;"> Login is failed, may be you want <a-->
+<!--                        href="Regestration.php"> create an account</a></p>-->
+<!--        </div>-->
         <?php
     }
     unset($id);
@@ -41,12 +48,12 @@ if (!isset($_SESSION["idUser"])) {
     </head>
     <body>
     <div class="login-page">
-        <div class="form">
-            <form class="login-form" method="post">
+        <div class="form" >
+            <form class="login-form" method="post" >
                 <input type="text" placeholder="username" name="login" value="admin" required/>
-                <input type="text" placeholder="password" name="password" value="admin" required/>
-                <button type="submit" name="ok">login</button>
-                <p class="message">Not registered? <a href="Regestration.php">Create an account</a></p>
+                <input type="password" placeholder="password" name="password" value="admin" required/>
+                <button type="submit" name="ok">Zaloguj się!</button>
+                <p class="message" style="text-align: center">Nie posiadasz konta? <a href="Regestration.php">Zarejestruj się!</a></p>
             </form>
         </div>
     </div>

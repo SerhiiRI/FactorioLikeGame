@@ -1,6 +1,7 @@
 <?php
-
+session_start();
 //Strona admina
+$succes = false;
 
 if (isset($_POST["edytuj_user"])) {
 
@@ -15,7 +16,9 @@ if (isset($_POST["edytuj_user"])) {
 //echo "Pass: ".$_POST['input_passwd']."<br/>";
         $__update->__Admin__UserUpdate($_POST['input_name'], $_POST['input_passwd'], $_POST["input_grafika"]);
         $_SESSION["ActionInfo"] = "Edytowano użytkownika: " . $_POST["input_name"];
+        $succes = true;
     }
+    $_SESSION["whatShouldOpen"] = "edytuj usera";
 }//FINISH
 
 if (isset($_POST["del_user"])) {
@@ -29,6 +32,8 @@ if (isset($_POST["del_user"])) {
 //echo "Pass: ".$_POST['input_passwd']."<br/>";
     $__update->__Admin__UserRemove($_POST['input_name']);
     $_SESSION["ActionInfo"] = "Usunięto użytkownika: " . $_POST["input_name"];
+    $_SESSION["whatShouldOpen"] = "zarządzaj użytkownikami";
+    $succes = true;
 }//FINISH
 
 
@@ -46,7 +51,9 @@ if (isset($_POST["add_task"])) {
 
         $__TaskControler->add($_POST["input_res_task"], $_POST["input_task"], $_POST["input_lvl_task"], $_POST["input_needed_task"]);
         $_SESSION["ActionInfo"] = "Dodano nowe zadanie: " . $_POST["input_task"];
+        $succes = true;
     }
+    $_SESSION["whatShouldOpen"] = "edytor zadań";
 }//FINISH
 
 if (isset($_POST["edytuj_task"])) {
@@ -62,10 +69,11 @@ if (isset($_POST["edytuj_task"])) {
 //    echo "Task: " . $_POST['input_task'] . "<br/>";
 //    echo "LVL: " . $_POST['input_lvl_task'] . "<br/>";
 //    echo "Need: " . $_POST['input_needed_task'] . "<br/>";
-        $__TaskControler->add($_POST["input_res_task"], $_POST["input_task"], $_POST["input_lvl_task"], $_POST["input_needed_task"]);
-        $__TaskControler->remove($_POST["idOfTask"]);
+        $__TaskControler->update($_POST["idOfTask"],  $_POST["input_task"], $_POST["input_res_task"], $_POST["input_lvl_task"], $_POST["input_needed_task"]);
         $_SESSION["ActionInfo"] = "Edytowano zadanie: " . $_POST["input_task"];
+        $succes = true;
     }
+    $_SESSION["whatShouldOpen"] = "edytor zadań";
 }//FINISH
 
 if (isset($_POST["del_task"])) {
@@ -76,6 +84,8 @@ if (isset($_POST["del_task"])) {
     $__TaskControler->remove($_POST["idOfTask"]);
     echo "Usunięto: " . $_POST['idOfTask'];
     $_SESSION["ActionInfo"] = "Usunięto zadanie: " . $_POST["idOfTask"];
+    $_SESSION["whatShouldOpen"] = "edytor zadań";
+    $succes = true;
 }//FINISH
 
 
@@ -92,7 +102,9 @@ if (isset($_POST["add_fabryka"])) {
 //        echo "Wydobycie: " . $_POST['input_wydobycie'] . "<br/>";
         $__ResControl->add($_POST['input_surowiec'], $_POST['input_wydobycie'], $_POST["input_fabryka"], $_POST["input_grafika"], $_POST["input_grafika"]);
         $_SESSION["ActionInfo"] = "Dodano surowiec/fabrykę: " . $_POST["input_surowiec"];
+        $succes = true;
     }
+    $_SESSION["whatShouldOpen"] = "edytor fabryk";
 }//FINISH
 
 if (isset($_POST["edytuj_fabryka"])) {
@@ -110,7 +122,10 @@ if (isset($_POST["edytuj_fabryka"])) {
         $graf = ($_POST["input_grafika"] == "") ? $_POST["input_grafika_hidden"] : $_POST["input_grafika"];
         $__ResControl->update($_POST['input_surowiec'], $_POST['input_wydobycie'], $_POST["input_fabryka"], $_POST["input_grafika"], $graf);
         $_SESSION["ActionInfo"] = "Edytowano surowiec/fabrykę: " . $_POST["input_surowiec"];
+        $txt = "Edycja fabryki";
+        $succes = true;
     }
+    $_SESSION["whatShouldOpen"] = "edytor fabryk";
 }//FINISH
 
 if (isset($_POST["del_fabryka"])) {
@@ -126,6 +141,8 @@ if (isset($_POST["del_fabryka"])) {
 //    echo "Wydobycie: " . $_POST['input_wydobycie'] . "<br/>";
     $__ResControl->removeByID($_POST["input_id_hidden"]);
     $_SESSION["ActionInfo"] = "Usunięto surowiec/fabrykę: " . $_POST["input_surowiec"];
+    $_SESSION["whatShouldOpen"] = "edytor fabryk";
+    $succes = true;
 }//FINISH
 
 
@@ -145,7 +162,9 @@ if (isset($_POST["add_Question"])) {
         $__QuestControl->add($_POST["select_task"], $_POST["txt_pytanie"], $_POST["txt_odp"], $_POST["txt_zle1"], $_POST["txt_zle2"], $_POST["txt_zle3"]);
 
         $_SESSION["ActionInfo"] = "Dodano Pytanie: " . $_POST["txt_pytanie"];
+        $succes = true;
     }
+    $_SESSION["whatShouldOpen"] = "edytor pytań";
 }//FINISH
 
 if (isset($_POST["edytuj_Question"])) {
@@ -165,7 +184,9 @@ if (isset($_POST["edytuj_Question"])) {
         $__QuestControl->remove($_POST["quest_id"]);
         $__QuestControl->add($_POST["select_task"], $_POST["txt_pytanie"], $_POST["txt_odp"], $_POST["txt_zle1"], $_POST["txt_zle2"], $_POST["txt_zle3"]);
         $_SESSION["ActionInfo"] = "Edytowano pytanie: " . $_POST["txt_pytanie"];
+        $succes = true;
     }
+    $_SESSION["whatShouldOpen"] = "edytor pytań";
 }//FINISH
 
 if (isset($_POST["del_Question"])) {
@@ -174,6 +195,8 @@ if (isset($_POST["del_Question"])) {
 //    echo "Quest ID: " . $_POST["quest_id"] . "<br/>";
     $__QuestControl->remove($_POST["quest_id"]);
     $_SESSION["ActionInfo"] = "Usunięto pytanie: " . $_POST["quest_id"];
+    $_SESSION["whatShouldOpen"] = "edytor pytań";
+    $succes = true;
 }//FINISH
 
 
@@ -193,7 +216,7 @@ if (isset($_POST["create_factory"])) {
 
 
 //Koniec
-
+if($succes==false){javamessage("Niepowodzenie! Pamiętaj że pola nie powinny być puste!");}
 header("Location: AdminControllerSystem.php");
 ?>
 <br/>

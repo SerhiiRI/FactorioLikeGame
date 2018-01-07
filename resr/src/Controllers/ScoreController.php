@@ -66,4 +66,10 @@ class ScoreController
     public function returnArray(){
         return $this->ScoreList;
     }
+    public function searchByIdTask($idTask){
+        foreach ($this->ScoreList as $item){
+            if($idTask==$item->getidTask() && $item->getidUser()==$_SESSION["idUser"]){return $item->getFinishedTask();}
+        }
+        return null;
+    }
 }

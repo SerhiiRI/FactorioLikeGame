@@ -2,7 +2,16 @@
 include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
 if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
 
-    include_once("resr/src/view_generator/view_for_user.php"); ?>
+    include_once("resr/src/view_generator/view_for_user.php");
+    $whatShouldOpen = $_SESSION["whatShouldOpen"];
+    $whatShouldOpen = $_SESSION["whatShouldOpen"];
+    if(isset($_SESSION["ActionInfo"])){
+        if($_SESSION["ActionInfo"]!="0"){
+            javamessage($_SESSION["ActionInfo"]);
+            $_SESSION["ActionInfo"]="0";
+        }
+    }
+    ?>
 
     <!DOCTYPE html>
     <html lang="pl">
@@ -32,6 +41,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
     <a href="Credits.html"><img src="resr/img/gear6.gif" class="autorzy_btn"></a>
 
     <?php lvlupLightbox(); ?>
+    <?php lvlupGratulation(); ?>
     <?php PanelKontrolnyFabryki(); ?>
 
     <div>
@@ -45,12 +55,12 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
                 <!--Lista zadań-->
                 <ul class="collapsible popout" data-collapsible="accordion">
                     <li>
-                        <div class="collapsible-header"><i class="material-icons">sort</i>Postęp technologiczny
+                        <div class="collapsible-header <?php if($whatShouldOpen == "Task"){echo "active";} ?>"><i class="material-icons">sort</i>Postęp technologiczny
                         </div>
                         <?php ListaTaskowDlaUsera(); ?>
                     </li>
                     <li>
-                        <div class="collapsible-header active"><i class="material-icons">sort</i>Mapa Fabryki
+                        <div class="collapsible-header <?php if($whatShouldOpen == "statystyka" || $whatShouldOpen == "startPage"){echo "active";} ?>"><i class="material-icons">sort</i>Mapa Fabryki
                         </div>
                         <!--Mapa gracza-->
                         <div class="collapsible-body coll-body-first">
@@ -106,16 +116,31 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
             document.getElementById("onClickWorking").setAttribute("onClick", "javascript: start_working();")
         }
 
-        // function lvlup_open_zindex(task, quest, odp1, odp2, odp3, odp4) {
-        function lvlup_open_zindex() {
+
+        function lvlup_open_zindex(task, quest, odp1, odp2, odp3, odp4) {
             document.getElementById("lvlup_lightbox").style.opacity = 1;
             document.getElementById("lvlup_lightbox").style.zIndex = 5;
-            // document.getElementById("task_lightbox").innerHTML = task;
-            // document.getElementById("quest_lightbox").innerHTML = quest;
-            // document.getElementById("odp1").innerHTML = odp1;
-            // document.getElementById("odp2").innerHTML = odp2;
-            // document.getElementById("odp3").innerHTML = odp3;
-            // document.getElementById("odp4").innerHTML = odp4;
+            document.getElementById("task_lightbox").innerHTML = task;
+            document.getElementById("quest_lightbox").innerHTML = quest;
+            document.getElementById("odp1").innerHTML = odp1;
+            document.getElementById("odp2").innerHTML = odp2;
+            document.getElementById("odp3").innerHTML = odp3;
+            document.getElementById("odp4").innerHTML = odp4;
+        }
+
+        function lvlup_close_zindex() {
+            document.getElementById("lvlup_lightbox").style.opacity = 0;
+            document.getElementById("lvlup_lightbox").style.zIndex = -2;
+        }
+
+        function lvlup_gratulation_open() {
+            document.getElementById("lvlup_gratulation").style.opacity = 1;
+            document.getElementById("lvlup_gratulation").style.zIndex = 5;
+        }
+
+        function lvlup_gratulation_close() {
+            document.getElementById("lvlup_gratulation").style.opacity = 0;
+            document.getElementById("lvlup_gratulation").style.zIndex = -5;
         }
 
     </script>
