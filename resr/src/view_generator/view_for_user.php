@@ -55,9 +55,10 @@ HTML;
                                                         </td>
                                                     </tr>
 HTML;
-        echo $show;
-    }
-
+        //echo $show;
+    }?>
+    <p id="serhii_log"></p>
+    <?php
     $progres_procent = ($progress_start_calc * 100) / $progress_finish_calc;
     $progres_procent = 100;
     $ButtonDisabled = ($progres_procent == 100) ?: "disabled";
