@@ -30,17 +30,19 @@ function LewyPanelAdmina()
     $__surowce = $__resControler->returnArray();
 
     $howManyTask = 0;
-    $TaskListByLvl = $__taskControler->returnTaskByLvl(1);
+    $TaskListByLvl = $__taskControler->returnTaskByLvl($userData->getLevel() + 1);
     foreach ($TaskListByLvl as $item) {
-        $howManyTask++;
+            $howManyTask++;
     }
 
     $howManyCurrentTask=0;
     $TaskList = $__taskControler->returnOnlyCurrentUserTaskArray();
     foreach ($TaskList as $item) {
-        $status = $__scoreControler->searchByIdTask($item->getidTask());
-        if($status==false){
-            $howManyCurrentTask++;
+        if ($item->getLevelTo() <= $userData->getLevel() + 1) {
+            $status = $__scoreControler->searchByIdTask($item->getidTask());
+            if ($status == false) {
+                $howManyCurrentTask++;
+            }
         }
     }
         //javamessage("Task: $howManyTask, CTask: $howManyCurrentTask");
@@ -89,10 +91,15 @@ HTML;
     }
 
     $finishTask = $howManyTask - $howManyCurrentTask;
-    $progres_procent = ($finishTask * 100) / $howManyTask;
-//    $progres_procent = 100;
+    if($howManyTask<=0 && $howManyTask<=0){
+        $progres_procent=0;
+        $wynik="It's end of game!";
+    }else {
+        $progres_procent = ($finishTask * 100) / $howManyTask;
+        $wynik = "Postęp: " . round($progres_procent) . "%";
+    }
     $ButtonDisabled = ($progres_procent == 100) ?: "disabled";
-    $ButtonValue = ($progres_procent == 100) ? "LVL UP!" : "Postęp: " . round($progres_procent) . "%";
+    $ButtonValue = ($progres_procent == 100) ? "LVL UP!" : $wynik;
 
     $show = <<<HTML
 
@@ -231,27 +238,54 @@ function ListaTaskowDlaUsera()
     $howManyCurrentTask=0;
     $TaskList = $__taskControler->returnOnlyCurrentUserTaskArray();
     foreach ($TaskList as $item) {
-        $status = $__scoreControler->searchByIdTask($item->getidTask());
-        if($status==false) {
-            $howManyCurrentTask++;
-            $lvl = $item->getLevelTo();
-            $opis = $item->getTask();
-            $taskID = $item->getidTask();
-            $odkrycie = $item->getResourceTo();
+        if ($item->getLevelTo() <= $userData->getLevel() + 1) {
+            $status = $__scoreControler->searchByIdTask($item->getidTask());
+            if ($status == false) {
+                $howManyCurrentTask++;
+                $lvl = $item->getLevelTo();
+                $opis = $item->getTask();
+                $taskID = $item->getidTask();
+                $odkrycie = $item->getResourceTo();
 //        $var = "456";
 
-            $QuestData = $__questController->searchQuestionByIdOf_Task($taskID);
+                $QuestData = $__questController->searchQuestionByIdOf_Task($taskID);
 //            echo "<pre>";print_r($QuestData);echo"</pre>";
-            $task = $opis;
-            $quest = $QuestData->getQuestion();
-            $answers = $QuestData->getAnswerList();
-            $idQuest = $QuestData->getIdQuestion();
-            $odp1 = $answers[0]->getAnswer();
-            $odp2 = $answers[1]->getAnswer();
-            $odp3 = $answers[2]->getAnswer();
-            $odp4 = $answers[3]->getAnswer();
+                $task = $opis;
+                $quest = $QuestData->getQuestion();
+                $answers = $QuestData->getAnswerList();
+                $idQuest = $QuestData->getIdQuestion();
+                $rand = rand(0, 2);
+                if ($rand == 0) {
+                    $odp1 = $answers[1]->getAnswer();
+                    $odp2 = $answers[0]->getAnswer();
+                    $odp3 = $answers[2]->getAnswer();
+                    $odp4 = $answers[3]->getAnswer();
+                    $odp1_id = $answers[1]->getidAnswers();
+                    $odp2_id = $answers[0]->getidAnswers();
+                    $odp3_id = $answers[2]->getidAnswers();
+                    $odp4_id = $answers[3]->getidAnswers();
+                } else if ($rand == 1) {
+                    $odp1 = $answers[3]->getAnswer();
+                    $odp2 = $answers[1]->getAnswer();
+                    $odp3 = $answers[0]->getAnswer();
+                    $odp4 = $answers[2]->getAnswer();
+                    $odp1_id = $answers[3]->getidAnswers();
+                    $odp2_id = $answers[1]->getidAnswers();
+                    $odp3_id = $answers[0]->getidAnswers();
+                    $odp4_id = $answers[2]->getidAnswers();
+                } else if ($rand == 2) {
+                    $odp1 = $answers[2]->getAnswer();
+                    $odp2 = $answers[1]->getAnswer();
+                    $odp3 = $answers[3]->getAnswer();
+                    $odp4 = $answers[0]->getAnswer();
+                    $odp1_id = $answers[2]->getidAnswers();
+                    $odp2_id = $answers[1]->getidAnswers();
+                    $odp3_id = $answers[3]->getidAnswers();
+                    $odp4_id = $answers[0]->getidAnswers();
+                }
 
-            $show = <<<HTML
+
+                $show = <<<HTML
 <div class="collapsible-body alx_flexkontener_user_task">
                             <div class="alx_flex_user_task">
                                 Wymagany poziom: $lvl
@@ -262,20 +296,20 @@ function ListaTaskowDlaUsera()
                             <div class="alx_flex_user_task">
                                 <div class="alx_flex_user_task_forbtn">
                                     <div class="alx_flex_user_task_btn">
-                                        <button class="btn" onclick="lvlup_open_zindex('$task', '$quest', '$odp1', '$odp2', '$odp3', '$odp4')">Badaj</button>
+                                        <button class="btn" id="addBtnDesibled" name="addBtnDesibled" onclick="lvlup_open_zindex('$task', '$taskID', '$quest', '$idQuest', '$odp1', '$odp2', '$odp3', '$odp4', '$odp1_id', '$odp2_id', '$odp3_id', '$odp4_id');">Badaj</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 HTML;
-            echo $show;
-        }else{
-            $lvl = $item->getLevelTo();
-            $opis = $item->getTask();
-            $odkrycie = $item->getResourceTo();
+                echo $show;
+            } else {
+                $lvl = $item->getLevelTo();
+                $opis = $item->getTask();
+                $odkrycie = $item->getResourceTo();
 //        $var = "456";
 
-            $show = <<<HTML
+                $show = <<<HTML
 <div class="collapsible-body alx_flexkontener_user_task">
                             <div class="alx_flex_user_task">
                                 Wymagany poziom: $lvl
@@ -292,8 +326,9 @@ HTML;
                             </div>
                         </div>
 HTML;
-            //---------------Desibled tasks
-            echo $show;
+                //---------------Desibled tasks
+                echo $show;
+            }
         }
     }
 }
@@ -396,7 +431,7 @@ function lvlupLightbox()
 
     $_SESSION["whatShouldOpen"] = "Task";
 
-    $action="#";
+//    $action="#";
     $action="db_update_user.php";
     $task = "Podstawowe wydobywanie rudy węgla.";
     $quest = "Czy możesz użyć węgla jako paliwa?";
@@ -405,11 +440,17 @@ function lvlupLightbox()
             $odp3="Może";
                 $odp4="PHP";
     $show = <<<HTML
-<div class="alx_flexkontener_lvlup_bg" id="lvlup_lightbox" onclick="lvlup_close_zindex()">
+<div class="alx_flexkontener_lvlup_bg" id="lvlup_lightbox">
         <div class="alx_flexkontener_lvlup_1" >
             <div class="alx_flex_lvlup_1" id="task_lightbox">Pytanie do zadania: <br/>$task</div>
             <div class="alx_flex_lvlup_3" id="quest_lightbox">Pytanie: <br/>$quest</div>
             <form class="alx_flex_lvlup_2" method="post" action="$action">
+                <input type="hidden" id="hodp1" name="hodp1" value="Defoult"/>
+                <input type="hidden" id="hodp2" name="hodp2" value="Defoult"/>
+                <input type="hidden" id="hodp3" name="hodp3" value="Defoult"/>
+                <input type="hidden" id="hodp4" name="hodp4" value="Defoult"/>
+                <input type="hidden" id="questID" name="questID" value="Defoult"/>
+                <input type="hidden" id="taskID" name="taskID" value="Defoult"/>
                 <button class="btn alx_flex_lvlup_2_1" id="odp1" name="odp1">$odp1</button>
                 <button class="btn alx_flex_lvlup_2_1" id="odp2" name="odp2">$odp2</button>
                 <button class="btn alx_flex_lvlup_2_1" id="odp3" name="odp3">$odp3</button>

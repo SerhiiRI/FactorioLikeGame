@@ -1,6 +1,7 @@
 <?php
 
 //Strona usera
+session_start();
 
 if (isset($_POST["create_factory"])) {
 
@@ -45,10 +46,106 @@ if (isset($_POST["destroy_factory"])) {
     $_SESSION["whatShouldOpen"] = "startPage";
 }//FINISH
 
+if (isset($_POST["odp1"])) {
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/QuestionController.php";
+    $__MapControl = \Controller\QuestionController::getInstance();
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ScoreController.php";
+    $__ScoreControl = \Controller\ScoreController::getInstance();
+
+    echo "POST<br/>";
+    echo "QuestID: " . $_POST["questID"] . "<br/>";
+    echo "TaskID: " . $_POST["taskID"] . "<br/>";
+    echo "Odp1: " . $_POST["hodp1"] . "<br/>";
+    if($__MapControl->onClickAndCheckQuestion($_POST["questID"], $_POST["hodp1"])==true){
+        $_SESSION["ActionInfo"] = "Poprawna odpowiedź!";
+        $__ScoreControl->update($_POST["taskID"]);
+    }else{
+        $_SESSION["ActionInfo"] = "Niestety to zła odpowiedź!";
+    }
+    $_SESSION["whatShouldOpen"] = "Task";
+}//FINISH
+
+if (isset($_POST["odp2"])) {
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/QuestionController.php";
+    $__MapControl = \Controller\QuestionController::getInstance();
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ScoreController.php";
+    $__ScoreControl = \Controller\ScoreController::getInstance();
+
+    echo "POST<br/>";
+    echo "QuestID: " . $_POST["questID"] . "<br/>";
+    echo "TaskID: " . $_POST["taskID"] . "<br/>";
+    echo "Odp2: " . $_POST["hodp2"] . "<br/>";
+    if($__MapControl->onClickAndCheckQuestion($_POST["questID"], $_POST["hodp2"])==true){
+        $_SESSION["ActionInfo"] = "Poprawna odpowiedź!";
+        $__ScoreControl->update($_POST["taskID"]);
+    }else{
+        $_SESSION["ActionInfo"] = "Niestety to zła odpowiedź!";
+    }
+    $_SESSION["whatShouldOpen"] = "Task";
+}//FINISH
+
+if (isset($_POST["odp3"])) {
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/QuestionController.php";
+    $__MapControl = \Controller\QuestionController::getInstance();
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ScoreController.php";
+    $__ScoreControl = \Controller\ScoreController::getInstance();
+
+    echo "POST<br/>";
+    echo "QuestID: " . $_POST["questID"] . "<br/>";
+    echo "TaskID: " . $_POST["taskID"] . "<br/>";
+    echo "Odp3: " . $_POST["hodp3"] . "<br/>";
+    if($__MapControl->onClickAndCheckQuestion($_POST["questID"], $_POST["hodp3"])==true){
+        $_SESSION["ActionInfo"] = "Poprawna odpowiedź!";
+        $__ScoreControl->update($_POST["taskID"]);
+    }else{
+        $_SESSION["ActionInfo"] = "Niestety to zła odpowiedź!";
+    }
+    $_SESSION["whatShouldOpen"] = "Task";
+}//FINISH
+
+if (isset($_POST["odp4"])) {
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/QuestionController.php";
+    $__MapControl = \Controller\QuestionController::getInstance();
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ScoreController.php";
+    $__ScoreControl = \Controller\ScoreController::getInstance();
+
+    echo "POST<br/>";
+    echo "QuestID: " . $_POST["questID"] . "<br/>";
+    echo "TaskID: " . $_POST["taskID"] . "<br/>";
+    echo "Odp4: " . $_POST["hodp4"] . "<br/>";
+    if($__MapControl->onClickAndCheckQuestion($_POST["questID"], $_POST["hodp4"])==true){
+        $_SESSION["ActionInfo"] = "Poprawna odpowiedź!";
+        $__ScoreControl->update($_POST["taskID"]);
+    }else{
+        $_SESSION["ActionInfo"] = "Niestety to zła odpowiedź!";
+    }
+    $_SESSION["whatShouldOpen"] = "Task";
+}//FINISH
+
+if(!empty($_GET["lvlup"])){
+    echo $_GET["lvlup"];
+    $_SESSION["ActionInfo"] = "Congratulation!";
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/UserController.php";
+    $__UserControl = \Controller\UserController::getInstance();
+    $__UserControl->nextLevel($_SESSION["name_of_user"]);
+}
 
 //Koniec
-if($_SESSION["ActionInfo"] == "0"){$_SESSION["ActionInfo"] = "Niepowodzenie działania.";}
-header("Location: AdminControllerSystem.php");
+if(isset($_SESSION["ActionInfo"])){
+    if( $_SESSION["ActionInfo"]== "0"){
+        $_SESSION["ActionInfo"] = "Niepowodzenie działania.";
+    }
+}
+header("Location: Map.php");
 ?>
 <br/>
 <a href="AdminControllerSystem.php">Back to Admin</a>
