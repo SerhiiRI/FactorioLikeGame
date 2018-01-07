@@ -62,12 +62,21 @@ class UserController
         $this->__dataBase__controller->__User__UpdateLastLogined($login, $LastLogined);
         $this->set($this->__dataBase__controller->__Admin__UserQuery());
     }
+
+    /**
+     * @param $email - email gracza, ktorego poziom będzie zwieksszony
+     */
     public function nextLevel($email){
         $this->__dataBase__controller->__User__UserNextLevel($email);
         $this->set($this->__dataBase__controller->__Admin__UserQuery());
         $userLevel = $this->SearchByEmail($email);
         $this->setOfScoreTaskForUserCurrentLevel($email, $userLevel->getLevel());
     }
+
+    /**
+     * @param $login
+     * @param $level
+     */
     private function setOfScoreTaskForUserCurrentLevel($login, $level){
         $ScoreCTRL = \Controller\ScoreController::getInstance();
         $TaskCTRL = \Controller\TaskController::getInstance();

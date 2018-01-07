@@ -27,7 +27,11 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
         <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
-
+    <script>
+        function uske(){
+            var lst = 1;
+        }
+    </script>
     <body class="alx_bg_img">
     <a href="Credits.html"><img src="resr/img/gear6.gif" class="autorzy_btn"></a>
 

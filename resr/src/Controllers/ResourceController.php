@@ -33,6 +33,7 @@ class ResourceController
     static private $instance = null;
     private $__dataBase__controller;
     private $ResourceListForCurrentUser = array();
+    private $SESSION_RESOURCES_LIST = array();
 
 
     //funkcja tworzy konstruktora, gdy go nie ma
@@ -112,7 +113,10 @@ class ResourceController
         foreach ($list as $value){
             $temp = $this->searchByIDAndReturnObject($value["idResources"]);
 //            echo "<pre>";print_r($temp);echo"</pre>";
-            if(!is_null($temp)) $this->ResourceListForCurrentUser[] = $temp;
+            if(!is_null($temp)) {
+                $this->ResourceListForCurrentUser[] = $temp;
+                $this->SESSION_RESOURCES_LIST[] = $temp->getResourceName();
+            }
         }
     }
 
@@ -142,4 +146,28 @@ class ResourceController
         return null;
     }
 
+    private $MAP_RESOURCE_COUNT = array();
+    public function initializeResourceScoreForFrontEnd(array $MapList){
+        $__factory__ = FactoryInstanceController::getInstance();
+        foreach ($MapList as $value){
+            // Array idResource (idResource =>  CountFactory);
+            $this->MAP_RESOURCE_COUNT[($__factory__->returnFactoryByID($value->getidFactory()))->getidResources()] = $value->getCountFactory();
+        }
+    }
+
+    /**
+     * create SESSION scope variable by ResourceName param, with farmed resource score.
+     * SESSION_RESOURCES_LIST - array contain key to
+     */
+    public function updateResourceScoreForFrontEnd(){
+        $__task__ = TaskController::getInstance();
+        $list = $__task__->returnOnlyCurrentUserTaskArray();
+        $this->SESSION_RESOURCES_LIST = array();
+        foreach ($this->ResourceListForCurrentUser as $value){
+            $this->SESSION_RESOURCES_LIST[] = $value->getResourceName();
+            if(isset($_SESSION[$value->getResourceName()])) {
+                $_SESSION[$value->getResourceName()] = $_SESSION[$value->getResourceName()] + $value->getProductiveUnit() * $this->MAP_RESOURCE_COUNT[$value->getIdResources()];
+            }else $_SESSION[$value->getResourceName()] = $value->getProductiveUnit() * $this->MAP_RESOURCE_COUNT[$value->getIdResources()];
+        }
+    }
 }
