@@ -44,6 +44,29 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
         <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
+    <script>
+        //function(){
+            var xmlhttp=new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("serhii_log").innerHTML = this.responseText;
+                }
+            };
+            xmlhttp.open("GET", "./resr/src/PAGE_INCLUDES_SCRIPT/AJAX_HANDLER_TO_RESOURCE.php", true);
+            xmlhttp.send();
+        //}
+        var interval = setInterval(function(){
+            var xmlhttp=new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("serhii_log").innerHTML = this.responseText;
+                }
+            };
+            xmlhttp.open("GET", "./resr/src/PAGE_INCLUDES_SCRIPT/AJAX_HANDLER_TO_RESOURCE.php", true);
+            xmlhttp.send();
+        }, 1000);
+    </script>
+    <body class="alx_bg_img">
 
     <body class="alx_bg_img" onload="BtnDes('<?php echo $BtnDes;?>')">
     <a href="Credits.html"><img src="resr/img/gear6.gif" class="autorzy_btn"></a>
@@ -94,8 +117,6 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
 
         </div>
     </div>
-
-
     <script>
         function func_open_zindex(grafika, wydobycie, lvl, nameOfFactory, nameOfResource, idOfFactory) {
             document.getElementById("alx_flexkontener_0").style.opacity = 1;

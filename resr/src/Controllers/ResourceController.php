@@ -14,6 +14,9 @@ use function PHPSTORM_META\type;
 
 include_once __DIR__."/MySQLController.php";
 include_once __DIR__."/../Class/Resource.php";
+include_once __DIR__."/FactoryInstanceController.php";
+include_once __DIR__."/TaskController.php";
+include_once __DIR__."/MapController.php";
 
 
 /**
@@ -33,6 +36,7 @@ class ResourceController
     static private $instance = null;
     private $__dataBase__controller;
     private $ResourceListForCurrentUser = array();
+    public $SESSION_RESOURCES_LIST = array();
 
 
     //funkcja tworzy konstruktora, gdy go nie ma
@@ -109,10 +113,13 @@ class ResourceController
     private function setUserResourceArray($idUser=-1){
         //unset($this->ResourceListForCurrentUser);
         $list = $this->__dataBase__controller->__User__UserResource($idUser);
+        $this->ResourceListForCurrentUser = array();
         foreach ($list as $value){
             $temp = $this->searchByIDAndReturnObject($value["idResources"]);
 //            echo "<pre>";print_r($temp);echo"</pre>";
-            if(!is_null($temp)) $this->ResourceListForCurrentUser[] = $temp;
+            if(!is_null($temp)) {
+                $this->ResourceListForCurrentUser[] = $temp;
+            }
         }
     }
 
@@ -144,4 +151,44 @@ class ResourceController
         return null;
     }
 
+    public $MAP_RESOURCE_COUNT = array();
+
+    public function initializeResourceScoreForFrontEnd(){
+        $__Map__ = MapController::getInstance();
+        $__factory__ = FactoryInstanceController::getInstance();
+        $this->setUserResourceArray($_SESSION["idUser"]);
+        $MapList = $__Map__->returnArrayByID($_SESSION["idUser"]);
+        foreach ($MapList as $value){
+            // Array idResource (ResourceName =>  CountFactory);
+            $this->MAP_RESOURCE_COUNT[($__factory__->returnFactoryByID($value->getidFactory()))->getidResource()] = $value->getCountFactory();
+        }
+        foreach ($this->ResourceListForCurrentUser as $value){
+            $this->SESSION_RESOURCES_LIST[] = $value->getResourceName();
+            //$_SESSION[$value->getResourceName()] = 0;
+        }
+    }
+
+    /**
+     * create SESSION scope variable by ResourceName param, with farmed resource score.
+     * SESSION_RESOURCES_LIST - array contain key to
+     */
+    public function updateResourceScoreForFrontEnd(){
+        $__task__ = TaskController::getInstance();
+        $this->SESSION_RESOURCES_LIST = array();
+        foreach ($this->ResourceListForCurrentUser as $value){
+            if(isset($_SESSION[$value->getResourceName()])) {
+                if($_SESSION[$value->getResourceName()] < $__task__->searchLevelByIdResorce($value->getIdResources())) {
+                    $_SESSION[$value->getResourceName()] = $_SESSION[$value->getResourceName()] + $value->getProductiveUnit() * $this->MAP_RESOURCE_COUNT[$value->getIdResources()];
+                }else $_SESSION[$value->getResourceName()] = $__task__->searchLevelByIdResorce($value->getIdResources());
+            }else $_SESSION[$value->getResourceName()] = 0;
+        }
+    }
+    public function clearFrontEndResourcesCount(){
+        foreach ($this->ResourceListForCurrentUser as $value) {
+            if (isset($_SESSION[$value->getResourceName()])) {
+                unset($_SESSION[$value->getResourceName()]);
+            }
+        }
+        return true;
+    }
 }
