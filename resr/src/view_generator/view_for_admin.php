@@ -776,13 +776,6 @@ HTML;
                                                 <tr>
                                                     <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
                                                             type="submit"
-                                                            name="ban_user">
-                                                        $ban <i class="$banico alx_h8_font"></i>
-                                                    </button>
-                                                </tr>
-                                                <tr>
-                                                    <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
-                                                            type="submit"
                                                             name="del_user">
                                                         Usuń <i class="icon-user-delete-outline alx_h8_font"></i>
                                                     </button>

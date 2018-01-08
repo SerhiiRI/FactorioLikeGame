@@ -1,5 +1,8 @@
 <?php
 include_once ("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
+if(session_status()==false) {
+    session_start();
+}
 
 function javamessage($txt){
     echo "<script type='text/javascript'>alert('$txt');</script>";
@@ -13,7 +16,6 @@ if(isset($_POST["ok"]) && isset($_POST["email_address"]) && isset($_POST["passwo
 
         $id->add($_POST["email_address"], $_POST["password"], date("Y-m-d"));
 
-
         if ($id != "-1") {
             $_SESSION["name_of_user"] = $_POST["email_address"];
             $_SESSION["LOGINED"] = "1";
@@ -25,12 +27,6 @@ if(isset($_POST["ok"]) && isset($_POST["email_address"]) && isset($_POST["passwo
             }
         } else {
             javamessage("Coś poszło nie tak :/ Spróbuj jeszcze.");
-            ?>
-<!--            <div class="form">-->
-<!--                <p class="message" style="font-size: 30px;"> Login is failed, may be you want <a-->
-<!--                            href="Regestration.php"> create an account</a></p>-->
-<!--            </div>-->
-            <?php
         }
     }else{
         javamessage("Istnieje już taki użytkownik!");

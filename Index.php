@@ -23,14 +23,9 @@ if (isset($_POST["ok"])) {
         $_SESSION["UserType"] = $id["Type"];
         $_SESSION["przekierowanie"] = "indexpage";
         $_SESSION["whatShouldOpen"] = "startPage";
+        $_SESSION["ref"] = false;
     } else {
-        javamessage("Coś poszło nie tak! Sprawdź swoje dane logowania.")
-        ?>
-<!--        <div class="form">-->
-<!--            <p class="message" style="font-size: 30px;"> Login is failed, may be you want <a-->
-<!--                        href="Regestration.php"> create an account</a></p>-->
-<!--        </div>-->
-        <?php
+        javamessage("Coś poszło nie tak! Sprawdź swoje dane logowania.");
     }
     unset($id);
 }

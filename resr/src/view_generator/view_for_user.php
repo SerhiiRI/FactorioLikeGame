@@ -74,37 +74,33 @@ HTML;
         $progres = rand(0, 100);
         $finish = 100;
         $progres_procent = ($progres * 100) / $finish;
-        $progress_start_calc = $progress_start_calc + $progres;
-        $progress_finish_calc = $progress_finish_calc + $finish;
 
-        $show = <<<HTML
-                                                    <tr>
-                                                        <td class="alx_center_th alx_th_padding">
-                                                            <input value="$surowiec: $progres/$finish" type="text" class="alx_small_input" disabled>
-                                                            <div class="progress">
-                                                                <div class="determinate" style="width: $progres_procent%;"></div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-HTML;
-        echo $show;
     }
-
+    ?>
+<!--<p id="serhii_log"></p>-->
+<?php
+    $eofg="";
     $finishTask = $howManyTask - $howManyCurrentTask;
     if($howManyTask<=0 && $howManyTask<=0){
         $progres_procent=0;
         $wynik="It's end of game!";
+        $eofg = "gameover";
     }else {
         $progres_procent = ($finishTask * 100) / $howManyTask;
         $wynik = "Postęp: " . round($progres_procent) . "%";
     }
-    $ButtonDisabled = ($progres_procent == 100) ?: "disabled";
+//    $ButtonDisabled = ($progres_procent == 100) ?: "disabled";
+    $ButtonDisabled = "disabled";
+    if($progres_procent == 100){$ok="ok";}else{$ok="nope";}
+//    javamessage("$progres_procent");
     $ButtonValue = ($progres_procent == 100) ? "LVL UP!" : $wynik;
 
     $show = <<<HTML
 
+<p id="serhii_log"></p>
+
                 <div class="alx_lvl_up_btn">
-                    <button name="levelup_btn" class="btn btn_lvlup" onclick="lvlup_gratulation_open()" $ButtonDisabled ">
+                    <button name="levelup_btn" class="btn btn_lvlup" id="lvlupBTN" value="$ok" onclick="lvlup_gratulation_open('$eofg')" $ButtonDisabled>
                     $ButtonValue
                     </button>
                 </div>
@@ -195,8 +191,8 @@ function PanelKontrolnyFabryki()
                 </div>
                 <p class="alx_flexy_w_edycji_fabryk_opis" id="opis_fabryki"></p>
                 <div class="alx_button_group_ligthbox">
-                    <button class="btn alx_flexy_w_edycji_fabryk_button">Upgrade!</button>
-                    <button class="btn alx_flexy_w_edycji_fabryk_button" onclick="stop_working()" id="onClickWorking">Wstrzymaj/wznów prace</button>
+                    <!--<button class="btn alx_flexy_w_edycji_fabryk_button">Upgrade!</button>-->
+                    <!--<button class="btn alx_flexy_w_edycji_fabryk_button" onclick="stop_working()" id="onClickWorking">Wstrzymaj/wznów prace</button>-->
                 <form action="db_update_user.php" method="post" class="alx_button_group_ligthbox">
                     <input type="hidden" id="idOfFactoryOnMap" name="idOfFactoryOnMap">
                     <button class="btn alx_flexy_w_edycji_fabryk_button" name="destroy_factory">Zniszcz fabrykę</button>

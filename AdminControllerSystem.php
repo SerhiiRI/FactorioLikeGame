@@ -126,7 +126,16 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
     </body>
     </html>
 
-<?php } else if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
+<?php
+
+    if($_SESSION['ref'] == true){
+        $_SESSION['ref'] = false;
+        echo '<script>
+        window.location.reload(true);
+        </script>';
+    }
+
+} else if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
     header("Location:Map.php");
 } else if (!isset($_SESSION["idUser"])) {
     header("Location:index.php");

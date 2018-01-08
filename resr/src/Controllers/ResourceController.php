@@ -178,13 +178,14 @@ class ResourceController
         foreach ($this->ResourceListForCurrentUser as $value){
             if(isset($_SESSION[$value->getResourceName()])) {
                 if($_SESSION[$value->getResourceName()] < $__task__->searchLevelByIdResorce($value->getIdResources())) {
-                    $_SESSION[$value->getResourceName()] = $_SESSION[$value->getResourceName()] + $value->getProductiveUnit() * $this->MAP_RESOURCE_COUNT[$value->getIdResources()];
+                    $_SESSION[$value->getResourceName()] = $_SESSION[$value->getResourceName()] + $value->getProductiveUnit() *
+                        ((isset($this->MAP_RESOURCE_COUNT[$value->getIdResources()])? $this->MAP_RESOURCE_COUNT[$value->getIdResources()] : 0));
                 }else $_SESSION[$value->getResourceName()] = $__task__->searchLevelByIdResorce($value->getIdResources());
             }else $_SESSION[$value->getResourceName()] = 0;
         }
     }
     public function clearFrontEndResourcesCount(){
-        foreach ($this->ResourceListForCurrentUser as $value) {
+        foreach ($this->returnArrayForCurrentUserResource($_SESSION["idUser"]) as $value) {
             if (isset($_SESSION[$value->getResourceName()])) {
                 unset($_SESSION[$value->getResourceName()]);
             }

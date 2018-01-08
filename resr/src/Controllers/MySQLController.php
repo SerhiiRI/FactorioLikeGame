@@ -91,7 +91,7 @@ final class MySQLController
         $prepare->execute();
         $idUzytkownika = -1;
         if ($prepare->rowCount() <= 0) {
-            $rejestracja = $this->pdo->prepare(" INSERT INTO User VALUES (NULL , :email, :pass, :dat,  :type, :score, :userlevel, :image) ");
+            $rejestracja = $this->pdo->prepare(" INSERT INTO User VALUES (NULL , :email, sha1(:pass), :dat,  :type, :score, :userlevel, :image) ");
             $rejestracja->bindParam(":email", $login);
             $rejestracja->bindParam(":pass", $password);
             $rejestracja->bindParam(":dat", $password);
@@ -114,7 +114,7 @@ final class MySQLController
 
     public function validateUser($login, $password)
     {
-        $prepare = $this->pdo->prepare("SELECT * FROM `User` WHERE Email=:email AND Passwd=:passwd");
+        $prepare = $this->pdo->prepare("SELECT * FROM `User` WHERE Email=:email AND Passwd=sha1(:passwd)");
         $prepare->bindParam(":email", $login);
         $prepare->bindParam(":passwd", $password);
         $prepare->execute();
@@ -462,7 +462,7 @@ final class MySQLController
 
     public function __Admin__UserUpdate($EmailToChange, $PasswordToChange, $IMG)
     {
-        $prepare = $this->pdo->prepare("UPDATE `User` SET `Passwd` = ?, `IMG` = ? WHERE `Email`=?");
+        $prepare = $this->pdo->prepare("UPDATE `User` SET `Passwd` = sha1(?), `IMG` = ? WHERE `Email`=?");
         $prepare->bindParam(1, $PasswordToChange);
         $prepare->bindParam(2, $IMG);
         $prepare->bindParam(3, $EmailToChange);
