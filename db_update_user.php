@@ -26,6 +26,21 @@ if (isset($_POST["create_factory"])) {
     $_SESSION["whatShouldOpen"] = "startPage";
 }//FINISH
 
+if (isset($_GET["create_factory"])) {
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/FactoryInstanceController.php";
+    $__facControler = \Controller\FactoryInstanceController::getInstance();
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/MapController.php";
+    $__MapControl = \Controller\MapController::getInstance();
+
+    $__facControler->add($_POST["idResource"], $_POST["upgradeLvl"], $_POST["idUser"]);
+    $factoryInst = $__facControler->returnFactoryIDbyParametr($_GET["idResource"], $_GET["upgradeLvl"], $_GET["idUser"]);
+
+    $__MapControl->add($factoryInst);
+    $_SESSION["ActionInfo"] = "Witaj w Factorio Online!";
+    $_SESSION["whatShouldOpen"] = "startPage";
+}//FINISH
 
 if (isset($_POST["destroy_factory"])) {
 

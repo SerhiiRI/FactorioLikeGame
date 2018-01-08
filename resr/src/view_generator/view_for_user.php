@@ -417,6 +417,7 @@ HTML;
         }
     }else{
         echo "<div class=\"collapsible-body\"><h4 style='padding: 2rem; text-align: center'>Nie odkryto jeszcze technologii</h4></div>";
+        header("Location: Map.php?");
     }
 }
 
