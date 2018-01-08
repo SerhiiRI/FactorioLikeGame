@@ -1,52 +1,48 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Serhii
- * Date: 23.10.17
- * Time: 2:36
- */
-
 namespace Controller;
 
 
-/**
- * @method __view__Generate is
- * @method __view__Change method
- * @method __view__ReturnParamert return
- */
-class Question implements GraficView
+include_once __DIR__."/../Class/Answer.php";
+use Controller\Answer;
+use Controller\MySQLController;
+
+class Question
 {
-    public $question = ' ';
-    public $answers = array();
+    private $idQuestion;
+    private $idTask;
+    private $Question;
+    private $answers = array();
+    private $__dataBase__controller;
 
-    public function __construct(string $questionField, array $answer)
-    {
-        if (!is_null($questionField) && !is_null($answer)) {
-            $this->question = $questionField;
-            $this->answers = $answer;
+    private function initAnswer($id){
+        foreach ($this->__dataBase__controller->__Admin__AnswerQuery($id) as $value) {
+            $this->answers[] = new Answer($value["idAnswers"], $value["idQuestion"], $value["Answer"], $value["Right"]);
         }
+        return null;
     }
 
-    public function __view__Generate()
+    public function __construct( $idQuestion, $idTask, $Question)
     {
-        // TODO: Implement __view__Generate() method.
+            $this->__dataBase__controller = MySQLController::getInstance();
+            $this->idQuestion = $idQuestion;
+            $this->idTask = $idTask;
+            $this->Question = $Question;
+            $this->initAnswer($this->idQuestion);
     }
 
-    public function __view__Change(array $param)
-    {
-        // TODO: Implement __view__Change() method.
+    public function getQuestion(){
+        return $this->Question;
+    }
+    public function getIdTask(){
+        return $this->idTask;
+    }
+    public function getIdQuestion(){
+        return $this->idQuestion;
+    }
+    public function getAnswerList(){
+        return $this->answers;
     }
 
-    public function __view__ReturnParametr()
-    {
-        // TODO: Implement __view__ReturnParametr() method.
-    }
 
-    public function __call($name, $arguments)
-    {
-        // TODO: Implement @method __view__Generate is
-        // TODO: Implement @method __view__Change method
-        // TODO: Implement @method __view__ReturnParamert return
-    }
 }
 

@@ -8,55 +8,36 @@
 
 namespace Controller;
 
-
-/**
- * @method __view__Generate is
- * @method __view__Change method
- * @method __view__ReturnParamert return
- */
-class Answer implements GraficView
+class Answer
 {
-    private $answer;
-    private $right = false;
+    private $idAnswers;
+    private $idQuestion;
+    private $Answer;
+    private $Right;
 
-    public function __construct($answerField, $isCorrect = false)
+    public function __construct($idAnswers, $idQuestion, $Answer, $Right)
     {
-        if (!is_null($answerField)) {
-            $this->answer = $answerField;
-            $this->right = $isCorrect;
-        }
+            $this->idAnswers = $idAnswers;
+            $this->idQuestion = $idQuestion;
+            $this->Answer = $Answer;
+            $this->Right = $Right;
     }
 
+    public function getidAnswers(){
+        return $this->idAnswers;
+    }
+    public function getidQuestion()
+    {
+        return $this->idQuestion;
+    }
     public function getAnswer()
     {
-        return $this->answer;
+        return $this->Answer;
     }
-
-    public function isRight()
+    public function getRight()
     {
-        return $this->right ? true : false;
+        return $this->Right;
     }
 
 
-    public function __view__Generate()
-    {
-        // TODO: Implement __view__Generate() method.
-    }
-
-    public function __view__Change(array $param)
-    {
-        // TODO: Implement __view__Change() method.
-    }
-
-    public function __view__ReturnParametr()
-    {
-        // TODO: Implement __view__ReturnParametr() method.
-    }
-
-    public function __call($name, $arguments)
-    {
-        // TODO: Implement @method __view__Generate is
-        // TODO: Implement @method __view__Change method
-        // TODO: Implement @method __view__ReturnParamert return
-    }
 }

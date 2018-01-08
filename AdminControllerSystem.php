@@ -1,105 +1,133 @@
 <?php
+//include_once("db_update.php");
 include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
-include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_LOGOUT_BUTTON_AND_FORM.php");
+if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 
-if (isset($_POST["__Admin__UserRemove"])) {
-    $__controller__DataBase->__Admin__UserRemove($_POST["Email"]);
-}
-if (isset($_POST["__Admin__UserAdd"])) {
-    $__controller__DataBase->__Admin__UserAdd(
-        $_POST["Email"],
-        $_POST["Password"],
-        $_POST["Type"],
-        $_POST["Level"]
-    );
-
-}
-if (isset($_POST["__Admin__UserUpdate"])) {
-    $__controller__DataBase->__Admin__UserUpdate($_POST["Email"], $_POST["Password"]);
-}
-
-?>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="style/login.css">
-</head>
-<body style="background-image: url(resr/img/adminit.jpg)">
-<div class="login-page">
-    <div class="form">
-        <p class="message" style='font-size: 2em; color: #4d4d4d'> I AM ROOT!!!</p>
-    </div>
-</div>
-<div class="form" style="max-width: 1000px">
-    <table style="margin: auto">
-        <tr class="message" style='font-size: 1.4em; color: #4d4d4d'>
-            <td style="text-align: center" colspan="5"> Lista:</td>
-        </tr>
-        <tr class="message" style='font-size: 1.4em; color: #4d4d4d'>
-            <td>Login:</td>
-            <td colspan="2">Level:</td>
-
-            <td>Typ:</td>
-            <td>Dzilania:</td>
-        </tr>
-        <tr>
-            <td></td>
-        </tr>
-        <?php
-        $listOf = $__controller__DataBase->__Admin__UserQuery();
-        if ($listOf != null) {
-            foreach ($listOf as $row) {
-                echo "<tr class='message' style='font-size: 1.1em'><form action='' method='post'>";
-                echo "<td><input type='hidden' name='Email' value='" . $row["Email"] . "'>" . $row["Email"] . "</td>";
-                echo "<td colspan='2'><input type='hidden' name='Level' value='" . $row["Level"] . "'>" . $row["Level"] . "</td>";
-
-                if ($row["Type"] == ADMIN) {
-                    echo "<td><input type='hidden' name='Type' value='" . $row["Type"] . "'>ROOT</td>";
-                } elseif ($row["Type"] == USER) {
-                    echo "<td><input type='hidden' name='Type' value='" . $row["Type"] . "'>Użytkownik</td>";
-                    echo "<td><button type='submit' name='__Admin__UserRemove' value='1'> Usun użytkownika </button></td>";
-                }
-                echo "</form></tr>";
-            }
+    include_once("resr/src/view_generator/view_for_admin.php");
+    $whatShouldOpen = $_SESSION["whatShouldOpen"];
+    if(isset($_SESSION["ActionInfo"])){
+        if($_SESSION["ActionInfo"]!="0"){
+            javamessage($_SESSION["ActionInfo"]);
+            $_SESSION["ActionInfo"]="0";
         }
-        ?>
-        <tr class="message" style='font-size: 1.4em; color: #4d4d4d'>
-            <td style="text-align: center" colspan="5"> Dodaj:</td>
-        </tr>
-        <tr class="message" style='font-size: 1.1em'>
-            <form action="" method="post">
+    }
+    ?>
 
-                <td><input type="text" name="Email" placeholder="Email" required></td>
-                <td><input type="text" name="Password" placeholder="Password" required></td>
-                <td><input type="number" name="Level" value="0" min="0" max="20" required></td>
-                <td><input type='hidden' name='Type' value="2">Tylko użytkownik</td>
-                <td>
-                    <button type="submit" name="__Admin__UserAdd" value="1"> Dodaj</button>
-                </td>
-            </form>
-        </tr>
-        <form action="" method="post">
-            <tr class="message"
-                style='font-size: 1.1em; border-color: #1a1a1a; border-top: solid; padding: 7px; border-width: 4px'>
-                <td>
-                    <select name="Email" required>
-                        <?php
-                        $list = $__controller__DataBase->__Admin__UserQuery();
-                        foreach ($list as $row1) {
-                            echo "<option value='" . $row1["Email"] . "'>" . $row1["Email"] . "</option>";
-                        }
-                        ?>
-                    </select>
-                </td>
-                <td><input type="text" name="Password" placeholder="Password" required></td>
-                <td colspan="2"></td>
-                <td>
-                    <button type="submit" name="__Admin__UserUpdate" value="1"> Odswiez</button>
-                </td>
-            </tr>
-        </form>
-    </table>
-</div>
-</body>
-</html>
+
+    <!DOCTYPE html>
+    <html lang="pl">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Admin Tools</title>
+        <!--Import materialize.css-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="style/materialize/css/materialize.min.css"
+              media="screen,projection"/>
+        <!--Import czcionek-->
+        <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Bahiana|Chelsea+Market|Cinzel:400,700,900|Dosis:200,300,400,500,600,700,800|Jim+Nightshade|Nosifer|Poiret+One|Quicksand:300,400,500,700|Text+Me+One&amp;subset=latin-ext"
+              rel="stylesheet">
+        <!--Import fontello-->
+        <link rel="stylesheet" href="style/fontello/css/fontello.css">
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="style/materialize/js/materialize.min.js"></script>
+        <!--Import aleks_style.css-->
+        <link type="text/css" rel="stylesheet" href="style/aleks_style.css"/>
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body class="alx_bg_img">
+
+    <a href="Credits.html"><img src="resr/img/gear6.gif" class="autorzy_btn"></a>
+    <div class="alx_border_space">
+        <div>
+            <!--lewy panel Admina-->
+            <?php LewyPanelAdmina(); ?>
+            <!--KONIEC PANELU LEWEGO-->
+
+            <!--prawy panel Admina (content)-->
+            <div class="aleks_content_panel">
+                <h1 class="alx_h1_title">Panel administratora</h1>
+
+                <!--                PANEL NARZĘDZI-->
+                <ul class="collapsible popout" data-collapsible="accordion">
+
+                    <!------------------------------------------------------------------------------------------------>
+                    <!--PIERWSZE NARZĘDZIE "STATYSTYKA"-->
+                    <li class="alx_zmiana_stylu_listy_panel_admina">
+                        <div class="collapsible-header <?php if($whatShouldOpen == "statystyka" || $whatShouldOpen == "startPage"){echo "active";} ?>"><i class="material-icons">sort</i>Statystyka</div>
+                        <!--PIERWSZY ELEMENT PO ROZWINIECIU-->
+                        <?php wyswietlanieStatystykSystemu(); ?>
+                        <!--KONIEC PIERWSZEGO ELEMENTU-->
+                    </li>
+                    <!--KONIEC PIERWSZEGO NARZEDZIA-->
+                    <!------------------------------------------------------------------------------------------------>
+
+                    <!--DRUGIE NARZĘDZIE "EDYCJA SUROWCOW"-->
+                    <li class="alx_zmiana_stylu_listy_panel_admina">
+                        <div class="collapsible-header <?php if($whatShouldOpen == "edytor fabryk"){echo "active";} ?>">
+                            <i class="icon-industrial-building aleks_icon"></i>
+                            Edytor fabryk/surowców
+                        </div>
+
+                        <!--    PĘTLA Z WIERSZAMI W Zarządzaie Surowcami w grze-->
+                        <?php zarządzanieFabrykamiOrazSurowcami(); ?>
+                        <!--KONIEC OPCJI 2-->
+                        <!------------------------------------------------------------------------------------------------>
+
+                        <!--POCZĄTEK OPCJI 3 - PYTANIA DO GRY-->
+                    <li class="alx_zmiana_stylu_listy_panel_admina">
+                        <div class="collapsible-header <?php if($whatShouldOpen == "edytor pytań"){echo "active";} ?>"><i class="icon-code-outline aleks_icon"></i>Edytor pytań
+                        </div>
+
+                        <!--PĘTLA Z WIERSZAMI W PYTANIA DO GRY-->
+                        <?php EdycjaPytanDoGry(); ?>
+                        <!--Koniec opcji 3-->
+                        <!------------------------------------------------------------------------------------------------>
+
+
+                        <!--POCZĄTEK OPCJI 4 - Taski DO GRY-->
+                    <li class="alx_zmiana_stylu_listy_panel_admina ">
+                        <div class="collapsible-header  <?php if($whatShouldOpen == "edytor zadań"){echo "active";} ?>"><i class="icon-tools aleks_icon"></i>Edytor zadań
+                        </div>
+
+
+                        <!--PĘTLA Z WIERSZAMI W Taski DO GRY-->
+                        <?php EdytorZadańDoGry(); ?>
+                        <!--Koniec opcji 3-->
+                        <!------------------------------------------------------------------------------------------------>
+
+
+                        <!--POCZĄTEK OPCJI 5 - Edytor użytkownikow-->
+                    <li class="alx_zmiana_stylu_listy_panel_admina">
+                        <div class="collapsible-header <?php if($whatShouldOpen == "edytuj usera"){echo "active";} ?>">
+                            <i class="icon-key aleks_icon"></i>Zarządzaj użytkownikami
+                        </div>
+
+                        <!--PĘTLA Z WIERSZAMI W ZARZĄDZAJ UŻYTKOWNIKAMI-->
+                        <?php EdtyorUzytkownikow(); ?>
+                        <!--Koniec opcji 5-->
+                        <!------------------------------------------------------------------------------------------------>
+
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('select').material_select();
+        });
+    </script>
+    </body>
+    </html>
+
+<?php } else if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
+    header("Location:Map.php");
+} else if (!isset($_SESSION["idUser"])) {
+    header("Location:index.php");
+} ?>

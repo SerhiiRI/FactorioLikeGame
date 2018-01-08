@@ -1,23 +1,39 @@
 <?php
 include_once ("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
 
+function javamessage($txt){
+    echo "<script type='text/javascript'>alert('$txt');</script>";
+}
+
 if(isset($_POST["ok"]) && isset($_POST["email_address"]) && isset($_POST["password"])){
-    $id = $__controller__DataBase->regestration($_POST["email_address"], $_POST["password"]);
-    echo "<h1> id ".print_r($id)."</h1>";
-    if($id!=-1){
-        $_SESSION["LOGINED"] = "1";
-        $_SESSION["idUser"] = $id;
-        if ($id==1) {
-            $_SESSION["UserType"] = "1";
-        }else{
-            $_SESSION["UserType"] = "2";
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/UserController.php";
+    $id = \Controller\UserController::getInstance();
+    if($id->SearchByEmail($_POST["email_address"])==null) {
+
+        $id->add($_POST["email_address"], $_POST["password"], date("Y-m-d"));
+
+
+        if ($id != "-1") {
+            $_SESSION["name_of_user"] = $_POST["email_address"];
+            $_SESSION["LOGINED"] = "1";
+            $_SESSION["idUser"] = $id;
+            if ($id == "1") {
+                $_SESSION["UserType"] = "1";
+            } else {
+                $_SESSION["UserType"] = "2";
+            }
+        } else {
+            javamessage("Coś poszło nie tak :/ Spróbuj jeszcze.");
+            ?>
+<!--            <div class="form">-->
+<!--                <p class="message" style="font-size: 30px;"> Login is failed, may be you want <a-->
+<!--                            href="Regestration.php"> create an account</a></p>-->
+<!--            </div>-->
+            <?php
         }
     }else{
-        ?>
-        <div class="form">
-            <p class="message" style="font-size: 30px;"> Login is failed, may be you want <a href="Regestration.php"> create an account</a></p>
-        </div>
-        <?
+        javamessage("Istnieje już taki użytkownik!");
     }
 }
 
@@ -36,10 +52,10 @@ include_once ("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_REDIRECT_CENTRAL_PAGE.php");
 <div class="login-page">
     <div class="form">
         <form class="register-form" action="" method="post">
-            <input type="text" name="email_address" placeholder="email address"/>
-            <input type="password" name="password" placeholder="password"/>
-            <button name="ok">create</button>
-            <p class="message">Already registered? <a href="Index.php">Sign In</a></p>
+            <input type="email" name="email_address" placeholder="email address" required/>
+            <input type="password" name="password" placeholder="password" required/>
+            <button name="ok">Zarejestruj</button>
+            <p class="message" style="text-align: center">Posiadasz już konto? <a href="Index.php">Zaloguj się!</a></p>
         </form>
     </div>
 </div>

@@ -15,46 +15,43 @@ namespace Controller;
  * @method __view__Change method
  * @method __view__ReturnParamert return
  */
-class Resource implements GraficView
+class Resource
 {
-    private $ResourceType;
-    private $ResourceValue;
+    private $idResources;
+    private $Resource;
+    private $ProductiveUnit;
+    private $FactoryName;
+    private $IMG;
+    private $IMGFac;
 
-    public function __construct($type = "", $value = "")
+    public function
+    __construct($idResources, $Resource, $ProductiveUnit, $FactoryName, $IMG, $IMGFac)
     {
-        $this->ResourceType = $type;
-        $this->ResourceValue = $value;
+        $this->idResources = $idResources;
+        $this->Resource = $Resource;
+        $this->FactoryName = $FactoryName;
+        $this->IMG = $IMG;
+        $this->IMGFac = $IMGFac;
+        $this->ProductiveUnit = $ProductiveUnit;
     }
 
-    public function getResourceType()
-    {
-        return $this->ResourceType;
+    public function getIdResources(){
+        return $this->idResources;
+    }
+    public function getResourceName(){
+        return $this->Resource;
+    }
+    public function getFactoryName(){
+        return $this->FactoryName;
+    }
+    public function getProductiveUnit(){
+        return $this->ProductiveUnit;
+    }
+    public function getIMG(){
+        return $this->IMG;
+    }
+    public function getIMGFactory(){
+        return $this->IMGFac;
     }
 
-    public function getResourceValue()
-    {
-        return $this->ResourceValue;
-    }
-
-    public function __view__Generate()
-    {
-        // TODO: Implement __view__Generate() method.
-    }
-
-    public function __view__Change(array $param)
-    {
-        // TODO: Implement __view__Change() method.
-    }
-
-    public function __view__ReturnParametr()
-    {
-        // TODO: Implement __view__ReturnParametr() method.
-    }
-
-    public function __call($name, $arguments)
-    {
-        // TODO: Implement @method __view__Generate is
-        // TODO: Implement @method __view__Change method
-        // TODO: Implement @method __view__ReturnParamert return
-    }
 }

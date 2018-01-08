@@ -1,12 +1,10 @@
 <?php
 if(isset($_POST["logut"])){
-    unset($_SESSION["LOGINED"]);
-    unset($_SESSION["idUser"]);
-    unset($_SESSION["UserType"]);
+    session_destroy();
     header("Location:Index.php");
 }
 ?>
-
 <form class="logout" action="" method="post">
-    <input name="logut"  src="resr/img/exit.png" width="200px" alt="Logout" value="LOGOUT" type="image"/>
+    <button class="btn-flat alx_przycisk_wylogowania" type="submit" name="logut"><img class="aleks_logout" src="resr/img/logout.svg"> Wyloguj
+    </button>
 </form>
