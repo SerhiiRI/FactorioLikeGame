@@ -163,6 +163,20 @@ if (isset($_POST["odp4"])) {
     $_SESSION["whatShouldOpen"] = "Task";
 }//FINISH
 
+if (isset($_GET["noAnswer"])) {
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ResourceController.php";
+    $__ResControl = \Controller\ResourceController::getInstance();
+    $__ResControl->clearFrontEndResourcesCount();
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ScoreController.php";
+    $__ScoreControl = \Controller\ScoreController::getInstance();
+
+    echo "Get: ".$_GET["taskID"];
+    $_SESSION["BtnDes"]="zablokuj";
+    $__ScoreControl->update($_GET["taskID"]);
+    $_SESSION["ActionInfo"] = "Badanie zakończone!";
+    $_SESSION["whatShouldOpen"] = "Task";
+}//FINISH
 
 if(!empty($_GET["lvlup"])){
     echo $_GET["lvlup"];

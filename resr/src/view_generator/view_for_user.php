@@ -85,7 +85,7 @@ HTML;
                         <!--                        WYLOGOWANIE-->
                         <div class="alx_btn_logout">
                     <table>
-                        <tr class="alx_przycisk_na_lewym_panelu">
+                        <tr class="alx_przycisk_na_lewym_panelu_wyloguj">
                             <td class="alx_td_left alx_border_none">
                                 <a href="hard_logout.php" class="alx_przycisk_wylogowania">
                                     <i class="icon-logout aleks_icon_logout"></i> Wyloguj
@@ -208,7 +208,7 @@ function ListaTaskowDlaUsera()
     $howManyCurrentTask=0;
     $TaskList = $__taskControler->returnArray();
     foreach ($TaskList as $item) {
-        if ($item->getLevelTo() <= $userData->getLevel()+1) {
+        if ($item->getLevelTo() <= $userData->getLevel() + 1) {
             $status = $__scoreControler->searchByIdTask($item->getidTask());
             if ($status == false) {
                 $howManyCurrentTask++;
@@ -217,41 +217,48 @@ function ListaTaskowDlaUsera()
                 $taskID = $item->getidTask();
 
                 $QuestData = $__questController->searchQuestionByIdOf_Task($taskID);
-//            echo "<pre>";print_r($QuestData);echo"</pre>";
-                $task = $opis;
-                $quest = $QuestData->getQuestion();
-                $answers = $QuestData->getAnswerList();
-                $idQuest = $QuestData->getIdQuestion();
-                $rand = rand(0, 2);
-                if ($rand == 0) {
-                    $odp1 = $answers[1]->getAnswer();
-                    $odp2 = $answers[0]->getAnswer();
-                    $odp3 = $answers[2]->getAnswer();
-                    $odp4 = $answers[3]->getAnswer();
-                    $odp1_id = $answers[1]->getidAnswers();
-                    $odp2_id = $answers[0]->getidAnswers();
-                    $odp3_id = $answers[2]->getidAnswers();
-                    $odp4_id = $answers[3]->getidAnswers();
-                } else if ($rand == 1) {
-                    $odp1 = $answers[3]->getAnswer();
-                    $odp2 = $answers[1]->getAnswer();
-                    $odp3 = $answers[0]->getAnswer();
-                    $odp4 = $answers[2]->getAnswer();
-                    $odp1_id = $answers[3]->getidAnswers();
-                    $odp2_id = $answers[1]->getidAnswers();
-                    $odp3_id = $answers[0]->getidAnswers();
-                    $odp4_id = $answers[2]->getidAnswers();
-                } else if ($rand == 2) {
-                    $odp1 = $answers[2]->getAnswer();
-                    $odp2 = $answers[1]->getAnswer();
-                    $odp3 = $answers[3]->getAnswer();
-                    $odp4 = $answers[0]->getAnswer();
-                    $odp1_id = $answers[2]->getidAnswers();
-                    $odp2_id = $answers[1]->getidAnswers();
-                    $odp3_id = $answers[3]->getidAnswers();
-                    $odp4_id = $answers[0]->getidAnswers();
+                $btn_send = "0";
+                if ($QuestData != null) {
+                    $btn_send = "1";
+                } else {
+                    $btn_send = "0";
                 }
-
+//            echo "<pre>";print_r($QuestData);echo"</pre>";
+                if ($btn_send == "1") {
+                    $task = $opis;
+                    $quest = $QuestData->getQuestion();
+                    $answers = $QuestData->getAnswerList();
+                    $idQuest = $QuestData->getIdQuestion();
+                    $rand = rand(0, 2);
+                    if ($rand == 0) {
+                        $odp1 = $answers[1]->getAnswer();
+                        $odp2 = $answers[0]->getAnswer();
+                        $odp3 = $answers[2]->getAnswer();
+                        $odp4 = $answers[3]->getAnswer();
+                        $odp1_id = $answers[1]->getidAnswers();
+                        $odp2_id = $answers[0]->getidAnswers();
+                        $odp3_id = $answers[2]->getidAnswers();
+                        $odp4_id = $answers[3]->getidAnswers();
+                    } else if ($rand == 1) {
+                        $odp1 = $answers[3]->getAnswer();
+                        $odp2 = $answers[1]->getAnswer();
+                        $odp3 = $answers[0]->getAnswer();
+                        $odp4 = $answers[2]->getAnswer();
+                        $odp1_id = $answers[3]->getidAnswers();
+                        $odp2_id = $answers[1]->getidAnswers();
+                        $odp3_id = $answers[0]->getidAnswers();
+                        $odp4_id = $answers[2]->getidAnswers();
+                    } else if ($rand == 2) {
+                        $odp1 = $answers[2]->getAnswer();
+                        $odp2 = $answers[1]->getAnswer();
+                        $odp3 = $answers[3]->getAnswer();
+                        $odp4 = $answers[0]->getAnswer();
+                        $odp1_id = $answers[2]->getidAnswers();
+                        $odp2_id = $answers[1]->getidAnswers();
+                        $odp3_id = $answers[3]->getidAnswers();
+                        $odp4_id = $answers[0]->getidAnswers();
+                    }
+                }
 
                 $show = <<<HTML
 <div class="collapsible-body alx_flexkontener_user_task">
@@ -264,13 +271,28 @@ function ListaTaskowDlaUsera()
                             <div class="alx_flex_user_task">
                                 <div class="alx_flex_user_task_forbtn">
                                     <div class="alx_flex_user_task_btn">
+HTML;
+                echo $show;
+                if ($btn_send == "1") {
+                    $show = <<<HTML
                                         <button class="btn" id="addBtnDesibled" name="addBtnDesibled" onclick="lvlup_open_zindex('$task', '$taskID', '$quest', '$idQuest', '$odp1', '$odp2', '$odp3', '$odp4', '$odp1_id', '$odp2_id', '$odp3_id', '$odp4_id');">Badaj</button>
+HTML;
+                    echo $show;
+                } else {
+                    $show = <<<HTML
+                                        <button class="btn" id="addBtnDesibled" name="addBtnDesibled" onclick="lvlup_open_zindex_noAnswer('$taskID');">Badaj</button>
+HTML;
+                    echo $show;
+                }
+                $show = <<<HTML
+
                                     </div>
                                 </div>
                             </div>
                         </div>
 HTML;
                 echo $show;
+
             } else {
                 $lvl = $item->getLevelTo();
                 $opis = $item->getTask();

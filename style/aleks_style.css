@@ -139,14 +139,14 @@ table, tr, td {
 
 /*Przycisk wylogowania*/
 .alx_btn_logout {
-    position: absolute;
+    position: relative;
     bottom: 0;
     width: var(--szerokosc-lewego-panelu);
 }
 
 .alx_przycisk_wylogowania {
     text-decoration: none;
-    color: black;
+    color: white;
     display: block;
     padding: 1rem;
 }
@@ -166,11 +166,32 @@ table, tr, td {
     color: black;
     font-size: 1.3rem;
     padding: 1rem;
+    /*background-color: rgba(077, 182, 172, 1) ;*/
     border-bottom: solid 1px rgba(50, 50, 50, 0.5);
     transition: color var(--transition-color), background-color var(--transition-bg);
 }
 
+
 .alx_przycisk_na_lewym_panelu:hover, .alx_td_left:hover {
+    color: white;
+    cursor: default;
+    background-color: rgba(191, 63, 63, 0.7);
+    transition: color var(--transition-color), background-color var(--transition-bg);
+}
+
+
+.alx_przycisk_na_lewym_panelu_wyloguj{
+    text-align: center;
+    color: black;
+    font-size: 1.3rem;
+    padding: 1rem;
+    background-color: rgba(077, 182, 172, 1) ;
+    box-shadow: 2px 2px 5px rgba(50, 50, 50, 0.6);
+    /*border-bottom: solid 1px rgba(50, 50, 50, 0.5);*/
+    transition: color var(--transition-color), background-color var(--transition-bg);
+}
+
+.alx_przycisk_na_lewym_panelu_wyloguj:hover{
     color: white;
     cursor: default;
     background-color: rgba(191, 63, 63, 0.7);

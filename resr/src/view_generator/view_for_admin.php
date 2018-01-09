@@ -46,7 +46,7 @@ function LewyPanelAdmina()
                         <!--                        WYLOGOWANIE-->
                         <div class="alx_btn_logout">
                     <table>
-                        <tr class="alx_przycisk_na_lewym_panelu">
+                        <tr class="alx_przycisk_na_lewym_panelu_wyloguj">
                             <td class="alx_td_left alx_border_none">
                                 <a href="hard_logout.php" class="alx_przycisk_wylogowania">
                                     <i class="icon-logout aleks_icon_logout"></i> Wyloguj
@@ -575,13 +575,13 @@ HTML;
                                         </div>
                                         <div>
                                             <div class="input-field">
-                                                <input type="number" class="alx_task_input" name="input_lvl_task" value="">
+                                                <input type="number" min="$min" max="$max" class="alx_task_input" name="input_lvl_task" value="">
                                                 <label>Wymagany poziom</label>
                                             </div>
                                         </div>
                                         <div>
                                             <div class="input-field">
-                                                <input type="number" min="$min" max="$max" class="alx_task_input" name="input_needed_task" value="">
+                                                <input type="number" min="$min" class="alx_task_input" name="input_needed_task" value="">
                                                 <label>Resource To</label>
                                             </div>
                                         </div>
@@ -663,7 +663,7 @@ HTML;
                                         </div>
                                         <div>
                                             <div class="input-field">
-                                                <input type="number" class="alx_task_input" name="input_needed_task" value="$neededRes">
+                                                <input type="number" min="$min" class="alx_task_input" name="input_needed_task" value="$neededRes">
                                                 <label>Resource To</label>
                                             </div>
                                         </div>

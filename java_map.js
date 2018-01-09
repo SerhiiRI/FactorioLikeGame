@@ -81,8 +81,12 @@ function BtnDes(a) {
     }
 }
 
+function lvlup_open_zindex_noAnswer(taskID){
+    window.location.href = "db_update_user.php?noAnswer=true&taskID=" + taskID;
+}
+
 function lvlup_open_zindex(task, taskID, quest, quest_id, odp1, odp2, odp3, odp4, odp1_id, odp2_id, odp3_id, odp4_id) {
-    alert('Uwaga! Zamknięcie urządzenia, bądź wylogowanie spowoduje utratę zebranych surowców, a aktualnie prowadzone badanie zostanie zresetowane!');
+    // alert('Uwaga! Zamknięcie urządzenia, bądź wylogowanie spowoduje utratę zebranych surowców, a aktualnie prowadzone badanie zostanie zresetowane!');
     var a = '<?php echo $_SESSION["BtnDes"];?>';
     // alert(a);
 <?php $_SESSION["BtnDes"]="zablokuj";?>
