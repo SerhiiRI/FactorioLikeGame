@@ -1,9 +1,19 @@
 <?php
 
 include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
+if(session_status()==false) {
+    session_start();
+}
 
 function javamessage($txt){
     echo "<script type='text/javascript'>alert('$txt');</script>";
+}
+
+if(isset($_SESSION["ActionInfo"])){
+    if($_SESSION["ActionInfo"]!="0"){
+        javamessage($_SESSION["ActionInfo"]);
+        $_SESSION["ActionInfo"]="0";
+    }
 }
 
 if (isset($_POST["ok"])) {

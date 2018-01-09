@@ -3,14 +3,9 @@
 include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
 if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 
+    include_once("resr/src/view_generator/view_for_message.php");
     include_once("resr/src/view_generator/view_for_admin.php");
     $whatShouldOpen = $_SESSION["whatShouldOpen"];
-    if(isset($_SESSION["ActionInfo"])){
-        if($_SESSION["ActionInfo"]!="0"){
-            javamessage($_SESSION["ActionInfo"]);
-            $_SESSION["ActionInfo"]="0";
-        }
-    }
     ?>
 
 
@@ -39,7 +34,16 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
     </head>
 
     <body class="alx_bg_img">
-
+    <div class="jsmessage" id="jsmessagestyle"><h4 id="jsmessage">TXT</h4></div>
+    <?php
+    if(isset($_SESSION["ActionInfo"])){
+        if($_SESSION["ActionInfo"]!= ""){
+            javamessage($_SESSION["ActionInfo"]);
+            $_SESSION["ActionInfo"] = "";
+        }
+    }
+//    javamessage("Wygląda na to że działa :D")
+    ;?>
     <a href="Credits.html"><img src="resr/img/gear6.gif" class="autorzy_btn"></a>
     <div class="alx_border_space">
         <div>
@@ -131,7 +135,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
     if($_SESSION['ref'] == true){
         $_SESSION['ref'] = false;
         echo '<script>
-        window.location.reload(true);
+//        window.location.reload(true);
         </script>';
     }
 

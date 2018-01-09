@@ -843,3 +843,13 @@ table, tr, td {
         font-size: 3rem;
     }
 }
+
+.jsmessage{
+    z-index: 2;
+    position: fixed;
+    right: 0vw;
+    opacity: 0;
+    top: 10%;
+    padding:0.5rem 2rem;
+    background-color: rgba(255,255,255,0.8);
+}

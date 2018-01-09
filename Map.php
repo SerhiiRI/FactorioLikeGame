@@ -2,6 +2,7 @@
 include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
 if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
 
+    include_once("resr/src/view_generator/view_for_message.php");
     include_once("resr/src/view_generator/view_for_user.php");
 
 
@@ -15,13 +16,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
     $_SESSION["lvlup_ok"]='ok';
 
     $whatShouldOpen = $_SESSION["whatShouldOpen"];
-    $whatShouldOpen = $_SESSION["whatShouldOpen"];
-    if(isset($_SESSION["ActionInfo"])){
-        if($_SESSION["ActionInfo"]!="0"){
-            javamessage($_SESSION["ActionInfo"]);
-            $_SESSION["ActionInfo"]="0";
-        }
-    }
+
 
     ?>
 
@@ -69,6 +64,21 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
             xmlhttp.open("GET", "./resr/src/PAGE_INCLUDES_SCRIPT/AJAX_HANDLER_TO_RESOURCE.php", true);
             xmlhttp.send();
         }, 1000);
+            function testOnNewLevelUp(){
+                var xhttp=new XMLHttpRequest();
+                xhttp.onreadystatechange = function(ss) {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // alert(this.responseText);
+                        if(this.responseText == "1"){
+                            if(document.getElementById("lvlupBTN").value=='ok'){document.getElementById("lvlupBTN").disabled = false;}
+                        }else{
+                            return false;
+                        }
+                    }
+                };
+                xhttp.open("POST", "./resr/src/PAGE_INCLUDES_SCRIPT/AJAX_TEST_TASK.php", true);
+                xhttp.send();
+            }
         function testFullResourcea(){
             var xhttp=new XMLHttpRequest();
             xhttp.onreadystatechange = function(ss) {
@@ -76,7 +86,8 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
                     if(this.responseText == "1"){
                         clearInterval(interval);
                         BtnDes('odblokuj');
-                        if(document.getElementById("lvlupBTN").value=='ok'){document.getElementById("lvlupBTN").disabled = false;}
+                        testOnNewLevelUp();
+                        //if(document.getElementById("lvlupBTN").value=='ok'){document.getElementById("lvlupBTN").disabled = false;}
                     }else{
                         return false;
                     }
@@ -85,9 +96,20 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
             xhttp.open("POST", "./resr/src/PAGE_INCLUDES_SCRIPT/AJAX_TEST.php", true);
             xhttp.send();
         }
+
     </script>
 
     <body class="alx_bg_img" onload="BtnDes('<?php echo $BtnDes;?>')">
+    <div class="jsmessage" id="jsmessagestyle"><h4 id="jsmessage">TXT</h4></div>
+    <?php
+    if(isset($_SESSION["ActionInfo"])){
+        if($_SESSION["ActionInfo"]!= ""){
+            javamessage($_SESSION["ActionInfo"]);
+            $_SESSION["ActionInfo"] = "";
+        }
+    }
+    //    javamessage("Wygląda na to że działa :D")
+    ;?>
     <a href="Credits.html"><img src="resr/img/gear6.gif" class="autorzy_btn"></a>
 
     <?php lvlupLightbox(); ?>
@@ -150,7 +172,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
     if($_SESSION['ref'] == true){
         $_SESSION['ref'] = false;
         echo '<script>
-        window.location.reload(true);
+//        window.location.reload(true);
         </script>';
     }
 

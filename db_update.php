@@ -6,12 +6,12 @@ $_SESSION['ref']=true;
 
 if (isset($_POST["edytuj_user"])) {
 
-    if ($_POST["input_name"] != "" && $_POST["input_passwd"] != "" && $_POST["input_grafika"] != "") {
+    if ($_POST["input_name"] != "" && $_POST["input_grafika"] != "") {
 
         include_once __DIR__ . "/../git-repo/resr/src/Controllers/MySQLController.php";
         $__update = \Controller\MySQLController::getInstance();
 
-        $__update->__Admin__UserUpdate($_POST['input_name'], $_POST['input_passwd'], $_POST["input_grafika"]);
+        $__update->__Admin__UserUpdate($_POST['input_name'], $_POST["input_grafika"]);
         $_SESSION["ActionInfo"] = "Edytowano użytkownika: " . $_POST["input_name"];
         $succes = true;
     }
@@ -213,6 +213,11 @@ if (isset($_POST["create_factory"])) {
 
 
 //Koniec
+if(isset($_SESSION["ActionInfo"])){
+    if( $_SESSION["ActionInfo"]== "0"){
+        $_SESSION["ActionInfo"] = "Niepowodzenie działania.";
+    }
+}
 if($succes==false){javamessage("Niepowodzenie! Pamiętaj że pola nie powinny być puste!");}
 header("Location: AdminControllerSystem.php");
 ?>

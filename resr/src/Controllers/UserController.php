@@ -72,7 +72,7 @@ class UserController
         $this->__dataBase__controller->__User__UserNextLevel($email);
         $this->set($this->__dataBase__controller->__Admin__UserQuery());
         $userLevel = $this->SearchByEmail($email);
-        $this->setOfScoreTaskForUserCurrentLevel($email, $userLevel->getLevel());
+        $this->setOfScoreTaskForUserCurrentLevel($email, $userLevel->getLevel()+1);
     }
 
     /**
@@ -82,6 +82,8 @@ class UserController
     private function setOfScoreTaskForUserCurrentLevel($login, $level){
         $ScoreCTRL = \Controller\ScoreController::getInstance();
         $TaskCTRL = \Controller\TaskController::getInstance();
+        //print("<script>alert(\"user name \");</script>");
+
         foreach ($TaskCTRL->returnTaskByLvl($level) as $value) {
             $usertemp = $this->SearchByEmail($login);
             $ScoreCTRL->add($value->getidTask(), $usertemp->getidUser());

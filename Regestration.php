@@ -7,6 +7,7 @@ if(session_status()==false) {
 function javamessage($txt){
     echo "<script type='text/javascript'>alert('$txt');</script>";
 }
+//javamessage("work");
 
 if(isset($_POST["ok"]) && isset($_POST["email_address"]) && isset($_POST["password"])){
 
@@ -15,6 +16,7 @@ if(isset($_POST["ok"]) && isset($_POST["email_address"]) && isset($_POST["passwo
     if($id->SearchByEmail($_POST["email_address"])==null) {
 
         $id->add($_POST["email_address"], $_POST["password"], date("Y-m-d"));
+        javamessage("Pomyślan rejestracja! Teraz możesz się zalogować :)");
 
         if ($id != "-1") {
             $_SESSION["name_of_user"] = $_POST["email_address"];
@@ -48,7 +50,7 @@ include_once ("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_REDIRECT_CENTRAL_PAGE.php");
 <div class="login-page">
     <div class="form">
         <form class="register-form" action="" method="post">
-            <input type="email" name="email_address" placeholder="email address" required/>
+            <input type="text" name="email_address" placeholder="email address" required/>
             <input type="password" name="password" placeholder="password" required/>
             <button name="ok">Zarejestruj</button>
             <p class="message" style="text-align: center">Posiadasz już konto? <a href="Index.php">Zaloguj się!</a></p>

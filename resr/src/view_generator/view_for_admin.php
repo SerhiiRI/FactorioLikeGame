@@ -1,9 +1,5 @@
 <?php
 
-function javamessage($txt){
-    echo "<script type='text/javascript'>alert('$txt');</script>";
-}
-
 function LewyPanelAdmina()
 {
     include_once __DIR__ . "/../Controllers/UserController.php";
@@ -239,7 +235,7 @@ function EdycjaPytanDoGry()
     $__TaskControler = \Controller\TaskController::getInstance();
 
     $TaskData = $__TaskControler->returnArray();
-    if($__QuestControler->returnArray()==null){
+    if ($__QuestControler->returnArray() == null) {
         $action = "db_update.php";
 
         $show = <<<HTML
@@ -323,7 +319,7 @@ HTML;
                             </div> <!--Ostatnii element dodający-->
 HTML;
         echo $show;
-    }else {
+    } else {
         $QuestData = $__QuestControler->returnArray();
         $action = "db_update.php";
 
@@ -544,7 +540,7 @@ function EdytorZadańDoGry()
                                         
 HTML;
     echo $show;
-    $tst=0;
+    $tst = 0;
     foreach ($factoryData as &$Res) {
         $tst++;
         $surowiec = $Res->getResourceName();
@@ -624,12 +620,12 @@ HTML;
                                         
 HTML;
         echo $show;
-        $tst=0;
+        $tst = 0;
         foreach ($factoryData as &$Res) {
             $tst++;
             $surowiec = $Res->getResourceName();
             $id_res = $Res->getIdResources();
-            $isSelect = ($Res->getIdResources()==$resrc)?"selected":"";
+            $isSelect = ($Res->getIdResources() == $resrc) ? "selected" : "";
 //            print_r($test);
             $show = <<<HTML
                                         <option value="$id_res" $isSelect>$surowiec</option>

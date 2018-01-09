@@ -1,9 +1,5 @@
 <?php
 
-function javamessage($txt){
-    echo "<script type='text/javascript'>alert('$txt');</script>";
-}
-
 function LewyPanelAdmina()
 {
     include_once __DIR__ . "/../Controllers/UserController.php";
@@ -26,11 +22,10 @@ function LewyPanelAdmina()
 
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
     $userData = $__userControler->SearchByEmail($nameOfUser);
-//    $factoryData = $__facControler->returnArray();
     $__surowce = $__resControler->returnArray();
 
     $howManyTask = 0;
-    $TaskListByLvl = $__taskControler->returnTaskByLvl($userData->getLevel() + 1);
+    $TaskListByLvl = $__taskControler->returnTaskByLvl($userData->getLevel());
     foreach ($TaskListByLvl as $item) {
             $howManyTask++;
     }
@@ -40,18 +35,16 @@ function LewyPanelAdmina()
     foreach ($TaskList as $item) {
         if ($item->getLevelTo() <= $userData->getLevel() + 1) {
             $status = $__scoreControler->searchByIdTask($item->getidTask());
-            if ($status == false) {
+            if ($status == true) {
                 $howManyCurrentTask++;
             }
         }
     }
-        //javamessage("Task: $howManyTask, CTask: $howManyCurrentTask");
-
+//    javamessage($howManyTask);
+//    javamessage($howManyCurrentTask);
 
     $imageOfUser = "resr/img/" . $userData->getIMG(); //Grafika usera
     $lvlGracza = $userData->getLevel();
-    $LastLogin = $userData->getLastLogined();
-    $secure = ($userData->getType() == 1) ? "Administrator" : "Gracz";
 
     $show = <<<HTML
     <div class="aleks_user_panel">
@@ -64,40 +57,23 @@ function LewyPanelAdmina()
                     <!-- Funkcje dla admina -->
                     <br/>
                     <br/>
+<p id="serhii_log"></p>
+
 HTML;
     echo $show;
-    $progress_start_calc = 0;
-    $progress_finish_calc = 0;
-    foreach ($__surowce as &$res) {
-//            $surowiec = $__resControler->searchByID($res->getidResource());
-        $surowiec = $res->getResourceName();
-        $progres = rand(0, 100);
-        $finish = 100;
-        $progres_procent = ($progres * 100) / $finish;
 
-    }
-    ?>
-<!--<p id="serhii_log"></p>-->
-<?php
-    $eofg="";
-    $finishTask = $howManyTask - $howManyCurrentTask;
-    if($howManyTask<=0 && $howManyTask<=0){
-        $progres_procent=0;
-        $wynik="It's end of game!";
-        $eofg = "gameover";
-    }else {
-        $progres_procent = ($finishTask * 100) / $howManyTask;
-        $wynik = "Postęp: " . round($progres_procent) . "%";
-    }
-//    $ButtonDisabled = ($progres_procent == 100) ?: "disabled";
+//    $progres_procent=100;
+//    $wynik = "Postęp: " . round($progres_procent) . "%";
     $ButtonDisabled = "disabled";
-    if($progres_procent == 100){$ok="ok";}else{$ok="nope";}
-//    javamessage("$progres_procent");
-    $ButtonValue = ($progres_procent == 100) ? "LVL UP!" : $wynik;
-
+//    $ButtonDisabled = "";
+//    $ButtonValue = ($progres_procent == 100) ? "LVL UP!" : $wynik;
+//    $ButtonValue = ($howManyTask == 0) ? "It's end of game!" : "LEVEL UP!";
+//    $ButtonDisabled = ($howManyTask > 0) ? "disabled" : "";
+    $ButtonValue="LVL UP!";
+    $eofg="";
+    $ok="ok";
     $show = <<<HTML
 
-<p id="serhii_log"></p>
 
                 <div class="alx_lvl_up_btn">
                     <button name="levelup_btn" class="btn btn_lvlup" id="lvlupBTN" value="$ok" onclick="lvlup_gratulation_open('$eofg')" $ButtonDisabled>
@@ -218,9 +194,6 @@ function ListaTaskowDlaUsera()
     include_once __DIR__ . "/../Controllers/TaskController.php";
     $__taskControler = \Controller\TaskController::getInstance();
 
-    include_once __DIR__ . "/../Controllers/MapController.php";
-    $__mapControler = \Controller\MapController::getInstance();
-
     include_once __DIR__ . "/../Controllers/QuestionController.php";
     $__questController = \Controller\QuestionController::getInstance();
 
@@ -230,19 +203,18 @@ function ListaTaskowDlaUsera()
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
     $userData = $__userControler->SearchByEmail($nameOfUser);
     $userID = $userData->getidUser();
+    $_SESSION['poziomGracza']=$userData->getLevel();
 
     $howManyCurrentTask=0;
-    $TaskList = $__taskControler->returnOnlyCurrentUserTaskArray();
+    $TaskList = $__taskControler->returnArray();
     foreach ($TaskList as $item) {
-        if ($item->getLevelTo() <= $userData->getLevel() + 1) {
+        if ($item->getLevelTo() <= $userData->getLevel()+1) {
             $status = $__scoreControler->searchByIdTask($item->getidTask());
             if ($status == false) {
                 $howManyCurrentTask++;
                 $lvl = $item->getLevelTo();
                 $opis = $item->getTask();
                 $taskID = $item->getidTask();
-                $odkrycie = $item->getResourceTo();
-//        $var = "456";
 
                 $QuestData = $__questController->searchQuestionByIdOf_Task($taskID);
 //            echo "<pre>";print_r($QuestData);echo"</pre>";
@@ -302,8 +274,6 @@ HTML;
             } else {
                 $lvl = $item->getLevelTo();
                 $opis = $item->getTask();
-                $odkrycie = $item->getResourceTo();
-//        $var = "456";
 
                 $show = <<<HTML
 <div class="collapsible-body alx_flexkontener_user_task">
@@ -417,7 +387,7 @@ HTML;
         }
     }else{
         echo "<div class=\"collapsible-body\"><h4 style='padding: 2rem; text-align: center'>Nie odkryto jeszcze technologii</h4></div>";
-        header("Location: Map.php?");
+        echo '<script>window.location.href = "db_update_user.php?firstfactory=true";</script>';
     }
 }
 

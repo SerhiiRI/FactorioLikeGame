@@ -460,12 +460,11 @@ final class MySQLController
         return $this->regestration($login, $password, $type, $idLevel, $idScore);
     }
 
-    public function __Admin__UserUpdate($EmailToChange, $PasswordToChange, $IMG)
+    public function __Admin__UserUpdate($EmailToChange, $IMG)
     {
-        $prepare = $this->pdo->prepare("UPDATE `User` SET `Passwd` = sha1(?), `IMG` = ? WHERE `Email`=?");
-        $prepare->bindParam(1, $PasswordToChange);
-        $prepare->bindParam(2, $IMG);
-        $prepare->bindParam(3, $EmailToChange);
+        $prepare = $this->pdo->prepare("UPDATE `User` SET `IMG` = ? WHERE `Email`=?");
+        $prepare->bindParam(1, $IMG);
+        $prepare->bindParam(2, $EmailToChange);
         $prepare->execute();
         $prepare->closeCursor();
     }
@@ -612,6 +611,20 @@ final class MySQLController
     public function __Admin__TaskQueryByLevel($neededLevel)
     {
         $prepare = $this->pdo->prepare("SELECT * FROM `Task` WHERE `LevelTo`=:lvl ORDER BY `LevelTo` ASC");
+        $prepare->bindParam(":lvl", $neededLevel);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        if ($prepare->rowCount() > 0) {
+            $assoc = $prepare->fetchAll();
+            return $assoc;
+        }
+        $prepare->closeCursor();
+        return null;
+    }
+
+    public function __System__GetMaxLevel()
+    {
+        $prepare = $this->pdo->prepare("SELECT MAX(`LevelTo`) as `LevelTo` FROM `Task` ");
         $prepare->bindParam(":lvl", $neededLevel);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();

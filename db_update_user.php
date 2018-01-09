@@ -26,7 +26,7 @@ if (isset($_POST["create_factory"])) {
     $_SESSION["whatShouldOpen"] = "startPage";
 }//FINISH
 
-if (isset($_GET["create_factory"])) {
+if (isset($_GET["firstfactory"])) {
 
     include_once __DIR__ . "/../git-repo/resr/src/Controllers/FactoryInstanceController.php";
     $__facControler = \Controller\FactoryInstanceController::getInstance();
@@ -34,10 +34,17 @@ if (isset($_GET["create_factory"])) {
     include_once __DIR__ . "/../git-repo/resr/src/Controllers/MapController.php";
     $__MapControl = \Controller\MapController::getInstance();
 
-    $__facControler->add($_POST["idResource"], $_POST["upgradeLvl"], $_POST["idUser"]);
-    $factoryInst = $__facControler->returnFactoryIDbyParametr($_GET["idResource"], $_GET["upgradeLvl"], $_GET["idUser"]);
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ScoreController.php";
+    $__ScoreControl = \Controller\ScoreController::getInstance();
 
+    echo "IDUSER: ".$_SESSION["idUser"];
+    echo "<br>Działa";
+
+    $__ScoreControl->update(591);
+    $__facControler->add(1, 1, $_SESSION["idUser"]);
+    $factoryInst = $__facControler->returnFactoryIDbyParametr(1, 1, $_SESSION["idUser"]);
     $__MapControl->add($factoryInst);
+
     $_SESSION["ActionInfo"] = "Witaj w Factorio Online!";
     $_SESSION["whatShouldOpen"] = "startPage";
 }//FINISH
@@ -68,11 +75,6 @@ if (isset($_POST["odp1"])) {
     $__ResControl = \Controller\ResourceController::getInstance();
     $__ResControl->clearFrontEndResourcesCount();
     $_SESSION["BtnDes"]="zablokuj";
-
-    echo "POST<br/>";
-    echo "QuestID: " . $_POST["questID"] . "<br/>";
-    echo "TaskID: " . $_POST["taskID"] . "<br/>";
-    echo "Odp1: " . $_POST["hodp1"] . "<br/>";
     if($__MapControl->onClickAndCheckQuestion($_POST["questID"], $_POST["hodp1"])==true){
         $_SESSION["ActionInfo"] = "Poprawna odpowiedź!";
         $__ScoreControl->update($_POST["taskID"]);

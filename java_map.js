@@ -1,4 +1,3 @@
-
 function func_open_zindex(grafika, wydobycie, lvl, nameOfFactory, nameOfResource, idOfFactory) {
     document.getElementById("alx_flexkontener_0").style.opacity = 1;
     document.getElementById("alx_flexkontener_0").style.zIndex = 5;
@@ -119,5 +118,6 @@ function lvlup_gratulation_close() {
     document.getElementById("lvlup_gratulation").style.zIndex = -5;
     window.location.href = "db_update_user.php?lvlup=true";
     audio.stop();
+
 }
 

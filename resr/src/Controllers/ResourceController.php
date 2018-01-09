@@ -126,6 +126,7 @@ class ResourceController
     public function returnArrayForCurrentUserResource($idUser){
         $this->setUserResourceArray($idUser);
         if(empty($this->ResourceListForCurrentUser)){
+            return null;
             //javamessage("W domu działało ; - ;");
              } else{
         return $this->ResourceListForCurrentUser;}
@@ -158,9 +159,11 @@ class ResourceController
         $__factory__ = FactoryInstanceController::getInstance();
         $this->setUserResourceArray($_SESSION["idUser"]);
         $MapList = $__Map__->returnArrayByID($_SESSION["idUser"]);
-        foreach ($MapList as $value){
-            // Array idResource (ResourceName =>  CountFactory);
-            $this->MAP_RESOURCE_COUNT[($__factory__->returnFactoryByID($value->getidFactory()))->getidResource()] = $value->getCountFactory();
+        if(!empty($MapList)) {
+            foreach ($MapList as $value) {
+                // Array idResource (ResourceName =>  CountFactory);
+                $this->MAP_RESOURCE_COUNT[($__factory__->returnFactoryByID($value->getidFactory()))->getidResource()] = $value->getCountFactory();
+            }
         }
         foreach ($this->ResourceListForCurrentUser as $value){
             $this->SESSION_RESOURCES_LIST[] = $value->getResourceName();
