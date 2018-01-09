@@ -102,7 +102,7 @@ function lvlup_close_zindex() {
     document.getElementById("lvlup_lightbox").style.zIndex = -2;
 }
 
-var audio = new Audio('resr/img/authors/audio.mp3');
+var audio = new Audio('resr/audio/audio.mp3');
 function lvlup_gratulation_open(eofg) {
     if(eofg!="gameover") {
         document.getElementById("lvlup_gratulation").style.opacity = 1;

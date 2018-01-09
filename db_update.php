@@ -59,16 +59,15 @@ if (isset($_POST["edytuj_task"])) {
 
         include_once __DIR__ . "/../git-repo/resr/src/Controllers/TaskController.php";
         $__TaskControler = \Controller\TaskController::getInstance();
-
-//echo "POST<br/>";
-//    echo "idOfTask: " . $_POST["idOfTask"] . "<br/>";
-//    echo "Zaznaczone: " . $_POST["input_res_task"] . "<br/>";
-//    echo "Task: " . $_POST['input_task'] . "<br/>";
-//    echo "LVL: " . $_POST['input_lvl_task'] . "<br/>";
-//    echo "Need: " . $_POST['input_needed_task'] . "<br/>";
-        $__TaskControler->update($_POST["idOfTask"],  $_POST["input_task"], $_POST["input_res_task"], $_POST["input_lvl_task"], $_POST["input_needed_task"]);
-        $_SESSION["ActionInfo"] = "Edytowano zadanie: " . $_POST["input_task"];
-        $succes = true;
+        $lvl = $_POST["input_lvl_task"];
+        if(count($__TaskControler->returnTaskByLvl($lvl-1))>1 || $lvl==1) {
+            $__TaskControler->update($_POST["idOfTask"], $_POST["input_task"], $_POST["input_res_task"], $_POST["input_lvl_task"], $_POST["input_needed_task"]);
+            $_SESSION["ActionInfo"] = "Edytowano zadanie: " . $_POST["input_task"];
+            $succes = true;
+        }else{
+            $succes = true;
+            $_SESSION["ActionInfo"] = "Niepoprawny poziom zadania: " . $_POST["input_task"];
+        }
     }
     $_SESSION["whatShouldOpen"] = "edytor zadań";
 }//FINISH
@@ -110,6 +109,8 @@ if (isset($_POST["edytuj_fabryka"])) {
         include_once __DIR__ . "/../git-repo/resr/src/Controllers/ResourceController.php";
         $__ResControl = \Controller\ResourceController::getInstance();
 
+
+
         echo "POST<br/>";
         echo "Grafika: " . $_POST["input_grafika"] . "<br/>";
         echo "Grafika: " . $_POST["input_grafika_hidden"] . "<br/>";
@@ -117,7 +118,8 @@ if (isset($_POST["edytuj_fabryka"])) {
         echo "Surowiec: " . $_POST['input_surowiec'] . "<br/>";
         echo "Wydobycie: " . $_POST['input_wydobycie'] . "<br/>";
         $graf = ($_POST["input_grafika"] == "") ? $_POST["input_grafika_hidden"] : $_POST["input_grafika"];
-        $__ResControl->update($_POST['input_surowiec'], $_POST['input_wydobycie'], $_POST["input_fabryka"], $_POST["input_grafika"], $graf);
+        $__ResControl->update($_POST['input_surowiec'], $_POST['input_wydobycie'], $_POST["input_fabryka"], $_POST["input_grafika"], $graf);include_once __DIR__ . "/../Controllers/MySQLController.php";
+
         $_SESSION["ActionInfo"] = "Edytowano surowiec/fabrykę: " . $_POST["input_surowiec"];
         $txt = "Edycja fabryki";
         $succes = true;

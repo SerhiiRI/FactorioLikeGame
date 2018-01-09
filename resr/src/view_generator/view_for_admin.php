@@ -524,6 +524,18 @@ function EdytorZadańDoGry()
     include_once __DIR__ . "/../Controllers/TaskController.php";
     $__TaskControler = \Controller\TaskController::getInstance();
 
+    include_once __DIR__ . "/../Controllers/MySQLController.php";
+    $__DB = \Controller\MySQLController::getInstance();
+
+    $result =  $__DB->__System__GetMaxLevel();
+    $suka = "1";
+    foreach ($result as $item) {
+        $suka = $item["LevelTo"];
+    }
+    $max = $suka+1;
+    $min = 1;
+//    javaalert($max);
+
     $TaskData = $__TaskControler->returnArray();
     $grupa = 0;
     $sumakoncowa = 0;
@@ -569,7 +581,7 @@ HTML;
                                         </div>
                                         <div>
                                             <div class="input-field">
-                                                <input type="number" class="alx_task_input" name="input_needed_task" value="">
+                                                <input type="number" min="$min" max="$max" class="alx_task_input" name="input_needed_task" value="">
                                                 <label>Resource To</label>
                                             </div>
                                         </div>
@@ -627,6 +639,7 @@ HTML;
             $id_res = $Res->getIdResources();
             $isSelect = ($Res->getIdResources() == $resrc) ? "selected" : "";
 //            print_r($test);
+
             $show = <<<HTML
                                         <option value="$id_res" $isSelect>$surowiec</option>
 HTML;
@@ -644,7 +657,7 @@ HTML;
                                         </div>
                                         <div>
                                             <div class="input-field">
-                                                <input type="number" class="alx_task_input" name="input_lvl_task" value="$neededLVL">
+                                                <input type="number" min="$min" max="$max" class="alx_task_input" name="input_lvl_task" value="$neededLVL">
                                                 <label>Wymagany poziom</label>
                                             </div>
                                         </div>
