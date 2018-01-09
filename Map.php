@@ -190,5 +190,5 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
 } else if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
     header("Location:AdminControllerSystem.php");
 } else if (!isset($_SESSION["idUser"])) {
-    header("Location:index.php");
+    header("Location:Index.php");
 } ?>
