@@ -44,6 +44,16 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <script>
+        function finalize() {
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("serhii_log").innerHTML = this.responseText;
+                }
+            };
+            xmlhttp.open("GET", "./resr/src/PAGE_INCLUDES_SCRIPT/AJAX_ONLY_GET_RESOURCES.php", true);
+            xmlhttp.send();
+        }
             var xmlhttp=new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -87,6 +97,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
                         clearInterval(interval);
                         BtnDes('odblokuj');
                         testOnNewLevelUp();
+                        finalize();
                         //if(document.getElementById("lvlupBTN").value=='ok'){document.getElementById("lvlupBTN").disabled = false;}
                     }else{
                         return false;
