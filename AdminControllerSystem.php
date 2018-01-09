@@ -142,5 +142,5 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 } else if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
     header("Location:Map.php");
 } else if (!isset($_SESSION["idUser"])) {
-    header("Location:index.php");
+    header("Location:Index.php");
 } ?>

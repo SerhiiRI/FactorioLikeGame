@@ -9,7 +9,6 @@ $_SESSION["on_test"] = 0;
 $__Resource__ = \Controller\ResourceController::getInstance();
 $__Task__ = \Controller\TaskController::getInstance();
 $__Resource__->initializeResourceScoreForFrontEnd();
-$__Resource__->updateResourceScoreForFrontEnd();
 
 $tf = true;
 foreach ($__Resource__->returnArrayForCurrentUserResource($_SESSION["idUser"]) as $value){
