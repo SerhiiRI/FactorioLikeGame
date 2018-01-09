@@ -35,6 +35,7 @@ if (isset($_POST["ok"])) {
         $_SESSION["przekierowanie"] = "indexpage";
         $_SESSION["whatShouldOpen"] = "startPage";
         $_SESSION["ref"] = false;
+        $_SESSION["ActionInfo"] = "";
     } else {
         javamessage("Coś poszło nie tak! Sprawdź swoje dane logowania.");
     }

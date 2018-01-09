@@ -1,3 +1,23 @@
+
+loading();
+
+function loading() {
+    var reload = "<?php echo $_SESSION['ActionInfo'];?>";
+    if(reload=="") {
+        // alert("reload empty");
+        setTimeout(function () {
+            document.getElementById("loading").style.transition = "opacity 500ms";
+            document.getElementById("loading").style.opacity = 0;
+            document.getElementById("loading").style.zIndex = -2;
+        }, 1000);
+    }else{
+        setTimeout(function () {
+            document.getElementById("loading").style.opacity = 0;
+            document.getElementById("loading").style.zIndex = -2;
+        }, 10);
+    }
+}
+
 function func_open_zindex(grafika, wydobycie, lvl, nameOfFactory, nameOfResource, idOfFactory) {
     document.getElementById("alx_flexkontener_0").style.opacity = 1;
     document.getElementById("alx_flexkontener_0").style.zIndex = 5;
@@ -120,4 +140,3 @@ function lvlup_gratulation_close() {
     audio.stop();
 
 }
-

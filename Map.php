@@ -1,3 +1,4 @@
+
 <?php
 include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
 if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
@@ -16,13 +17,10 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
     $_SESSION["lvlup_ok"]='ok';
 
     $whatShouldOpen = $_SESSION["whatShouldOpen"];
-
-
     ?>
 
     <!DOCTYPE html>
     <html lang="pl">
-
     <head>
         <meta charset="UTF-8">
         <title>Admin Tools</title>
@@ -43,6 +41,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
         <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
+
     <script>
             var xmlhttp=new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
@@ -100,7 +99,14 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
     </script>
 
     <body class="alx_bg_img" onload="BtnDes('<?php echo $BtnDes;?>')">
+
+    <script>
+        <?php echo include_once("java_map.js");?>
+    </script>
+
+    <div id="loading" class="loading"><img src="resr/img/chomiczek.gif" id="loadingimg" class="loadingimg"/></div>
     <div class="jsmessage" id="jsmessagestyle"><h4 id="jsmessage">TXT</h4></div>
+
     <?php
     if(isset($_SESSION["ActionInfo"])){
         if($_SESSION["ActionInfo"]!= ""){
@@ -158,13 +164,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
 
         </div>
     </div>
-    <script>
-        <?php
-        include_once("java_map.js");
-        ?>
-    </script>
-
-    </body>
+</body>
     </html>
 
 <?php
