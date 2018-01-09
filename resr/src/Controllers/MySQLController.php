@@ -638,15 +638,23 @@ final class MySQLController
 
     public function __Admin__TaskAdd($Task, $idResource, $LevelTo, $ResourceTo)
     {
-        $prepare = $this->pdo->prepare("INSERT INTO `Task` VALUES (NULL , :iddresources, :Task, :LevelTo, :ResourceTo)");
-        $prepare->bindParam(":iddresources", $idResource);
-        $prepare->bindParam(":Task", $Task);
-        $prepare->bindParam(":LevelTo", $LevelTo);
-        $prepare->bindParam(":ResourceTo", $ResourceTo);
+        $prepare = $this->pdo->prepare("SELECT * FROM `task` WHERE `idResources`=:id");
+        $prepare->bindParam(":id", $idResource);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
-        $id_New_Added_Task = $this->pdo->lastInsertId();
+        if ($prepare->rowCount() == 0) {
+            $prepare = $this->pdo->prepare("INSERT INTO `Task` VALUES (NULL , :iddresources, :Task, :LevelTo, :ResourceTo)");
+            $prepare->bindParam(":iddresources", $idResource);
+            $prepare->bindParam(":Task", $Task);
+            $prepare->bindParam(":LevelTo", $LevelTo);
+            $prepare->bindParam(":ResourceTo", $ResourceTo);
+            $prepare->execute();
+            $id_New_Added_Task = $this->pdo->lastInsertId();
+            $prepare->closeCursor();
+            return $id_New_Added_Task;
+        }
         $prepare->closeCursor();
-        return $id_New_Added_Task;
+        return null;
     }
 
 
@@ -697,13 +705,19 @@ final class MySQLController
 
     public function __Admin__TaskUpdate($idTask, $Task, $idResource, $LevelTo, $ResourceTo)
     {
-        $prepare = $this->pdo->prepare("UPDATE `task` SET `idResources`=:idres, `Task`=:tsk, `LevelTo`=:lvlto, `ResourceTo`=:rsrto WHERE `idTask`=:idtsk");
-        $prepare->bindParam(":idtsk", $idTask);
-        $prepare->bindParam(":idres", $idResource);
-        $prepare->bindParam(":tsk", $Task);
-        $prepare->bindParam(":lvlto", $LevelTo);
-        $prepare->bindParam(":rsrto", $ResourceTo);
+        $prepare = $this->pdo->prepare("SELECT * FROM `task` WHERE `idResources`=:id");
+        $prepare->bindParam(":id", $idResource);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
+        if ($prepare->rowCount() == 0) {
+            $prepare = $this->pdo->prepare("UPDATE `task` SET `idResources`=:idres, `Task`=:tsk, `LevelTo`=:lvlto, `ResourceTo`=:rsrto WHERE `idTask`=:idtsk");
+            $prepare->bindParam(":idtsk", $idTask);
+            $prepare->bindParam(":idres", $idResource);
+            $prepare->bindParam(":tsk", $Task);
+            $prepare->bindParam(":lvlto", $LevelTo);
+            $prepare->bindParam(":rsrto", $ResourceTo);
+            $prepare->execute();
+        }
         $prepare->closeCursor();
         return null;
     }
