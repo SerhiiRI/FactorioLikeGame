@@ -182,6 +182,7 @@ if (isset($_GET["noAnswer"])) {
 if(!empty($_GET["lvlup"])){
     echo $_GET["lvlup"];
     $_SESSION["ActionInfo"] = "Congratulation!";
+    $_SESSION["BtnDes"]="zablokuj";
 
     include_once __DIR__ . "/../git-repo/resr/src/Controllers/UserController.php";
     $__UserControl = \Controller\UserController::getInstance();
