@@ -4,7 +4,7 @@ if(session_status()==false) {
 }
 ?>
 <!DOCTYPE html>
-<html onclose="closeIT();">
+<html id="musicTab">
 <head>
     <title>Factorio Audio</title>
 </head>
@@ -18,11 +18,11 @@ if(!isset($_SESSION['audiobg'])){
     <?php $_SESSION['audiobg']=true;?>
     // alert("Factorio Sound BG");
     var factorio = new Audio('../git-repo/resr/audio/factorioSoundtruck.mp3');
-    factorio.volume = 0.05;
+    factorio.volume = 0.1;
     factorio.loop = true;
     factorio.play();
     window.open("Index.php", "_blank");
 </script>
 <?php }?>
-    </body>
+</body>
 </html>

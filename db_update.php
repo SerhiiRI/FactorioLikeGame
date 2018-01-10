@@ -11,7 +11,10 @@ if (isset($_POST["edytuj_user"])) {
         include_once __DIR__ . "/../git-repo/resr/src/Controllers/MySQLController.php";
         $__update = \Controller\MySQLController::getInstance();
 
-        $__update->__Admin__UserUpdate($_POST['input_name'], $_POST["input_grafika"]);
+        echo "Name: ".$_POST['input_name']."<br/>"."Old Graphic: ".$_POST["input_grafika"]."<br/>"."New Graphic: ".$_POST["input_grafika_new"];
+        if($_POST["input_grafika_new"]!="") {
+            $__update->__Admin__UserUpdate($_POST['input_name'], $_POST["input_grafika_new"]);
+        }
         $_SESSION["ActionInfo"] = "Edytowano użytkownika: " . $_POST["input_name"];
         $succes = true;
     }

@@ -263,7 +263,7 @@ function ListaTaskowDlaUsera()
                 $show = <<<HTML
 <div class="collapsible-body alx_flexkontener_user_task">
                             <div class="alx_flex_user_task">
-                                Wymagany poziom: $lvl
+                                Wymagane do poziomu: $lvl
                             </div>
                             <div class="alx_flex_user_task">
                                 Opis: $opis
@@ -300,7 +300,7 @@ HTML;
                 $show = <<<HTML
 <div class="collapsible-body alx_flexkontener_user_task">
                             <div class="alx_flex_user_task">
-                                Wymagany poziom: $lvl
+                                Wymagane do poziomu: $lvl
                             </div>
                             <div class="alx_flex_user_task">
                                 Opis: $opis

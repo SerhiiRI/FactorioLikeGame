@@ -732,7 +732,7 @@ function EdtyorUzytkownikow()
                                                 <div class="file-field input-field">
                                                     <div class="btn-floating alx_btn_floating">
                                                         <i class="icon-wrench"></i>
-                                                        <input type="file" name="input_grafika" value="$grafikaUsera">
+                                                        <input type="file" name="input_grafika_new">
                                                         <input type="hidden" name="input_grafika" value="$grafikaUsera">
                                                     </div>
                                                     <img src="resr/img/$grafikaUsera" class="alx_img_src">

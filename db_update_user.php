@@ -45,6 +45,7 @@ if (isset($_GET["firstfactory"])) {
     $factoryInst = $__facControler->returnFactoryIDbyParametr(1, 1, $_SESSION["idUser"]);
     $__MapControl->add($factoryInst);
 
+    $_SESSION["BtnDes"]="zablokuj";
     $_SESSION["ActionInfo"] = "Witaj w Factorio Online!";
     $_SESSION["whatShouldOpen"] = "startPage";
 }//FINISH

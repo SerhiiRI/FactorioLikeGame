@@ -25,6 +25,15 @@ HTML;
     echo $show;
 }
 
+
+function jsEOG()
+{
+    $show = <<<HTML
+<script>alert("Gratulacje! Ukończyłeś grę :D");</script>
+HTML;
+    echo $show;
+}
+
 function javaalert($txt){
     echo "<script>alert('$txt');</script>";
 }
