@@ -3,26 +3,38 @@
 //Strona usera
 session_start();
 $_SESSION['ref']=true;
+$nope=false;
 
 if (isset($_POST["create_factory"])) {
 
-    include_once __DIR__ . "/../git-repo/resr/src/Controllers/FactoryInstanceController.php";
-    $__facControler = \Controller\FactoryInstanceController::getInstance();
+    if(isset($_SESSION["howManyFactoryCanBe"]) && isset($_SESSION["howManyFactory"])) {
+        $ile = $_SESSION["howManyFactory"];
+        $limit = $_SESSION["howManyFactoryCanBe"];
+        if ($ile < $limit) {
 
-    include_once __DIR__ . "/../git-repo/resr/src/Controllers/MapController.php";
-    $__MapControl = \Controller\MapController::getInstance();
+            include_once __DIR__ . "/../git-repo/resr/src/Controllers/FactoryInstanceController.php";
+            $__facControler = \Controller\FactoryInstanceController::getInstance();
 
-    echo "POST<br/>";
-    echo "IDres: " . $_POST["idResource"] . "<br/>";
-    echo "UpgradeLvl: " . $_POST['upgradeLvl'] . "<br/>";
-    echo "IdUser: " . $_POST['idUser'] . "<br/>";
+            include_once __DIR__ . "/../git-repo/resr/src/Controllers/MapController.php";
+            $__MapControl = \Controller\MapController::getInstance();
 
-    $__facControler->add($_POST["idResource"], $_POST["upgradeLvl"], $_POST["idUser"]);
-    $factoryInst = $__facControler->returnFactoryIDbyParametr($_POST["idResource"], $_POST["upgradeLvl"], $_POST["idUser"]);
+            echo "POST<br/>";
+            echo "IDres: " . $_POST["idResource"] . "<br/>";
+            echo "UpgradeLvl: " . $_POST['upgradeLvl'] . "<br/>";
+            echo "IdUser: " . $_POST['idUser'] . "<br/>";
+
+            $__facControler->add($_POST["idResource"], $_POST["upgradeLvl"], $_POST["idUser"]);
+            $factoryInst = $__facControler->returnFactoryIDbyParametr($_POST["idResource"], $_POST["upgradeLvl"], $_POST["idUser"]);
 //    echo "<pre> TO jest";print_r($iddodanejFabryki); echo "</pre>";
 
-    $__MapControl->add($factoryInst);
-    $_SESSION["ActionInfo"] = "Dodano fabrykę!";
+            $__MapControl->add($factoryInst);
+            $_SESSION["ActionInfo"] = "Dodano fabrykę!";
+            $_SESSION["whatShouldOpen"] = "startPage";
+            $_SESSION["howManyFactory"] = $ile + 1;
+        }else{
+            $_SESSION["ActionInfo"] = "Osiągnięto limit budowy fabryk!";
+        }
+    }
     $_SESSION["whatShouldOpen"] = "startPage";
 }//FINISH
 
@@ -48,6 +60,8 @@ if (isset($_GET["firstfactory"])) {
     $_SESSION["BtnDes"]="zablokuj";
     $_SESSION["ActionInfo"] = "Witaj w Factorio Online!";
     $_SESSION["whatShouldOpen"] = "startPage";
+    $nope=true;
+    header("Location: tutorial.php");
 }//FINISH
 
 if (isset($_POST["destroy_factory"])) {
@@ -186,7 +200,20 @@ if(!empty($_GET["lvlup"])){
 
     include_once __DIR__ . "/../git-repo/resr/src/Controllers/UserController.php";
     $__UserControl = \Controller\UserController::getInstance();
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/TaskController.php";
+    $__TaskControl = \Controller\TaskController::getInstance();
+
     $__UserControl->nextLevel($_SESSION["name_of_user"]);
+    $user = $__UserControl->SearchByEmail($_SESSION["name_of_user"]);
+    $lvl = $user->getLevel();
+
+    if($__TaskControl->returnTaskByLvl($lvl)==null || empty($__TaskControl->returnTaskByLvl($lvl))){
+        $_SESSION["levelOfUser"]=$lvl;
+        $_SESSION["EndGame"]="end";
+    }else{
+        $_SESSION["EndGame"]="con";
+    }
 }
 
 //Koniec
@@ -195,7 +222,9 @@ if(isset($_SESSION["ActionInfo"])){
         $_SESSION["ActionInfo"] = "Niepowodzenie działania.";
     }
 }
-header("Location: Map.php");
+if ($nope==false) {
+    header("Location: Map.php");
+}
 ?>
 <br/>
 <a href="AdminControllerSystem.php">Back to Admin</a>

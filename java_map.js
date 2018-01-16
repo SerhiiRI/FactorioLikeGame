@@ -142,5 +142,4 @@ function lvlup_gratulation_close() {
     document.getElementById("lvlup_gratulation").style.zIndex = -5;
     window.location.href = "db_update_user.php?lvlup=true";
     audio.stop();
-
 }

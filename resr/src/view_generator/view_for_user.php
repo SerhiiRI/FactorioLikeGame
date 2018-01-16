@@ -85,6 +85,13 @@ HTML;
                         <!--                        WYLOGOWANIE-->
                         <div class="alx_btn_logout">
                     <table>
+                        <tr class="alx_przycisk_na_lewym_panelu_wyloguj" >
+                            <td class="alx_td_left alx_border_none">
+                                <a href="tutorial.php" class="alx_przycisk_wylogowania">- Informacje na start -</a>
+                            </td>
+                        </tr>
+                        </table>
+                        <table style="margin-top: 5px">
                         <tr class="alx_przycisk_na_lewym_panelu_wyloguj">
                             <td class="alx_td_left alx_border_none">
                                 <a href="hard_logout.php" class="alx_przycisk_wylogowania">
@@ -116,12 +123,16 @@ function MapaFabryki()
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
     $userData = $__userControler->SearchByEmail($nameOfUser);
     $userID = $userData->getidUser();
-
+//    $mapArray = $__mapControler->returnArray();
+    $howManyFactory=0;
+    $lvlOfUser = $userData->getLevel();
+    $howManyFactoryCanBe = ($lvlOfUser + 1) * 2;
     $userMap = (!empty($__mapControler->returnArrayByID($userID))) ? $__mapControler->returnArrayByID($userID) : null;
     if (!empty($userMap)) {
         foreach ($userMap as &$item) {
             $CountFactory = $item->getCountFactory();
             for ($pi = 0; $pi < $CountFactory; $pi++) {
+                $howManyFactory++;
                 $factoryID = $item->getidFactory();
                 $WhichFactoryOnMap = $__facControler->returnFactoryByID($factoryID);
 //            echo "<pre>";print_r($WhichFactoryOnMap);echo "</pre>";
@@ -145,6 +156,20 @@ HTML;
     } else {
         echo "<h4>Brak obiektów na mapie</h4>";
     }
+//    javamessage($howManyFactory." / ".$howManyFactoryCanBe);
+
+    $_SESSION["howManyFactory"]=$howManyFactory;
+    $_SESSION["howManyFactoryCanBe"]=$howManyFactoryCanBe;
+    $show = <<<HTML
+<script>
+howManyOnMap($howManyFactory, $howManyFactoryCanBe);
+function howManyOnMap(ile, tyle) {
+    document.getElementById("MapaFabryki").innerHTML = "Mapa Fabryki: " + ile + "/" + tyle;
+}
+</script>
+HTML;
+echo $show;
+
 } //Tabela z fabrykami
 
 function PanelKontrolnyFabryki()

@@ -158,6 +158,11 @@ HTML;
 //        $imageOfUser = $item->getIMGFactory(); //Grafika fabryki
         $fabrykaGrafika = ($item->getIMGFactory() == "") ? "image.svg" : $item->getIMGFactory(); //Grafika fabryki
         $id_res = $item->getIdResources();
+        if($fabricName=="Wodociąg"){
+            $dontTouch="disabled";
+        }else{
+            $dontTouch="";
+        }
 
         $show = <<<HTML
                             <div class="collapsible-body">
@@ -210,7 +215,7 @@ HTML;
                                                         <div class="alx_padding_edit_users_button">
                                                             <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
                                                                     type="submit"
-                                                                    name="del_fabryka">
+                                                                    name="del_fabryka" $dontTouch>
                                                                 Usuń <i class="icon-block alx_h8_font"></i>
                                                             </button>
                                                         </div>
@@ -552,6 +557,7 @@ function EdytorZadańDoGry()
                                         
 HTML;
     echo $show;
+
     $tst = 0;
     foreach ($factoryData as &$Res) {
         $tst++;

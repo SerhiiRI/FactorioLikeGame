@@ -24,22 +24,32 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
     <head>
         <meta charset="UTF-8">
         <title>Admin Tools</title>
-        <!--Import materialize.css-->
+
+
+        <!--Import Google Icon Font-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="style/materialize/css/materialize.min.css"
-              media="screen,projection"/>
-        <!--Import czcionek-->
-        <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Bahiana|Chelsea+Market|Cinzel:400,700,900|Dosis:200,300,400,500,600,700,800|Jim+Nightshade|Nosifer|Poiret+One|Quicksand:300,400,500,700|Text+Me+One&amp;subset=latin-ext"
-              rel="stylesheet">
-        <!--Import fontello-->
-        <link rel="stylesheet" href="style/fontello/css/fontello.css">
-        <!--Import jQuery before materialize.js-->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script type="text/javascript" src="style/materialize/js/materialize.min.js"></script>
-        <!--Import aleks_style.css-->
-        <link type="text/css" rel="stylesheet" href="style/aleks_style.css"/>
+
         <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <!--Import fontello-->
+        <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Bahiana|Chelsea+Market|Cinzel:400,700,900|Dosis:200,300,400,500,600,700,800|Jim+Nightshade|Nosifer|Poiret+One|Quicksand:300,400,500,700|Text+Me+One&amp;subset=latin-ext" rel="stylesheet">
+        <br/>
+        <link rel="stylesheet" href="style/fontello/css/fontello.css">
+
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+        <!--Import aleks_style.css-->
+        <link type="text/css" rel="stylesheet" href="style/aleks_style.css"/>
+
+
     </head>
 
     <script>
@@ -80,7 +90,9 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
                         // alert(this.responseText);
                         if(this.responseText == "1"){
                             if(document.getElementById("lvlupBTN").value=='ok'){document.getElementById("lvlupBTN").disabled = false;}
+
                         }else{
+
                             return false;
                         }
                     }
@@ -108,8 +120,12 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
         }
 
     </script>
-
     <body class="alx_bg_img" onload="BtnDes('<?php echo $BtnDes;?>')">
+    <?php if(isset($_SESSION["EndGame"])){
+        if($_SESSION["EndGame"]=="end"){
+            javamessage("Gratulacje! Ukończyłeś grę!");
+        }
+    }?>
 
     <script>
         <?php echo include_once("java_map.js");?>
@@ -153,7 +169,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
                         </div>
                         <!--Mapa gracza-->
                         <div class="collapsible-body coll-body-first">
-                            <h1 class="alx_h1_title alx_h1_title_fix">Mapa Fabryki</h1>
+                            <h1 class="alx_h1_title alx_h1_title_fix" id="MapaFabryki">Mapa Fabryki</h1>
                         </div>
                         <div class="collapsible-body alx_flex_dla_mapy_diva">
                             <?php MapaFabryki(); ?>

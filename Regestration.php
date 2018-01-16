@@ -4,19 +4,16 @@ if(session_status()==false) {
     session_start();
 }
 
-function javamessage($txt){
-    echo "<script type='text/javascript'>alert('$txt');</script>";
-}
-//javamessage("work");
-
 if(isset($_POST["ok"]) && isset($_POST["email_address"]) && isset($_POST["password"])){
 
     include_once __DIR__ . "/../git-repo/resr/src/Controllers/UserController.php";
     $id = \Controller\UserController::getInstance();
     if($id->SearchByEmail($_POST["email_address"])==null) {
 
+
+//        echo '<script>alert("Pomyślan rejestracja! Teraz możesz się zalogować :)");</script>';
         $idst = $id->add($_POST["email_address"], $_POST["password"], date("Y-m-d"));
-        javamessage("Pomyślan rejestracja! Teraz możesz się zalogować :)");
+//        $_SESSION["ActionInfo"]="Pomyślan rejestracja! Teraz możesz się zalogować :)";
 
         if ($idst != "-1") {
             $_SESSION["name_of_user"] = $_POST["email_address"];

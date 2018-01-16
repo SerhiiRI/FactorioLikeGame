@@ -47,16 +47,22 @@ final class MySQLController
     {
         if (empty(self::$instance))
             self::$instance = new self('root', '');
+//            self::$instance = new self('id4294276_spok', 'LiveLongAndProsper');
+//            self::$instance = new self('u646018221_jack', 'kinomaniak1122');
         return self::$instance;
     }
 
     private function __construct($login = 'root', $passwd = '')
+//    private function __construct($login = 'id4294276_spok', $passwd = 'LiveLongAndProsper')
+//    private function __construct($login = 'u646018221_jack', $passwd = 'kinomaniak1122')
     {
         $this->login = $login;
         $this->passwd = $passwd;
         try { // przekazujemy dla interfejsa PDO ustanawia dla zdefiniowanego zdarzenia
 //            $this->pdo = new PDO("mysql:host=192.168.1.5;dbname=game", $login, $passwd);
             $this->pdo = new PDO("mysql:host=127.0.0.1;dbname=game", $login, $passwd);
+//            $this->pdo = new PDO("mysql:host=enjoy-factorio.000webhostapp.com;dbname=id4294276_factorysystem", $login, $passwd);
+//            $this->pdo = new PDO("mysql:host=mysql.hostinger.pl;dbname=u646018221_game", $login, $passwd);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\Exception $e) {
             echo "Error: " . $e->getMessage();
@@ -661,12 +667,12 @@ final class MySQLController
 
     public function __Admin__TaskUpdate($idTask, $Task, $idResource, $LevelTo, $ResourceTo)
     {
-        $prepare = $this->pdo->prepare("SELECT * FROM `task` WHERE `idResources`=:id");
+        $prepare = $this->pdo->prepare("SELECT * FROM `task` WHERE `idResource`=:id");
         $prepare->bindParam(":id", $idResource);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         if ($prepare->rowCount() == 0) {
-            $prepare = $this->pdo->prepare("UPDATE `task` SET `idResources`=:idres, `Task`=:tsk, `LevelTo`=:lvlto, `ResourceTo`=:rsrto WHERE `idTask`=:idtsk");
+            $prepare = $this->pdo->prepare("UPDATE `task` SET `idResource`=:idres, `Task`=:tsk, `LevelTo`=:lvlto, `ResourceTo`=:rsrto WHERE `idTask`=:idtsk");
             $prepare->bindParam(":idtsk", $idTask);
             $prepare->bindParam(":idres", $idResource);
             $prepare->bindParam(":tsk", $Task);
