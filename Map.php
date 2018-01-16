@@ -23,7 +23,7 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
     <html lang="pl">
     <head>
         <meta charset="UTF-8">
-        <title>Admin Tools</title>
+        <title>Mapa</title>
 
 
         <!--Import Google Icon Font-->

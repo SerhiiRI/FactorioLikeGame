@@ -66,7 +66,7 @@ if (isset($_POST["edytuj_task"])) {
         $lvl = $_POST["input_lvl_task"];
         if(count($__TaskControler->returnTaskByLvl($lvl-1))>1 || $lvl==1) {
             $__TaskControler->update($_POST["idOfTask"], $_POST["input_task"], $_POST["input_res_task"], $_POST["input_lvl_task"], $_POST["input_needed_task"]);
-           // $_SESSION["ActionInfo"] = "idTask: ".$_POST["idOfTask"]."  Task: ".$_POST["input_task"]."  ResTask: ".$_POST["input_res_task"]."  LVLTask: ".$_POST["input_lvl_task"]."  Need: ".$_POST["input_needed_task"];
+           $_SESSION["ActionInfo"] = "idTask: ".$_POST["idOfTask"]."  Task: ".$_POST["input_task"]."  ResTask: ".$_POST["input_res_task"]."  LVLTask: ".$_POST["input_lvl_task"]."  Need: ".$_POST["input_needed_task"];
 //            $_SESSION["ActionInfo"] = "Edytowano zadanie: " . $_POST["input_task"];
             $succes = true;
         }else{

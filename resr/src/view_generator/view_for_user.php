@@ -144,7 +144,7 @@ function MapaFabryki()
                 $nameOfFactory = $WhichResource->getFactoryName();
                 $nameOfResource = $WhichResource->getResourceName();
                 $wydobycie = $WhichResource->getProductiveUnit();
-                $grafika = $WhichResource->getIMGFactory();
+                $grafika = ($WhichResource->getIMGFactory() == "") ? "image.svg" : $WhichResource->getIMGFactory(); //Grafika fabryki
                 $show = <<<HTML
                 <div class="alx_flex_dla_mapy_diva">
                     <img src="resr/img/$grafika" class="alx_flexy_w_divie_map" onclick="func_open_zindex('$grafika', '$wydobycie', '$lvl', '$nameOfFactory', '$nameOfResource', '$factoryID')">
