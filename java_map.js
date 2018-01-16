@@ -122,7 +122,7 @@ function lvlup_open_zindex_part2(task, taskID, quest, quest_id, odp1, odp2, odp3
 }
 
 function lvlup_close_zindex() {
-    document.getElementById("lvlup_lightbox").style.opacity = 0;
+    document.gZetElementById("lvlup_lightbox").style.opacity = 0;
     document.getElementById("lvlup_lightbox").style.zIndex = -2;
 }
 

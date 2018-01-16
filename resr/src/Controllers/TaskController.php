@@ -78,6 +78,7 @@ class TaskController
         $this->__dataBase__controller->__Admin__TaskRemoveAll();
     }
     public function update($idTask, $Task, $idResource, $LevelTo, $ResourceTo){
+        //echo "<script>alert($idTask, $Task, $idResource, $LevelTo, $ResourceTo)</script>";
         $this->__dataBase__controller->__Admin__TaskUpdate($idTask, $Task, $idResource, $LevelTo, $ResourceTo);
         unset($this->TaskList);
         $this->set($this->__dataBase__controller->__Admin__TaskQuery());

@@ -57,7 +57,8 @@ if (isset($_POST["add_task"])) {
 }//FINISH
 
 if (isset($_POST["edytuj_task"])) {
-
+    //echo "<script>alert(".$_POST["idOfTask"].", ".$_POST["input_task"].", ".$_POST["input_res_task"].", ".$_POST["input_lvl_task"].", ".$_POST["input_needed_task"].")</script>";
+    //echo "<script>alert(' CO TO JEST ')</script>";
     if ($_POST["input_res_task"] != "" && $_POST["input_task"] != "" && $_POST["input_lvl_task"] != "" && $_POST["input_needed_task"] != "") {
 
         include_once __DIR__ . "/../git-repo/resr/src/Controllers/TaskController.php";

@@ -667,12 +667,12 @@ final class MySQLController
 
     public function __Admin__TaskUpdate($idTask, $Task, $idResource, $LevelTo, $ResourceTo)
     {
-        $prepare = $this->pdo->prepare("SELECT * FROM `task` WHERE `idResource`=:id");
-        $prepare->bindParam(":id", $idResource);
+        $prepare = $this->pdo->prepare("SELECT * FROM `task` WHERE `idTask`=:id");
+        $prepare->bindParam(":id", $idTask);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
         if ($prepare->rowCount() == 0) {
-            $prepare = $this->pdo->prepare("UPDATE `task` SET `idResource`=:idres, `Task`=:tsk, `LevelTo`=:lvlto, `ResourceTo`=:rsrto WHERE `idTask`=:idtsk");
+            $prepare = $this->pdo->prepare("UPDATE `task` SET `idResources`=:idres, `Task`=:tsk, `LevelTo`=:lvlto, `ResourceTo`=:rsrto WHERE `idTask`=:idtsk");
             $prepare->bindParam(":idtsk", $idTask);
             $prepare->bindParam(":idres", $idResource);
             $prepare->bindParam(":tsk", $Task);
