@@ -671,7 +671,7 @@ final class MySQLController
         $prepare->bindParam(":id", $idTask);
         $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
-        if ($prepare->rowCount() == 0) {
+        if ($prepare->rowCount() > 0) {
             $prepare = $this->pdo->prepare("UPDATE `task` SET `idResources`=:idres, `Task`=:tsk, `LevelTo`=:lvlto, `ResourceTo`=:rsrto WHERE `idTask`=:idtsk");
             $prepare->bindParam(":idtsk", $idTask);
             $prepare->bindParam(":idres", $idResource);
