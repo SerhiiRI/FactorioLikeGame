@@ -1,0 +1,2 @@
+To jest kopia bazy danych "game", która musi być importowana o nazwie "game" do MySQL 
+odpowiedni komponent do edycji nazwi i innego - to jest clasa MySQLController in git-repo/resr/src/Controller/
