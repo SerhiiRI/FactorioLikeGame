@@ -438,6 +438,74 @@ HTML;
     }
 }
 
+function ProfilOfUser()
+    {
+        include_once __DIR__ . "/../Controllers/UserController.php";
+        $__userControler = \Controller\UserController::getInstance();
+
+        $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
+        $userData = $__userControler->SearchByEmail($nameOfUser);
+        $idUser = $userData->getidUser();
+        $_SESSION['idUser'] = $idUser;
+        $grafikaUsera = $userData->getIMG();
+
+            $action = "db_update_user.php";
+//    echo "<pre>";print_r($factoryData);echo"</pre>";
+
+
+                $show = <<<HTML
+                            <div class="collapsible-body">
+                                <table>
+                                    <tr>
+                                        <form action="$action" method="post">
+                                          <input type="hidden" value="$nameOfUser" name="input_name">
+                                            <td class="alx_szerokosc_kolumny_dla_grafiki_w_statystyce">
+                                                <div class="file-field input-field">
+                                                    <div class="btn-floating alx_btn_floating">
+                                                        <i class="icon-wrench"></i>
+                                                        <input type="file" name="input_grafika_new">
+                                                        <input type="hidden" name="input_grafika" value="$grafikaUsera">
+                                                    </div>
+                                                    <img src="resr/img/$grafikaUsera" class="alx_img_src">
+                                                </div>
+                                            </td>
+                                            <td class="alx_tabela_surowcow_admin">
+                                                <div class="input-field">
+                                                    <input disabled value="$nameOfUser" id="first_name2" type="text" class="validate" name="input_name">
+                                                    <label class="active" for="first_name2">User</label>
+                                                </div>
+                                            </td>
+                                            <td class="alx_tabela_surowcow_admin">
+                                                <div class="input-field">
+                                                    <input pattern="[A-Za-z_!@#$%^&*].{6,20}" placeholder="Nowe Hasło" id="first_name2" type="password" class="validate" name="input_passwd">
+                                                    <label class="active" for="first_name2">Hasło</label>
+                                                </div>
+
+                                            <!--                                            BUTTONY-->
+                                            <td class="alx_edit_users_button">
+                                                <table>
+                                                    <tr class="alx_padding_edit_users_button">
+                                                        <div class=" alx_padding_edit_users_button">
+                                                            <button class="btn waves-effect waves-light alx_h8_font alx_button_width"
+                                                                    type="submit"
+                                                                    name="edytuj_moj_profil">
+                                                                Edytuj <i class="icon-tools alx_h8_font"></i>
+                                                            </button>
+                                                        </div>
+                                                    </tr>
+                                                        </div>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                </table>
+                            </div><!-- Elementy do wczytaj i edytuj-->
+HTML;
+                echo $show;
+    }
+
+
 function lvlupLightbox()
 {
     include_once __DIR__ . "/../Controllers/QuestionController.php";

@@ -9,12 +9,23 @@ if (isset($_POST["edytuj_user"])) {
     if ($_POST["input_name"] != "" && $_POST["input_grafika"] != "") {
         include_once __DIR__ . "/../git-repo/resr/src/Controllers/MySQLController.php";
         $__update = \Controller\MySQLController::getInstance();
+
 //        echo "Name: ".$_POST['input_name']."<br/>"."Old Graphic: ".$_POST["input_grafika"]."<br/>"."New Graphic: ".$_POST["input_grafika_new"];
-        if($_POST["input_grafika_new"]!="") {
-            $__update->__Admin__UserUpdate($_POST['input_name'], $_POST["input_grafika_new"]);
-        }
-        $_SESSION["ActionInfo"] = "Edytowano avatar użytkownika: " . $_POST["input_name"];
-        $succes = true;
+            if ($_POST["input_passwd"] != "") {
+                $__update->__Admin__UserUpdatePass($_POST['input_name'], $_POST["input_passwd"]);
+                $_SESSION["ActionInfo"] = "Edytowano hasło użytkownika: " . $_POST["input_name"];
+                $succes = true;
+            }
+
+            if ($_POST["input_grafika_new"] != "") {
+                $__update->__Admin__UserUpdate($_POST['input_name'], $_POST["input_grafika_new"]);
+                $_SESSION["ActionInfo"] = "Edytowano awatar użytkownika: " . $_POST["input_name"];
+                $succes = true;
+            }
+
+//        $_SESSION["ActionInfo"] = "Edytowano użytkownika: " . $_POST["input_name"];
+//            $succes = true;
+
     }
     $_SESSION["whatShouldOpen"] = "edytuj usera";
 }//FINISH
@@ -304,7 +315,7 @@ if(isset($_SESSION["ActionInfo"])){
     }
 }
 //if($succes==false){javamessage("Niepowodzenie! Pamiętaj że pola nie powinny być puste!");}
-//header("Location: AdminControllerSystem.php");
+header("Location: AdminControllerSystem.php");
 ?>
 <br/>
 <a href="AdminControllerSystem.php">Back to Admin</a>

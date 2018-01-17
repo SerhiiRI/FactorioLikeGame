@@ -773,7 +773,7 @@ function EdtyorUzytkownikow()
                                                     
                                                     <tr>
                                                         <div class="input-field alx_margin0">
-                                                            <input $patt value="$passwd" id="first_name2" type="password" class="validate" name="input_passwd">
+                                                            <input pattern="[A-Za-z_!@#$%^&*].{6,20}" placeholder="Nowe hasło" id="first_name2" type="password" class="validate" name="input_passwd">
                                                             <label class="active alx_2rem_font" for="first_name2">Hasło</label>
                                                         </div>
                                                     </tr>

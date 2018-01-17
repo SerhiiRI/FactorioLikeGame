@@ -180,6 +180,11 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
                         </div>
                         <?php ListaFabrykDoBudowyDlaUsera(); ?>
                     </li>
+                    <li>
+                        <div class="collapsible-header"><i class="material-icons">sort</i>Profil
+                        </div>
+                        <?php ProfilOfUser(); ?>
+                    </li>
                 </ul>
 
 

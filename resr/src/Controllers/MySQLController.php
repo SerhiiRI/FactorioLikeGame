@@ -474,7 +474,14 @@ final class MySQLController
         $prepare->execute();
         $prepare->closeCursor();
     }
-
+    public function __Admin__UserUpdatePass($EmailToChange, $password)
+    {
+        $prepare = $this->pdo->prepare("UPDATE `User` SET `Passwd` = sha1(?) WHERE `Email`=?");
+        $prepare->bindParam(1, $password);
+        $prepare->bindParam(2, $EmailToChange);
+        $prepare->execute();
+        $prepare->closeCursor();
+    }
 
     public function __Admin__UserRemove($login)
     {
