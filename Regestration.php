@@ -4,6 +4,19 @@ if(session_status()==false) {
     session_start();
 }
 
+function javamessage($txt)
+{
+    echo "<script type='text/javascript'>alert('$txt');</script>";
+}
+
+if (isset($_SESSION["ActionInfo"])) {
+    if ($_SESSION["ActionInfo"] != "0") {
+        javamessage($_SESSION["ActionInfo"]);
+        $_SESSION["ActionInfo"] = "0";
+    }
+}
+
+
 if(isset($_POST["ok"]) && isset($_POST["email_address"]) && isset($_POST["password"])){
 
     include_once __DIR__ . "/../git-repo/resr/src/Controllers/UserController.php";
