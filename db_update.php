@@ -67,7 +67,7 @@ if (isset($_POST["edytuj_task"])) {
         if(count($__TaskControler->returnTaskByLvl($lvl-1))>1 || $lvl==1) {
             $__TaskControler->update($_POST["idOfTask"], $_POST["input_task"], $_POST["input_res_task"], $_POST["input_lvl_task"], $_POST["input_needed_task"]);
            // $_SESSION["ActionInfo"] = "idTask: ".$_POST["idOfTask"]."  Task: ".$_POST["input_task"]."  ResTask: ".$_POST["input_res_task"]."  LVLTask: ".$_POST["input_lvl_task"]."  Need: ".$_POST["input_needed_task"];
-//            $_SESSION["ActionInfo"] = "Edytowano zadanie: " . $_POST["input_task"];
+            $_SESSION["ActionInfo"] = "Edytowano zadanie: " . $_POST["input_task"];
             $succes = true;
         }else{
             $succes = true;
@@ -122,8 +122,11 @@ if (isset($_POST["edytuj_fabryka"])) {
         echo "Name: " . $_POST["input_fabryka"] . "<br/>";
         echo "Surowiec: " . $_POST['input_surowiec'] . "<br/>";
         echo "Wydobycie: " . $_POST['input_wydobycie'] . "<br/>";
+
+        $as = $_POST["input_fabryka"];
+
         $graf = ($_POST["input_grafika"] == "") ? $_POST["input_grafika_hidden"] : $_POST["input_grafika"];
-        $__ResControl->update($_POST['input_surowiec'], $_POST['input_wydobycie'], $_POST["input_fabryka"], $_POST["input_grafika"], $graf);include_once __DIR__ . "/../Controllers/MySQLController.php";
+//        $__ResControl->update($_POST['input_surowiec'], $_POST['input_wydobycie'], $_POST["input_fabryka"], $_POST["input_grafika"], $graf);include_once __DIR__ . "/../Controllers/MySQLController.php";
 
         $_SESSION["ActionInfo"] = "Edytowano surowiec/fabrykę: " . $_POST["input_surowiec"];
         $txt = "Edycja fabryki";

@@ -57,8 +57,8 @@ if (!isset($_SESSION["idUser"])) {
     <div class="login-page">
         <div class="form">
             <form class="login-form" method="post">
-                <input type="text" placeholder="username" name="login" value="admin" required/>
-                <input type="password" placeholder="password" name="password" value="admin" required/>
+                <input type="email" placeholder="username" name="login" equired/>
+                <input type="password" placeholder="password" name="password" pattern="[A-Za-z_!@#$%^&*].{1,}" required/>
                 <button type="submit" name="ok">Zaloguj się!</button>
                 <p class="message" style="text-align: center">Nie posiadasz konta? <a href="Regestration.php">Zarejestruj
                         się!</a></p>

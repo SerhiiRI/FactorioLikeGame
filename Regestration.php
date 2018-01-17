@@ -47,8 +47,8 @@ include_once ("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_REDIRECT_CENTRAL_PAGE.php");
 <div class="login-page">
     <div class="form">
         <form class="register-form" action="" method="post">
-            <input type="text" name="email_address" placeholder="email address" required/>
-            <input type="password" name="password" placeholder="password" required/>
+            <input type="email" name="email_address" placeholder="email address" required/>
+            <input type="password" name="password" placeholder="password" pattern="[A-Za-z_!@#$%^&*].{6,20}" required/>
             <button name="ok">Zarejestruj</button>
             <p class="message" style="text-align: center">Posiadasz już konto? <a href="Index.php">Zaloguj się!</a></p>
         </form>

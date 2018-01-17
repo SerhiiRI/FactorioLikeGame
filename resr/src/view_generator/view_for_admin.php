@@ -93,6 +93,7 @@ function zarządzanieFabrykamiOrazSurowcami()
 
     $factoryData = $__ResControler->returnArray();
     $action = "db_update.php";
+    $patt = 'pattern="(?=.*[a-z])[A-Za-z_!@#$%^&*].{3,}"';
 
     $show = <<<HTML
                         <div class="collapsible-body">
@@ -110,13 +111,13 @@ function zarządzanieFabrykamiOrazSurowcami()
                                             </td>
                                             <td class="alx_tabela_surowcow_admin">
                                                 <div class="input-field">
-                                                    <input value="" id="first_name2" type="text" class="validate" name="input_fabryka">
+                                                    <input $patt value="" id="first_name2" type="text" class="validate" name="input_fabryka">
                                                     <label class="active" for="first_name2">Fabryka</label>
                                                 </div>
                                             </td>
                                             <td class="alx_tabela_surowcow_admin">
                                                 <div class="input-field">
-                                                    <input value="" id="first_name2" type="text" class="validate" name="input_surowiec">
+                                                    <input $patt value="" id="first_name2" type="text" class="validate" name="input_surowiec">
                                                     <label class="active" for="first_name2">Surowiec</label>
                                                 </div>
                                             </td>
@@ -182,13 +183,13 @@ HTML;
                                             </td>
                                             <td class="alx_tabela_surowcow_admin">
                                                 <div class="input-field">
-                                                    <input value="$fabricName" id="first_name2" type="text" class="validate" name="input_fabryka">
+                                                    <input $patt value="$fabricName" id="first_name2" type="text" class="validate" name="input_fabryka">
                                                     <label class="active" for="first_name2">Fabryka</label>
                                                 </div>
                                             </td>
                                             <td class="alx_tabela_surowcow_admin">
                                                 <div class="input-field">
-                                                    <input value="$surowiec" id="first_name2" type="text" class="validate" name="input_surowiec">
+                                                    <input $patt value="$surowiec" id="first_name2" type="text" class="validate" name="input_surowiec">
                                                     <label class="active" for="first_name2">Surowiec</label>
                                                 </div>
                                             </td>
@@ -238,6 +239,7 @@ function EdycjaPytanDoGry()
 
     include_once __DIR__ . "/../Controllers/TaskController.php";
     $__TaskControler = \Controller\TaskController::getInstance();
+    $patt = 'pattern="(?=.*[a-z])[A-Za-z_!@#$%^&*].{3,}"';
 
     $TaskData = $__TaskControler->returnArray();
     if ($__QuestControler->returnArray() == null) {
@@ -269,13 +271,13 @@ HTML;
                                     <tr>
                                             <td class="alx_flex_quest_input">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_pytanie"></textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_pytanie"></textarea>
                                                     <label for="textarea1" >Pytanie</label>
                                                 </div>
                                             </td>
                                             <td class="alx_edytor_pytań">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_odp"></textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_odp"></textarea>
                                                     <label for="textarea1">Odpowiedź</label>
                                                 </div>
                                             </td>
@@ -286,19 +288,19 @@ HTML;
                                             <tr>                                           
                                             <td class="alx_edytor_pytań">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle1"></textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_zle1"></textarea>
                                                     <label for="textarea1">Źle</label>
                                                 </div>
                                             </td>
                                             <td class="alx_edytor_pytań">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle2"></textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_zle2"></textarea>
                                                     <label for="textarea1">Źle</label>
                                                 </div>
                                             </td>
                                             <td class="alx_edytor_pytań">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle3"></textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_zle3"></textarea>
                                                     <label for="textarea1">Źle</label>
                                                 </div>
                                             </td>
@@ -354,13 +356,13 @@ HTML;
                                     <tr>
                                             <td class="alx_flex_quest_input">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_pytanie"></textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_pytanie"></textarea>
                                                     <label for="textarea1" >Pytanie</label>
                                                 </div>
                                             </td>
                                             <td class="alx_edytor_pytań">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_odp"></textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_odp"></textarea>
                                                     <label for="textarea1">Odpowiedź</label>
                                                 </div>
                                             </td>
@@ -371,19 +373,19 @@ HTML;
                                             <tr>                                           
                                             <td class="alx_edytor_pytań">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle1"></textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_zle1"></textarea>
                                                     <label for="textarea1">Źle</label>
                                                 </div>
                                             </td>
                                             <td class="alx_edytor_pytań">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle2"></textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_zle2"></textarea>
                                                     <label for="textarea1">Źle</label>
                                                 </div>
                                             </td>
                                             <td class="alx_edytor_pytań">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle3"></textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_zle3"></textarea>
                                                     <label for="textarea1">Źle</label>
                                                 </div>
                                             </td>
@@ -449,13 +451,13 @@ HTML;
                                     <tr>
                                             <td class="alx_flex_quest_input">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_pytanie">$pytanie</textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_pytanie">$pytanie</textarea>
                                                     <label for="textarea1" >Pytanie</label>
                                                 </div>
                                             </td>
                                             <td class="alx_edytor_pytań">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_odp">$odp</textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_odp">$odp</textarea>
                                                     <label for="textarea1">Odpowiedź</label>
                                                 </div>
                                             </td>
@@ -466,19 +468,19 @@ HTML;
                                             <tr>                                           
                                             <td class="alx_edytor_pytań">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle1">$zle1</textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_zle1">$zle1</textarea>
                                                     <label for="textarea1">Źle</label>
                                                 </div>
                                             </td>
                                             <td class="alx_edytor_pytań">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle2">$zle2</textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_zle2">$zle2</textarea>
                                                     <label for="textarea1">Źle</label>
                                                 </div>
                                             </td>
                                             <td class="alx_edytor_pytań">
                                                 <div class="input-field col s12">
-                                                    <textarea id="textarea1" class="materialize-textarea" name="txt_zle3">$zle3</textarea>
+                                                    <textarea $patt id="textarea1" class="materialize-textarea" name="txt_zle3">$zle3</textarea>
                                                     <label for="textarea1">Źle</label>
                                                 </div>
                                             </td>
@@ -531,6 +533,7 @@ function EdytorZadańDoGry()
 
     include_once __DIR__ . "/../Controllers/MySQLController.php";
     $__DB = \Controller\MySQLController::getInstance();
+    $patt = 'pattern="(?=.*[a-z])[A-Za-z_!@#$%^&*].{3,}"';
 
     $result =  $__DB->__System__GetMaxLevel();
     $suka = "1";
@@ -576,7 +579,7 @@ HTML;
                                     </div>
                                     <div class="input-field alx_flex_w_edytorze_taskow_midlle">
                                         <div>
-                                            <input type="text" class="alx_task_input" name="input_task" value="">
+                                            <input $patt type="text" class="alx_task_input" name="input_task" value="">
                                             <label>Zadanie</label>
                                         </div>
                                         <div>
@@ -658,7 +661,7 @@ HTML;
                                     </div>
                                     <div class="input-field alx_flex_w_edytorze_taskow_midlle">
                                         <div>
-                                            <input type="text" class="alx_task_input" name="input_task" value="$task">
+                                            <input $patt type="text" class="alx_task_input" name="input_task" value="$task">
                                             <label>Zadanie</label>
                                         </div>
                                         <div>
@@ -713,6 +716,7 @@ function EdtyorUzytkownikow()
 
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
     $usersData = $__userControler->returnArray();
+    $patt = 'pattern="[A-Za-z_!@#$%^&*].{6,20}"';
 
     foreach ($usersData as &$data) {
 
@@ -767,7 +771,7 @@ function EdtyorUzytkownikow()
                                                     
                                                     <tr>
                                                         <div class="input-field alx_margin0">
-                                                            <input value="$passwd" id="first_name2" type="password" class="validate" name="input_passwd">
+                                                            <input $patt value="$passwd" id="first_name2" type="password" class="validate" name="input_passwd">
                                                             <label class="active alx_2rem_font" for="first_name2">Hasło</label>
                                                         </div>
                                                     </tr>
