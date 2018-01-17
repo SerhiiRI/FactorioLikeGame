@@ -6,6 +6,9 @@
  * Time: 23:23
  */
 
+/**
+ * Class StringUtils define static method to parsing string-type variable;
+ */
 class StringUtils
 {
     private static $sqlDictionary = array(
@@ -41,6 +44,11 @@ class StringUtils
     public function __construct()
     {}
 
+    /**
+     * :PARSER: search SQL tag
+     * @param $testString String text to testing on SQL key-word
+     * @return boolean True, if
+     */
     public static function testOnSql($testString){
         if ( (is_string($testString)) && (strpos($testString, ' ') !=false) && ( 2 < count(explode(" ", $testString))))
         {
