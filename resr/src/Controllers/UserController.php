@@ -94,7 +94,7 @@ class UserController
     }
     public function SearchByEmail($User_Email){
         foreach($this->UserList as $value){
-            if ($value->getEmail() == $User_Email) return $value;
+            if (strtolower($value->getEmail()) == strtolower($User_Email)) return $value;
         }
         return null;
     }
