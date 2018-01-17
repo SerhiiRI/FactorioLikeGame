@@ -239,7 +239,8 @@ function EdycjaPytanDoGry()
 
     include_once __DIR__ . "/../Controllers/TaskController.php";
     $__TaskControler = \Controller\TaskController::getInstance();
-    $patt = 'pattern="(?=.*[a-z])[A-Za-z_!@#$%^&*].{3,}"';
+//    $patt = 'pattern="[A-Za-z_!?@#$%^&*.].{3,20}"';
+    $patt = '';
 
     $TaskData = $__TaskControler->returnArray();
     if ($__QuestControler->returnArray() == null) {

@@ -264,6 +264,10 @@ if (isset($_POST["edytuj_Question"])) {
         $strip4 = strip_tags($_POST["txt_zle2"]);
         $strip5 = strip_tags($_POST["txt_zle3"]);
 
+        echo $strip3."<br>";
+        echo $_POST["txt_zle1"]."<br>";
+        echo "<br>";
+
         if (StringUtils::testOnSql($_POST["txt_pytanie"]) == false && StringUtils::testOnSql($_POST["txt_odp"]) == false
             && StringUtils::testOnSql($_POST["txt_zle1"]) == false && StringUtils::testOnSql($_POST["txt_zle2"]) == false
             && StringUtils::testOnSql($_POST["txt_zle3"]) == false
@@ -300,7 +304,7 @@ if(isset($_SESSION["ActionInfo"])){
     }
 }
 //if($succes==false){javamessage("Niepowodzenie! Pamiętaj że pola nie powinny być puste!");}
-header("Location: AdminControllerSystem.php");
+//header("Location: AdminControllerSystem.php");
 ?>
 <br/>
 <a href="AdminControllerSystem.php">Back to Admin</a>
