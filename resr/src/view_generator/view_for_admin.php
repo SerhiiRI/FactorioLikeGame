@@ -716,7 +716,8 @@ function EdtyorUzytkownikow()
 
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
     $usersData = $__userControler->returnArray();
-    $patt = 'pattern="[A-Za-z_!@#$%^&*].{6,20}"';
+//    $patt = 'pattern="[A-Za-z_!@#$%^&*].{6,20}"';
+    $patt = 'disabled';
 
     foreach ($usersData as &$data) {
 
