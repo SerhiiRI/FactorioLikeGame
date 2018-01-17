@@ -1,9 +1,21 @@
 <?php
 include_once ("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
+if(session_status()==false) {
+    session_start();
+}
 
-function javamessage($txt){
+function javamessage($txt)
+{
     echo "<script type='text/javascript'>alert('$txt');</script>";
 }
+
+if (isset($_SESSION["ActionInfo"])) {
+    if ($_SESSION["ActionInfo"] != "0") {
+        javamessage($_SESSION["ActionInfo"]);
+        $_SESSION["ActionInfo"] = "0";
+    }
+}
+
 
 if(isset($_POST["ok"]) && isset($_POST["email_address"]) && isset($_POST["password"])){
 
@@ -11,10 +23,12 @@ if(isset($_POST["ok"]) && isset($_POST["email_address"]) && isset($_POST["passwo
     $id = \Controller\UserController::getInstance();
     if($id->SearchByEmail($_POST["email_address"])==null) {
 
-        $id->add($_POST["email_address"], $_POST["password"], date("Y-m-d"));
 
+//        echo '<script>alert("Pomyślan rejestracja! Teraz możesz się zalogować :)");</script>';
+        $idst = $id->add($_POST["email_address"], $_POST["password"], date("Y-m-d"));
+//        $_SESSION["ActionInfo"]="Pomyślan rejestracja! Teraz możesz się zalogować :)";
 
-        if ($id != "-1") {
+        if ($idst != "-1") {
             $_SESSION["name_of_user"] = $_POST["email_address"];
             $_SESSION["LOGINED"] = "1";
             $_SESSION["idUser"] = $id;
@@ -25,12 +39,6 @@ if(isset($_POST["ok"]) && isset($_POST["email_address"]) && isset($_POST["passwo
             }
         } else {
             javamessage("Coś poszło nie tak :/ Spróbuj jeszcze.");
-            ?>
-<!--            <div class="form">-->
-<!--                <p class="message" style="font-size: 30px;"> Login is failed, may be you want <a-->
-<!--                            href="Regestration.php"> create an account</a></p>-->
-<!--            </div>-->
-            <?php
         }
     }else{
         javamessage("Istnieje już taki użytkownik!");
@@ -53,7 +61,7 @@ include_once ("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_REDIRECT_CENTRAL_PAGE.php");
     <div class="form">
         <form class="register-form" action="" method="post">
             <input type="email" name="email_address" placeholder="email address" required/>
-            <input type="password" name="password" placeholder="password" required/>
+            <input type="password" name="password" placeholder="password" pattern="[A-Za-z_!@#$%^&*].{6,20}" required/>
             <button name="ok">Zarejestruj</button>
             <p class="message" style="text-align: center">Posiadasz już konto? <a href="Index.php">Zaloguj się!</a></p>
         </form>

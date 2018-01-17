@@ -2,35 +2,67 @@
 
 //Strona usera
 session_start();
+$_SESSION['ref']=true;
+$nope=false;
 
 if (isset($_POST["create_factory"])) {
 
+    if(isset($_SESSION["howManyFactoryCanBe"]) && isset($_SESSION["howManyFactory"])) {
+        $ile = $_SESSION["howManyFactory"];
+        $limit = $_SESSION["howManyFactoryCanBe"];
+        if ($ile < $limit) {
+
+            include_once __DIR__ . "/../git-repo/resr/src/Controllers/FactoryInstanceController.php";
+            $__facControler = \Controller\FactoryInstanceController::getInstance();
+
+            include_once __DIR__ . "/../git-repo/resr/src/Controllers/MapController.php";
+            $__MapControl = \Controller\MapController::getInstance();
+
+            echo "POST<br/>";
+            echo "IDres: " . $_POST["idResource"] . "<br/>";
+            echo "UpgradeLvl: " . $_POST['upgradeLvl'] . "<br/>";
+            echo "IdUser: " . $_POST['idUser'] . "<br/>";
+
+            $__facControler->add($_POST["idResource"], $_POST["upgradeLvl"], $_POST["idUser"]);
+            $factoryInst = $__facControler->returnFactoryIDbyParametr($_POST["idResource"], $_POST["upgradeLvl"], $_POST["idUser"]);
+//    echo "<pre> TO jest";print_r($iddodanejFabryki); echo "</pre>";
+
+            $__MapControl->add($factoryInst);
+            $_SESSION["ActionInfo"] = "Dodano fabrykę!";
+            $_SESSION["whatShouldOpen"] = "startPage";
+            $_SESSION["howManyFactory"] = $ile + 1;
+        }else{
+            $_SESSION["ActionInfo"] = "Osiągnięto limit budowy fabryk!";
+        }
+    }
+    $_SESSION["whatShouldOpen"] = "startPage";
+}//FINISH
+
+if (isset($_GET["firstfactory"])) {
 
     include_once __DIR__ . "/../git-repo/resr/src/Controllers/FactoryInstanceController.php";
     $__facControler = \Controller\FactoryInstanceController::getInstance();
 
-    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ResourceController.php";
-    $__ResControl = \Controller\ResourceController::getInstance();
-
     include_once __DIR__ . "/../git-repo/resr/src/Controllers/MapController.php";
     $__MapControl = \Controller\MapController::getInstance();
 
-    echo "POST<br/>";
-    echo "IDres: " . $_POST["idResource"] . "<br/>";
-    echo "UpgradeLvl: " . $_POST['upgradeLvl'] . "<br/>";
-    echo "IdUser: " . $_POST['idUser'] . "<br/>";
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ScoreController.php";
+    $__ScoreControl = \Controller\ScoreController::getInstance();
 
-    $__facControler->add($_POST["idResource"], $_POST["upgradeLvl"], $_POST["idUser"]);
-//    echo "<pre> TO jest";print_r($iddodanejFabryki); echo "</pre>";
-    $factoryInst = $__facControler->returnFactoryIDbyParametr($_POST["idResource"], $_POST["upgradeLvl"], $_POST["idUser"]);
-    echo "<pre> TO jest";print_r($factoryInst); echo "</pre>";
+    echo "IDUSER: ".$_SESSION["idUser"];
+    echo "<br>Działa";
 
+    $__ScoreControl->update(591);
+    $__facControler->add(1, 1, $_SESSION["idUser"]);
+    $factoryInst = $__facControler->returnFactoryIDbyParametr(1, 1, $_SESSION["idUser"]);
     $__MapControl->add($factoryInst);
-    $_SESSION["ActionInfo"] = "Dodano fabrykę!";
-    $_SESSION["whatShouldOpen"] = "startPage";
-//    public function add($idResource, $upgradeLevel, $idUser){
-}//FINISH
 
+    $_SESSION["BtnDes"]="zablokuj";
+    $_SESSION["ActionInfo"] = "Witaj w Factorio Online!";
+    $_SESSION["whatShouldOpen"] = "startPage";
+    $nope=true;
+    header("Location: tutorial.php");
+}//FINISH
 
 if (isset($_POST["destroy_factory"])) {
 
@@ -54,13 +86,14 @@ if (isset($_POST["odp1"])) {
     include_once __DIR__ . "/../git-repo/resr/src/Controllers/ScoreController.php";
     $__ScoreControl = \Controller\ScoreController::getInstance();
 
-    echo "POST<br/>";
-    echo "QuestID: " . $_POST["questID"] . "<br/>";
-    echo "TaskID: " . $_POST["taskID"] . "<br/>";
-    echo "Odp1: " . $_POST["hodp1"] . "<br/>";
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ResourceController.php";
+    $__ResControl = \Controller\ResourceController::getInstance();
+    $__ResControl->clearFrontEndResourcesCount();
+    $_SESSION["BtnDes"]="zablokuj";
     if($__MapControl->onClickAndCheckQuestion($_POST["questID"], $_POST["hodp1"])==true){
         $_SESSION["ActionInfo"] = "Poprawna odpowiedź!";
         $__ScoreControl->update($_POST["taskID"]);
+
     }else{
         $_SESSION["ActionInfo"] = "Niestety to zła odpowiedź!";
     }
@@ -74,6 +107,11 @@ if (isset($_POST["odp2"])) {
 
     include_once __DIR__ . "/../git-repo/resr/src/Controllers/ScoreController.php";
     $__ScoreControl = \Controller\ScoreController::getInstance();
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ResourceController.php";
+    $__ResControl = \Controller\ResourceController::getInstance();
+    $__ResControl->clearFrontEndResourcesCount();
+    $_SESSION["BtnDes"]="zablokuj";
 
     echo "POST<br/>";
     echo "QuestID: " . $_POST["questID"] . "<br/>";
@@ -96,6 +134,11 @@ if (isset($_POST["odp3"])) {
     include_once __DIR__ . "/../git-repo/resr/src/Controllers/ScoreController.php";
     $__ScoreControl = \Controller\ScoreController::getInstance();
 
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ResourceController.php";
+    $__ResControl = \Controller\ResourceController::getInstance();
+    $__ResControl->clearFrontEndResourcesCount();
+    $_SESSION["BtnDes"]="zablokuj";
+
     echo "POST<br/>";
     echo "QuestID: " . $_POST["questID"] . "<br/>";
     echo "TaskID: " . $_POST["taskID"] . "<br/>";
@@ -117,6 +160,11 @@ if (isset($_POST["odp4"])) {
     include_once __DIR__ . "/../git-repo/resr/src/Controllers/ScoreController.php";
     $__ScoreControl = \Controller\ScoreController::getInstance();
 
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ResourceController.php";
+    $__ResControl = \Controller\ResourceController::getInstance();
+    $__ResControl->clearFrontEndResourcesCount();
+    $_SESSION["BtnDes"]="zablokuj";
+
     echo "POST<br/>";
     echo "QuestID: " . $_POST["questID"] . "<br/>";
     echo "TaskID: " . $_POST["taskID"] . "<br/>";
@@ -130,13 +178,42 @@ if (isset($_POST["odp4"])) {
     $_SESSION["whatShouldOpen"] = "Task";
 }//FINISH
 
+if (isset($_GET["noAnswer"])) {
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ResourceController.php";
+    $__ResControl = \Controller\ResourceController::getInstance();
+    $__ResControl->clearFrontEndResourcesCount();
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/ScoreController.php";
+    $__ScoreControl = \Controller\ScoreController::getInstance();
+
+    echo "Get: ".$_GET["taskID"];
+    $_SESSION["BtnDes"]="zablokuj";
+    $__ScoreControl->update($_GET["taskID"]);
+    $_SESSION["ActionInfo"] = "Badanie zakończone!";
+    $_SESSION["whatShouldOpen"] = "Task";
+}//FINISH
+
 if(!empty($_GET["lvlup"])){
     echo $_GET["lvlup"];
     $_SESSION["ActionInfo"] = "Congratulation!";
+    $_SESSION["BtnDes"]="zablokuj";
 
     include_once __DIR__ . "/../git-repo/resr/src/Controllers/UserController.php";
     $__UserControl = \Controller\UserController::getInstance();
+
+    include_once __DIR__ . "/../git-repo/resr/src/Controllers/TaskController.php";
+    $__TaskControl = \Controller\TaskController::getInstance();
+
     $__UserControl->nextLevel($_SESSION["name_of_user"]);
+    $user = $__UserControl->SearchByEmail($_SESSION["name_of_user"]);
+    $lvl = $user->getLevel();
+
+    if($__TaskControl->returnTaskByLvl($lvl)==null || empty($__TaskControl->returnTaskByLvl($lvl))){
+        $_SESSION["levelOfUser"]=$lvl;
+        $_SESSION["EndGame"]="end";
+    }else{
+        $_SESSION["EndGame"]="con";
+    }
 }
 
 //Koniec
@@ -145,7 +222,9 @@ if(isset($_SESSION["ActionInfo"])){
         $_SESSION["ActionInfo"] = "Niepowodzenie działania.";
     }
 }
-header("Location: Map.php");
+if ($nope==false) {
+    header("Location: Map.php");
+}
 ?>
 <br/>
 <a href="AdminControllerSystem.php">Back to Admin</a>

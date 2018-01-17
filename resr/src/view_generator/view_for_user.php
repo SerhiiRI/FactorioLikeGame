@@ -1,9 +1,5 @@
 <?php
 
-function javamessage($txt){
-    echo "<script type='text/javascript'>alert('$txt');</script>";
-}
-
 function LewyPanelAdmina()
 {
     include_once __DIR__ . "/../Controllers/UserController.php";
@@ -26,11 +22,10 @@ function LewyPanelAdmina()
 
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
     $userData = $__userControler->SearchByEmail($nameOfUser);
-//    $factoryData = $__facControler->returnArray();
     $__surowce = $__resControler->returnArray();
 
     $howManyTask = 0;
-    $TaskListByLvl = $__taskControler->returnTaskByLvl($userData->getLevel() + 1);
+    $TaskListByLvl = $__taskControler->returnTaskByLvl($userData->getLevel());
     foreach ($TaskListByLvl as $item) {
             $howManyTask++;
     }
@@ -40,18 +35,16 @@ function LewyPanelAdmina()
     foreach ($TaskList as $item) {
         if ($item->getLevelTo() <= $userData->getLevel() + 1) {
             $status = $__scoreControler->searchByIdTask($item->getidTask());
-            if ($status == false) {
+            if ($status == true) {
                 $howManyCurrentTask++;
             }
         }
     }
-        //javamessage("Task: $howManyTask, CTask: $howManyCurrentTask");
-
+//    javamessage($howManyTask);
+//    javamessage($howManyCurrentTask);
 
     $imageOfUser = "resr/img/" . $userData->getIMG(); //Grafika usera
     $lvlGracza = $userData->getLevel();
-    $LastLogin = $userData->getLastLogined();
-    $secure = ($userData->getType() == 1) ? "Administrator" : "Gracz";
 
     $show = <<<HTML
     <div class="aleks_user_panel">
@@ -64,47 +57,26 @@ function LewyPanelAdmina()
                     <!-- Funkcje dla admina -->
                     <br/>
                     <br/>
+<p id="serhii_log"></p>
+
 HTML;
     echo $show;
-    $progress_start_calc = 0;
-    $progress_finish_calc = 0;
-    foreach ($__surowce as &$res) {
-//            $surowiec = $__resControler->searchByID($res->getidResource());
-        $surowiec = $res->getResourceName();
-        $progres = rand(0, 100);
-        $finish = 100;
-        $progres_procent = ($progres * 100) / $finish;
-        $progress_start_calc = $progress_start_calc + $progres;
-        $progress_finish_calc = $progress_finish_calc + $finish;
 
-        $show = <<<HTML
-                                                    <tr>
-                                                        <td class="alx_center_th alx_th_padding">
-                                                            <input value="$surowiec: $progres/$finish" type="text" class="alx_small_input" disabled>
-                                                            <div class="progress">
-                                                                <div class="determinate" style="width: $progres_procent%;"></div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-HTML;
-        echo $show;
-    }
-
-    $finishTask = $howManyTask - $howManyCurrentTask;
-    if($howManyTask<=0 && $howManyTask<=0){
-        $progres_procent=0;
-        $wynik="It's end of game!";
-    }else {
-        $progres_procent = ($finishTask * 100) / $howManyTask;
-        $wynik = "Postęp: " . round($progres_procent) . "%";
-    }
-    $ButtonDisabled = ($progres_procent == 100) ?: "disabled";
-    $ButtonValue = ($progres_procent == 100) ? "LVL UP!" : $wynik;
-
+//    $progres_procent=100;
+//    $wynik = "Postęp: " . round($progres_procent) . "%";
+    $ButtonDisabled = "disabled";
+//    $ButtonDisabled = "";
+//    $ButtonValue = ($progres_procent == 100) ? "LVL UP!" : $wynik;
+//    $ButtonValue = ($howManyTask == 0) ? "It's end of game!" : "LEVEL UP!";
+//    $ButtonDisabled = ($howManyTask > 0) ? "disabled" : "";
+    $ButtonValue="LVL UP!";
+    $eofg="";
+    $ok="ok";
     $show = <<<HTML
 
+
                 <div class="alx_lvl_up_btn">
-                    <button name="levelup_btn" class="btn btn_lvlup" onclick="lvlup_gratulation_open()" $ButtonDisabled ">
+                    <button name="levelup_btn" class="btn btn_lvlup" id="lvlupBTN" value="$ok" onclick="lvlup_gratulation_open('$eofg')" $ButtonDisabled>
                     $ButtonValue
                     </button>
                 </div>
@@ -113,7 +85,14 @@ HTML;
                         <!--                        WYLOGOWANIE-->
                         <div class="alx_btn_logout">
                     <table>
-                        <tr class="alx_przycisk_na_lewym_panelu">
+                        <tr class="alx_przycisk_na_lewym_panelu_wyloguj" >
+                            <td class="alx_td_left alx_border_none">
+                                <a href="tutorial.php" class="alx_przycisk_wylogowania">- Informacje na start -</a>
+                            </td>
+                        </tr>
+                        </table>
+                        <table style="margin-top: 5px">
+                        <tr class="alx_przycisk_na_lewym_panelu_wyloguj">
                             <td class="alx_td_left alx_border_none">
                                 <a href="hard_logout.php" class="alx_przycisk_wylogowania">
                                     <i class="icon-logout aleks_icon_logout"></i> Wyloguj
@@ -144,12 +123,16 @@ function MapaFabryki()
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
     $userData = $__userControler->SearchByEmail($nameOfUser);
     $userID = $userData->getidUser();
-
+//    $mapArray = $__mapControler->returnArray();
+    $howManyFactory=0;
+    $lvlOfUser = $userData->getLevel();
+    $howManyFactoryCanBe = ($lvlOfUser + 1) * 2;
     $userMap = (!empty($__mapControler->returnArrayByID($userID))) ? $__mapControler->returnArrayByID($userID) : null;
     if (!empty($userMap)) {
         foreach ($userMap as &$item) {
             $CountFactory = $item->getCountFactory();
             for ($pi = 0; $pi < $CountFactory; $pi++) {
+                $howManyFactory++;
                 $factoryID = $item->getidFactory();
                 $WhichFactoryOnMap = $__facControler->returnFactoryByID($factoryID);
 //            echo "<pre>";print_r($WhichFactoryOnMap);echo "</pre>";
@@ -161,7 +144,7 @@ function MapaFabryki()
                 $nameOfFactory = $WhichResource->getFactoryName();
                 $nameOfResource = $WhichResource->getResourceName();
                 $wydobycie = $WhichResource->getProductiveUnit();
-                $grafika = $WhichResource->getIMGFactory();
+                $grafika = ($WhichResource->getIMGFactory() == "") ? "image.svg" : $WhichResource->getIMGFactory(); //Grafika fabryki
                 $show = <<<HTML
                 <div class="alx_flex_dla_mapy_diva">
                     <img src="resr/img/$grafika" class="alx_flexy_w_divie_map" onclick="func_open_zindex('$grafika', '$wydobycie', '$lvl', '$nameOfFactory', '$nameOfResource', '$factoryID')">
@@ -173,6 +156,20 @@ HTML;
     } else {
         echo "<h4>Brak obiektów na mapie</h4>";
     }
+//    javamessage($howManyFactory." / ".$howManyFactoryCanBe);
+
+    $_SESSION["howManyFactory"]=$howManyFactory;
+    $_SESSION["howManyFactoryCanBe"]=$howManyFactoryCanBe;
+    $show = <<<HTML
+<script>
+howManyOnMap($howManyFactory, $howManyFactoryCanBe);
+function howManyOnMap(ile, tyle) {
+    document.getElementById("MapaFabryki").innerHTML = "Mapa Fabryki: " + ile + "/" + tyle;
+}
+</script>
+HTML;
+echo $show;
+
 } //Tabela z fabrykami
 
 function PanelKontrolnyFabryki()
@@ -195,8 +192,8 @@ function PanelKontrolnyFabryki()
                 </div>
                 <p class="alx_flexy_w_edycji_fabryk_opis" id="opis_fabryki"></p>
                 <div class="alx_button_group_ligthbox">
-                    <button class="btn alx_flexy_w_edycji_fabryk_button">Upgrade!</button>
-                    <button class="btn alx_flexy_w_edycji_fabryk_button" onclick="stop_working()" id="onClickWorking">Wstrzymaj/wznów prace</button>
+                    <!--<button class="btn alx_flexy_w_edycji_fabryk_button">Upgrade!</button>-->
+                    <!--<button class="btn alx_flexy_w_edycji_fabryk_button" onclick="stop_working()" id="onClickWorking">Wstrzymaj/wznów prace</button>-->
                 <form action="db_update_user.php" method="post" class="alx_button_group_ligthbox">
                     <input type="hidden" id="idOfFactoryOnMap" name="idOfFactoryOnMap">
                     <button class="btn alx_flexy_w_edycji_fabryk_button" name="destroy_factory">Zniszcz fabrykę</button>
@@ -222,9 +219,6 @@ function ListaTaskowDlaUsera()
     include_once __DIR__ . "/../Controllers/TaskController.php";
     $__taskControler = \Controller\TaskController::getInstance();
 
-    include_once __DIR__ . "/../Controllers/MapController.php";
-    $__mapControler = \Controller\MapController::getInstance();
-
     include_once __DIR__ . "/../Controllers/QuestionController.php";
     $__questController = \Controller\QuestionController::getInstance();
 
@@ -234,9 +228,10 @@ function ListaTaskowDlaUsera()
     $nameOfUser = $_SESSION["name_of_user"]; //Nazwa użytkowanik
     $userData = $__userControler->SearchByEmail($nameOfUser);
     $userID = $userData->getidUser();
+    $_SESSION['poziomGracza']=$userData->getLevel();
 
     $howManyCurrentTask=0;
-    $TaskList = $__taskControler->returnOnlyCurrentUserTaskArray();
+    $TaskList = $__taskControler->returnArray();
     foreach ($TaskList as $item) {
         if ($item->getLevelTo() <= $userData->getLevel() + 1) {
             $status = $__scoreControler->searchByIdTask($item->getidTask());
@@ -245,50 +240,55 @@ function ListaTaskowDlaUsera()
                 $lvl = $item->getLevelTo();
                 $opis = $item->getTask();
                 $taskID = $item->getidTask();
-                $odkrycie = $item->getResourceTo();
-//        $var = "456";
 
                 $QuestData = $__questController->searchQuestionByIdOf_Task($taskID);
-//            echo "<pre>";print_r($QuestData);echo"</pre>";
-                $task = $opis;
-                $quest = $QuestData->getQuestion();
-                $answers = $QuestData->getAnswerList();
-                $idQuest = $QuestData->getIdQuestion();
-                $rand = rand(0, 2);
-                if ($rand == 0) {
-                    $odp1 = $answers[1]->getAnswer();
-                    $odp2 = $answers[0]->getAnswer();
-                    $odp3 = $answers[2]->getAnswer();
-                    $odp4 = $answers[3]->getAnswer();
-                    $odp1_id = $answers[1]->getidAnswers();
-                    $odp2_id = $answers[0]->getidAnswers();
-                    $odp3_id = $answers[2]->getidAnswers();
-                    $odp4_id = $answers[3]->getidAnswers();
-                } else if ($rand == 1) {
-                    $odp1 = $answers[3]->getAnswer();
-                    $odp2 = $answers[1]->getAnswer();
-                    $odp3 = $answers[0]->getAnswer();
-                    $odp4 = $answers[2]->getAnswer();
-                    $odp1_id = $answers[3]->getidAnswers();
-                    $odp2_id = $answers[1]->getidAnswers();
-                    $odp3_id = $answers[0]->getidAnswers();
-                    $odp4_id = $answers[2]->getidAnswers();
-                } else if ($rand == 2) {
-                    $odp1 = $answers[2]->getAnswer();
-                    $odp2 = $answers[1]->getAnswer();
-                    $odp3 = $answers[3]->getAnswer();
-                    $odp4 = $answers[0]->getAnswer();
-                    $odp1_id = $answers[2]->getidAnswers();
-                    $odp2_id = $answers[1]->getidAnswers();
-                    $odp3_id = $answers[3]->getidAnswers();
-                    $odp4_id = $answers[0]->getidAnswers();
+                $btn_send = "0";
+                if ($QuestData != null) {
+                    $btn_send = "1";
+                } else {
+                    $btn_send = "0";
                 }
-
+//            echo "<pre>";print_r($QuestData);echo"</pre>";
+                if ($btn_send == "1") {
+                    $task = $opis;
+                    $quest = $QuestData->getQuestion();
+                    $answers = $QuestData->getAnswerList();
+                    $idQuest = $QuestData->getIdQuestion();
+                    $rand = rand(0, 2);
+                    if ($rand == 0) {
+                        $odp1 = $answers[1]->getAnswer();
+                        $odp2 = $answers[0]->getAnswer();
+                        $odp3 = $answers[2]->getAnswer();
+                        $odp4 = $answers[3]->getAnswer();
+                        $odp1_id = $answers[1]->getidAnswers();
+                        $odp2_id = $answers[0]->getidAnswers();
+                        $odp3_id = $answers[2]->getidAnswers();
+                        $odp4_id = $answers[3]->getidAnswers();
+                    } else if ($rand == 1) {
+                        $odp1 = $answers[3]->getAnswer();
+                        $odp2 = $answers[1]->getAnswer();
+                        $odp3 = $answers[0]->getAnswer();
+                        $odp4 = $answers[2]->getAnswer();
+                        $odp1_id = $answers[3]->getidAnswers();
+                        $odp2_id = $answers[1]->getidAnswers();
+                        $odp3_id = $answers[0]->getidAnswers();
+                        $odp4_id = $answers[2]->getidAnswers();
+                    } else if ($rand == 2) {
+                        $odp1 = $answers[2]->getAnswer();
+                        $odp2 = $answers[1]->getAnswer();
+                        $odp3 = $answers[3]->getAnswer();
+                        $odp4 = $answers[0]->getAnswer();
+                        $odp1_id = $answers[2]->getidAnswers();
+                        $odp2_id = $answers[1]->getidAnswers();
+                        $odp3_id = $answers[3]->getidAnswers();
+                        $odp4_id = $answers[0]->getidAnswers();
+                    }
+                }
 
                 $show = <<<HTML
 <div class="collapsible-body alx_flexkontener_user_task">
                             <div class="alx_flex_user_task">
-                                Wymagany poziom: $lvl
+                                Wymagane do poziomu: $lvl
                             </div>
                             <div class="alx_flex_user_task">
                                 Opis: $opis
@@ -296,23 +296,36 @@ function ListaTaskowDlaUsera()
                             <div class="alx_flex_user_task">
                                 <div class="alx_flex_user_task_forbtn">
                                     <div class="alx_flex_user_task_btn">
+HTML;
+                echo $show;
+                if ($btn_send == "1") {
+                    $show = <<<HTML
                                         <button class="btn" id="addBtnDesibled" name="addBtnDesibled" onclick="lvlup_open_zindex('$task', '$taskID', '$quest', '$idQuest', '$odp1', '$odp2', '$odp3', '$odp4', '$odp1_id', '$odp2_id', '$odp3_id', '$odp4_id');">Badaj</button>
+HTML;
+                    echo $show;
+                } else {
+                    $show = <<<HTML
+                                        <button class="btn" id="addBtnDesibled" name="addBtnDesibled" onclick="lvlup_open_zindex_noAnswer('$taskID');">Badaj</button>
+HTML;
+                    echo $show;
+                }
+                $show = <<<HTML
+
                                     </div>
                                 </div>
                             </div>
                         </div>
 HTML;
                 echo $show;
+
             } else {
                 $lvl = $item->getLevelTo();
                 $opis = $item->getTask();
-                $odkrycie = $item->getResourceTo();
-//        $var = "456";
 
                 $show = <<<HTML
 <div class="collapsible-body alx_flexkontener_user_task">
                             <div class="alx_flex_user_task">
-                                Wymagany poziom: $lvl
+                                Wymagane do poziomu: $lvl
                             </div>
                             <div class="alx_flex_user_task">
                                 Opis: $opis
@@ -421,6 +434,7 @@ HTML;
         }
     }else{
         echo "<div class=\"collapsible-body\"><h4 style='padding: 2rem; text-align: center'>Nie odkryto jeszcze technologii</h4></div>";
+        echo '<script>window.location.href = "db_update_user.php?firstfactory=true";</script>';
     }
 }
 

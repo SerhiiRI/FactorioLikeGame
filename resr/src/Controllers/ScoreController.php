@@ -29,8 +29,8 @@ class ScoreController
     private function __construct()
     {
         $this->__dataBase__controller = MySQLController::getInstance();
-        $this->set($this->__dataBase__controller->__User__UserScoreQuery($_SESSION["idUser"]));
-        //$this->set($this->__dataBase__controller->__User__UserScoreQuery());
+        //$this->set($this->__dataBase__controller->__User__UserScoreQuery($_SESSION["idUser"]));
+        $this->set($this->__dataBase__controller->__User__UserScoreQuery());
     }
 
     private function set( $sql_question){
@@ -72,4 +72,5 @@ class ScoreController
         }
         return null;
     }
+
 }

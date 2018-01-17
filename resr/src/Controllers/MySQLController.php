@@ -47,16 +47,22 @@ final class MySQLController
     {
         if (empty(self::$instance))
             self::$instance = new self('root', '');
+//            self::$instance = new self('id4294276_spok', 'LiveLongAndProsper');
+//            self::$instance = new self('u646018221_jack', 'kinomaniak1122');
         return self::$instance;
     }
 
     private function __construct($login = 'root', $passwd = '')
+//    private function __construct($login = 'id4294276_spok', $passwd = 'LiveLongAndProsper')
+//    private function __construct($login = 'u646018221_jack', $passwd = 'kinomaniak1122')
     {
         $this->login = $login;
         $this->passwd = $passwd;
         try { // przekazujemy dla interfejsa PDO ustanawia dla zdefiniowanego zdarzenia
 //            $this->pdo = new PDO("mysql:host=192.168.1.5;dbname=game", $login, $passwd);
             $this->pdo = new PDO("mysql:host=127.0.0.1;dbname=game", $login, $passwd);
+//            $this->pdo = new PDO("mysql:host=enjoy-factorio.000webhostapp.com;dbname=id4294276_factorysystem", $login, $passwd);
+//            $this->pdo = new PDO("mysql:host=mysql.hostinger.pl;dbname=u646018221_game", $login, $passwd);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\Exception $e) {
             echo "Error: " . $e->getMessage();
@@ -91,7 +97,7 @@ final class MySQLController
         $prepare->execute();
         $idUzytkownika = -1;
         if ($prepare->rowCount() <= 0) {
-            $rejestracja = $this->pdo->prepare(" INSERT INTO User VALUES (NULL , :email, :pass, :dat,  :type, :score, :userlevel, :image) ");
+            $rejestracja = $this->pdo->prepare(" INSERT INTO User VALUES (NULL , :email, sha1(:pass), :dat,  :type, :score, :userlevel, :image) ");
             $rejestracja->bindParam(":email", $login);
             $rejestracja->bindParam(":pass", $password);
             $rejestracja->bindParam(":dat", $password);
@@ -114,7 +120,7 @@ final class MySQLController
 
     public function validateUser($login, $password)
     {
-        $prepare = $this->pdo->prepare("SELECT * FROM `User` WHERE Email=:email AND Passwd=:passwd");
+        $prepare = $this->pdo->prepare("SELECT * FROM `User` WHERE Email=:email AND Passwd=sha1(:passwd)");
         $prepare->bindParam(":email", $login);
         $prepare->bindParam(":passwd", $password);
         $prepare->execute();
@@ -460,12 +466,11 @@ final class MySQLController
         return $this->regestration($login, $password, $type, $idLevel, $idScore);
     }
 
-    public function __Admin__UserUpdate($EmailToChange, $PasswordToChange, $IMG)
+    public function __Admin__UserUpdate($EmailToChange, $IMG)
     {
-        $prepare = $this->pdo->prepare("UPDATE `User` SET `Passwd` = ?, `IMG` = ? WHERE `Email`=?");
-        $prepare->bindParam(1, $PasswordToChange);
-        $prepare->bindParam(2, $IMG);
-        $prepare->bindParam(3, $EmailToChange);
+        $prepare = $this->pdo->prepare("UPDATE `User` SET `IMG` = ? WHERE `Email`=?");
+        $prepare->bindParam(1, $IMG);
+        $prepare->bindParam(2, $EmailToChange);
         $prepare->execute();
         $prepare->closeCursor();
     }
@@ -537,51 +542,7 @@ final class MySQLController
         $prepare->closeCursor();
         return null;
     }
-/*
-    public function __Admin__QuestionUpdate($idTask, $Question, $AnswerTrue, $AnswerFalse1, $AnswerFalse2, $AnswerFalse3)
-    {
-        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Question` WHERE `idQuestion`=:id");
-        $sprawdzenia->bindParam(":id", $idQuestion);
-        $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
-        $sprawdzenia->execute();
-        if ($sprawdzenia->rowCount() > 0) {
-            $prepare = $this->pdo->prepare(" UPDATE `Question` SET `Question`=:txt WHERE `idQuestion`=:id");
-            $prepare->bindParam(":id", $idQuestion);
-            $prepare->bindParam(":txt", $text);
-            $prepare->execute();
-            $prepare->closeCursor();
-        }
-        $sprawdzenia->closeCursor();
-        return null;
-    }
 
-    public function __Admin__AnswerUpdate($idAnswer, $idQuestion, $text, $right)
-    {
-        $sprawdzenia = $this->pdo->prepare("SELECT * FROM `Answers` WHERE `idQuestion`=:id");
-        $sprawdzenia->bindParam(":id", $idQuestion);
-        $sprawdzenia->setFetchMode(PDO::FETCH_ASSOC);
-        $sprawdzenia->execute();
-        $sprawdzenia->closeCursor();
-        if (($sprawdzenia->rowCount() > 0) && $right == true) {
-            $prepare = $this->pdo->prepare(" UPDATE `Answers` SET `Right`=FALSE WHERE `idQuestion`=:id");
-            $prepare->bindParam(":id", $idQuestion);
-            $prepare->execute();
-            $prepare->closeCursor();
-            $prepare = $this->pdo->prepare("UPDATE `Answers` SET `Answer`=:text,`Right`=FALSE WHERE `idAnswers`=:id");
-            $prepare->bindParam(":id", $idAnswer);
-            $prepare->bindParam(":text", $text);
-            $prepare->execute();
-            $prepare->closeCursor();
-        } elseif (($sprawdzenia->rowCount() > 0) && $right == false) {
-            $prepare = $this->pdo->prepare("UPDATE `Answers` SET `Answer`=:text,`Right`=FALSE WHERE `idAnswers`=:id");
-            $prepare->bindParam(":id", $idAnswer);
-            $prepare->bindParam(":text", $text);
-            $prepare->execute();
-            $prepare->closeCursor();
-        }
-        return null;
-    }
-*/
     public function __Admin__AnswerQuery($idQuestion)
     {
         $prepare = $this->pdo->prepare("SELECT * FROM `Answers` WHERE `idQuestion`=:id");
@@ -623,17 +584,39 @@ final class MySQLController
         return null;
     }
 
+    public function __System__GetMaxLevel()
+    {
+        $prepare = $this->pdo->prepare("SELECT MAX(`LevelTo`) as `LevelTo` FROM `Task` ");
+        $prepare->bindParam(":lvl", $neededLevel);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
+        $prepare->execute();
+        if ($prepare->rowCount() > 0) {
+            $assoc = $prepare->fetchAll();
+            return $assoc;
+        }
+        $prepare->closeCursor();
+        return null;
+    }
+
     public function __Admin__TaskAdd($Task, $idResource, $LevelTo, $ResourceTo)
     {
-        $prepare = $this->pdo->prepare("INSERT INTO `Task` VALUES (NULL , :iddresources, :Task, :LevelTo, :ResourceTo)");
-        $prepare->bindParam(":iddresources", $idResource);
-        $prepare->bindParam(":Task", $Task);
-        $prepare->bindParam(":LevelTo", $LevelTo);
-        $prepare->bindParam(":ResourceTo", $ResourceTo);
+        $prepare = $this->pdo->prepare("SELECT * FROM `task` WHERE `idResources`=:id");
+        $prepare->bindParam(":id", $idResource);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
-        $id_New_Added_Task = $this->pdo->lastInsertId();
+        if ($prepare->rowCount() == 0) {
+            $prepare = $this->pdo->prepare("INSERT INTO `Task` VALUES (NULL , :iddresources, :Task, :LevelTo, :ResourceTo)");
+            $prepare->bindParam(":iddresources", $idResource);
+            $prepare->bindParam(":Task", $Task);
+            $prepare->bindParam(":LevelTo", $LevelTo);
+            $prepare->bindParam(":ResourceTo", $ResourceTo);
+            $prepare->execute();
+            $id_New_Added_Task = $this->pdo->lastInsertId();
+            $prepare->closeCursor();
+            return $id_New_Added_Task;
+        }
         $prepare->closeCursor();
-        return $id_New_Added_Task;
+        return null;
     }
 
 
@@ -649,48 +632,54 @@ final class MySQLController
         $prepare = $this->pdo->prepare("DELETE FROM `Task`");
         $prepare->execute();
         $prepare->closeCursor();
-        return "suka bliat";
+        return null;
     }
     public function __Admin__UserRemoveAll(){
         $prepare = $this->pdo->prepare("DELETE FROM `User`");
         $prepare->execute();
         $prepare->closeCursor();
-        return "suka bliat";
+        return null;
     }
     public function __Admin__QuestionRemoveAll(){
         $prepare = $this->pdo->prepare("DELETE FROM `Question`");
         $prepare->execute();
         $prepare->closeCursor();
-        return "suka bliat";
+        return null;
     }
     public function __Admin__FactoryInstanceRemoveAll(){
         $prepare = $this->pdo->prepare("DELETE FROM `FactoryInstance`");
         $prepare->execute();
         $prepare->closeCursor();
-        return "suka bliat";
+        return null;
     }
     public function __Admin__ResourceRemoveAll(){
         $prepare = $this->pdo->prepare("DELETE FROM `Resource`");
         $prepare->execute();
         $prepare->closeCursor();
-        return "suka bliat";
+        return null;
     }
     public function __Admin__UserMapRemoveAll(){
         $prepare = $this->pdo->prepare("DELETE FROM `UserMap`");
         $prepare->execute();
         $prepare->closeCursor();
-        return "suka bliat";
+        return null;
     }
 
     public function __Admin__TaskUpdate($idTask, $Task, $idResource, $LevelTo, $ResourceTo)
     {
-        $prepare = $this->pdo->prepare("UPDATE `task` SET `idResources`=:idres, `Task`=:tsk, `LevelTo`=:lvlto, `ResourceTo`=:rsrto WHERE `idTask`=:idtsk");
-        $prepare->bindParam(":idtsk", $idTask);
-        $prepare->bindParam(":idres", $idResource);
-        $prepare->bindParam(":tsk", $Task);
-        $prepare->bindParam(":lvlto", $LevelTo);
-        $prepare->bindParam(":rsrto", $ResourceTo);
+        $prepare = $this->pdo->prepare("SELECT * FROM `task` WHERE `idTask`=:id");
+        $prepare->bindParam(":id", $idTask);
+        $prepare->setFetchMode(PDO::FETCH_ASSOC);
         $prepare->execute();
+        if ($prepare->rowCount() > 0) {
+            $prepare = $this->pdo->prepare("UPDATE `task` SET `idResources`=:idres, `Task`=:tsk, `LevelTo`=:lvlto, `ResourceTo`=:rsrto WHERE `idTask`=:idtsk");
+            $prepare->bindParam(":idtsk", $idTask);
+            $prepare->bindParam(":idres", $idResource);
+            $prepare->bindParam(":tsk", $Task);
+            $prepare->bindParam(":lvlto", $LevelTo);
+            $prepare->bindParam(":rsrto", $ResourceTo);
+            $prepare->execute();
+        }
         $prepare->closeCursor();
         return null;
     }

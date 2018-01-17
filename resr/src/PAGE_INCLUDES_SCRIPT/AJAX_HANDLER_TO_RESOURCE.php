@@ -15,11 +15,17 @@ $__Resource__ = \Controller\ResourceController::getInstance();
 $__Task__ = \Controller\TaskController::getInstance();
 $__Resource__->initializeResourceScoreForFrontEnd();
 $__Resource__->updateResourceScoreForFrontEnd();
+
+$tf = true;
 foreach ($__Resource__->returnArrayForCurrentUserResource($_SESSION["idUser"]) as $value){
     $surowiec = $value->getResourceName();
     $progres = $_SESSION[$value->getResourceName()];
     $finish = $__Task__->searchLevelByIdResorce($value->getIdResources());
     $progres_procent = ($progres * 100) / $finish;
+
+    if($tf==true){
+        if($progres==$finish){$tf=true;}else{$tf=false;}
+    }
 
 
     $show = <<<HTML
@@ -34,3 +40,10 @@ foreach ($__Resource__->returnArrayForCurrentUserResource($_SESSION["idUser"]) a
 HTML;
     echo $show;
 }
+if($tf==true){
+    $_SESSION["BtnDes"]="odblokuj";
+
+}else{
+    $_SESSION["BtnDes"]="zablokuj";
+}
+

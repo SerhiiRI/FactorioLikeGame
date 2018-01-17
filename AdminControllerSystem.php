@@ -3,14 +3,9 @@
 include_once("resr/src/PAGE_INCLUDES_SCRIPT/PAGE_DEFINE_VARIABLE.php");
 if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
 
+    include_once("resr/src/view_generator/view_for_message.php");
     include_once("resr/src/view_generator/view_for_admin.php");
     $whatShouldOpen = $_SESSION["whatShouldOpen"];
-    if(isset($_SESSION["ActionInfo"])){
-        if($_SESSION["ActionInfo"]!="0"){
-            javamessage($_SESSION["ActionInfo"]);
-            $_SESSION["ActionInfo"]="0";
-        }
-    }
     ?>
 
 
@@ -20,26 +15,48 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
     <head>
         <meta charset="UTF-8">
         <title>Admin Tools</title>
-        <!--Import materialize.css-->
+
+        <!--Import Google Icon Font-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="style/materialize/css/materialize.min.css"
-              media="screen,projection"/>
-        <!--Import czcionek-->
-        <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Bahiana|Chelsea+Market|Cinzel:400,700,900|Dosis:200,300,400,500,600,700,800|Jim+Nightshade|Nosifer|Poiret+One|Quicksand:300,400,500,700|Text+Me+One&amp;subset=latin-ext"
-              rel="stylesheet">
-        <!--Import fontello-->
-        <link rel="stylesheet" href="style/fontello/css/fontello.css">
-        <!--Import jQuery before materialize.js-->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script type="text/javascript" src="style/materialize/js/materialize.min.js"></script>
-        <!--Import aleks_style.css-->
-        <link type="text/css" rel="stylesheet" href="style/aleks_style.css"/>
+
         <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <!--Import fontello-->
+        <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Bahiana|Chelsea+Market|Cinzel:400,700,900|Dosis:200,300,400,500,600,700,800|Jim+Nightshade|Nosifer|Poiret+One|Quicksand:300,400,500,700|Text+Me+One&amp;subset=latin-ext" rel="stylesheet">
+        <br/>
+        <link rel="stylesheet" href="style/fontello/css/fontello.css">
+
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+        <!--Import aleks_style.css-->
+        <link type="text/css" rel="stylesheet" href="style/aleks_style.css"/>
+
     </head>
 
     <body class="alx_bg_img">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
+    <div class="jsmessage" id="jsmessagestyle"><h4 id="jsmessage">TXT</h4></div>
+    <?php
+    if(isset($_SESSION["ActionInfo"])){
+        if($_SESSION["ActionInfo"]!= ""){
+            javamessage($_SESSION["ActionInfo"]);
+            $_SESSION["ActionInfo"] = "";
+        }
+    }
+//    javamessage("Wygląda na to że działa :D")
+    ;?>
     <a href="Credits.html"><img src="resr/img/gear6.gif" class="autorzy_btn"></a>
     <div class="alx_border_space">
         <div>
@@ -126,8 +143,17 @@ if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "1") {
     </body>
     </html>
 
-<?php } else if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
+<?php
+
+    if($_SESSION['ref'] == true){
+        $_SESSION['ref'] = false;
+        echo '<script>
+//        window.location.reload(true);
+        </script>';
+    }
+
+} else if (isset($_SESSION["idUser"]) && $_SESSION["UserType"] == "2") {
     header("Location:Map.php");
 } else if (!isset($_SESSION["idUser"])) {
-    header("Location:index.php");
+    header("Location:Index.php");
 } ?>
